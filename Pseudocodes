@@ -1,0 +1,20 @@
+//pseudocode for topic pattern generation
+
+pattern generator:
+
+- use NYT new-popular API, get the most popular articles
+	
+	- pull keywords from "all-views"
+
+- store these keywords, url, timestamp into database
+
+- loop through each keyword
+
+	- send these keywords to twitter API (GetSearch)
+
+	- check how many times that keyword has been tweeted/retweeted
+
+- filter down the results
+
+
+//pseudocode for news article generation
