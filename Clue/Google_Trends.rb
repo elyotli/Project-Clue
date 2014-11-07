@@ -43,15 +43,15 @@ end
 APP_KEY = "25c2511fffb22160760720222857b846:6:70154133"
 
 resource_type = {
-  email:"/mostemailed", 
-  share: "/mostshared", 
-  view: "/mostviewed"
+  email:"mostemailed", 
+  share: "mostshared", 
+  view: "mostviewed"
   }
 
-section = {all: "/all-sections"}
+section = {all: "all-sections"}
 
 client = NYT_Most_Popular_Client.new(APP_KEY)
 
-response_hash = client.get("http://api.nytimes.com/svc/mostpopular/v2" + resource_type[:view] + section[:all] + "/1.json?api-key=")
+response_hash = client.get("http://api.nytimes.com/svc/mostpopular/v2/" + resource_type[:view] + "/" + section[:all] + "/1.json?api-key=")
 
 # ap parse_response(response_hash)
