@@ -26,8 +26,8 @@ class OAuthClient
 
   def getArticles(topic, yyyymmdd)
     #NYTimesSearch(topic, yyyymmdd)
-    WaPo(topic)
-    #USAToday(topic)
+    # WaPo(topic)
+    USAToday(topic)
     #guardian(topic)
   end
 
@@ -41,7 +41,7 @@ class OAuthClient
     return parse_JSON(response.body)
 
   end
-
+  #plus sign
   def NYTimesSearch(topic, yyyymmdd)
     url = "http://api.nytimes.com/svc/search/v2/articlesearch.json?q#{topic}&begin_date=#{yyyymmdd}&api-key=295f07d2db55fce19a6bdd330412d2ff:0:70154133"
     getResponse(url)
@@ -51,13 +51,15 @@ class OAuthClient
 
   end
 
+  #plus sign
   def WaPo(topic)
     url = "http://api.washingtonpost.com/trove/v1/search?q=#{topic}&key=27D7BE94-8E90-48AA-8BF0-4AF5D19C4F25"  #is this saft to store key in the string like this?  Ask baker or alyssa
     getResponse(url)
   end
 
+  #space %20
   def USAToday(topic) #this has articles sorted by most read for whatever topic you pass in.  Put a count of 50 on
-     url =  "http://api.usatoday.com/open/articles?tag=#{topic}&count=1&most=read&encoding=json&api_key=gc66vcg4q8v5bhbsbzz4evzy"
+     url =  "http://api.usatoday.com/open/articles?tag=#{topic}&count=50&most=read&encoding=json&api_key=gc66vcg4q8v5bhbsbzz4evzy"
      getResponse(url)
   end
 
@@ -65,6 +67,7 @@ class OAuthClient
 
   end
 
+  #%20
   def guardian(topic) #count is equal to 20, look for the size parameter
     url = "http://content.guardianapis.com/search?api-key=sfrv3wukd7uaw7amha8cd2e6&page-size=20&order-by=newest&q=#{topic}"
     response = getResponse(url)
@@ -97,7 +100,7 @@ client = OAuthClient.new(
      consumer_key: "295f07d2db55fce19a6bdd330412d2ff:0:70154133" #article search key
 )
 
- ap client.getArticles("ebola", 20140606)
+ ap client.getArticles("minimum%20wage", 20140606)
 
 # ap client.get("http://api.nytimes.com/svc/search/v2/articlesearch.json?callback=svc_search_v2_articlesearch&fq=source%3A%28%22The+New+York+Times%22%29&begin_date=20141105&end_date=20141106&sort=newest&hl=true&page=1&api-key=295f07d2db55fce19a6bdd330412d2ff%3A0%3A70154133")
 
