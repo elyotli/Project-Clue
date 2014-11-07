@@ -19,26 +19,19 @@ end
 class TwitterWordSearch < APIControl
 
   def initialize
+    @tweet_arr = []
+    @total_tweet_popularity = 0
   end
 
   def search_tweet(search_word)
-    tweet_arr = []
     search_word = URI.parse(search_word)
-    TWITTER_CLIENT.search("#{search_word}", :lang => "en", :result_type => "mixed").take(100).each_with_index do |tweet, index|
-      p index
-       p "Tweet Text: "
-      ap tweet.text
-      p "Tweet Retweet Count: "
-      ap tweet.retweet_count
-      p "Tweet Favorite Count: "
-      ap tweet.favorite_count
-      p "user: "
-      ap tweet.user.name
-      ap tweet.created_at
-      tweet_arr << tweet
-    end
+    twit_search = TWITTER_CLIENT.search("#{search_word}", :lang => "en", :result_type => "recent").take(100)
+    twit_search.each{|tweet| @tweet_arr << tweet.favorite_count + tweet.retweet_count}
+    @total_tweet_popularity += @tweet_arr.inject(:+)
+    return @total_tweet_popularity
   end
+
 end
 
 tws = TwitterWordSearch.new
-tws.search_tweet("")
+ap tws.search_tweet("Ebola")
