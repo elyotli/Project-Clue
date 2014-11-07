@@ -25,8 +25,10 @@ class OAuthClient
   end
 
   def getArticles(topic, yyyymmdd)
-    NYTimesSearch(topic, yyyymmdd)
+    #NYTimesSearch(topic, yyyymmdd)
     WaPo(topic)
+    #USAToday(topic)
+    #guardian(topic)
   end
 
   def getResponse(url)
@@ -43,7 +45,10 @@ class OAuthClient
   def NYTimesSearch(topic, yyyymmdd)
     url = "http://api.nytimes.com/svc/search/v2/articlesearch.json?q#{topic}&begin_date=#{yyyymmdd}&api-key=295f07d2db55fce19a6bdd330412d2ff:0:70154133"
     getResponse(url)
-    p "#"
+  end
+
+  def NYTimesMostPopular(today)
+
   end
 
   def WaPo(topic)
@@ -51,7 +56,26 @@ class OAuthClient
     getResponse(url)
   end
 
-  def USAToday()
+  def USAToday(topic) #this has articles sorted by most read for whatever topic you pass in.  Put a count of 50 on
+     url =  "http://api.usatoday.com/open/articles?tag=#{topic}&count=1&most=read&encoding=json&api_key=gc66vcg4q8v5bhbsbzz4evzy"
+     getResponse(url)
+  end
+
+  def Hearst(topic)
+
+  end
+
+  def guardian(topic) #count is equal to 20, look for the size parameter
+    url = "http://content.guardianapis.com/search?api-key=sfrv3wukd7uaw7amha8cd2e6&page-size=20&order-by=newest&q=#{topic}"
+    response = getResponse(url)
+    response["response"]["results"].each do |article|
+      p article["webTitle"]
+      p article["webUrl"]
+      p article["webPublicationDate"]
+      puts "\n"
+    end
+  end
+
 
 
 
@@ -73,7 +97,7 @@ client = OAuthClient.new(
      consumer_key: "295f07d2db55fce19a6bdd330412d2ff:0:70154133" #article search key
 )
 
-ap client.getArticles("president-barack-obama", 20140606)
+ ap client.getArticles("ebola", 20140606)
 
 # ap client.get("http://api.nytimes.com/svc/search/v2/articlesearch.json?callback=svc_search_v2_articlesearch&fq=source%3A%28%22The+New+York+Times%22%29&begin_date=20141105&end_date=20141106&sort=newest&hl=true&page=1&api-key=295f07d2db55fce19a6bdd330412d2ff%3A0%3A70154133")
 
@@ -86,6 +110,7 @@ ap client.getArticles("president-barack-obama", 20140606)
 #hearst
 #huffpost???
 #USA Today
+#guardian
 
 #put in a topic
 #get back an array of articles from each site going back 6 months.
