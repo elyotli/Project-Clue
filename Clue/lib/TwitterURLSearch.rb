@@ -22,5 +22,11 @@ class TwitterURLSearch < APIControl
 end
 
 client = TwitterURLSearch.new
-client.set_params("http://www.nytimes.com/2014/11/07/us/politics/republican-wins-may-lead-to-fiscal-deal-with-democrats.html?hp&action=click&pgtype=Homepage&module=photo-spot-region&region=top-news&WT.nav=top-news")
+client.set_params("http://trove.com/me/content/QmcWA")
 p client.get_response
+client.set_params("washingtonpost.com/voters-dont-seem-to-view-the-minimum-wage-as-a-partisan-political-issue/")
+p client.get_response
+
+client.set_params("google")
+p client.get_response
+
