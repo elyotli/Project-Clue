@@ -2,9 +2,24 @@ require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 
+require 'twitter'
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
+
+PROJ_CLUE_CONSUMER_KEY = "pn5orCjkWymq7dLFZwf1rJWLB"
+PROJ_CLUE_CONSUMER_SECRET ="1KzC4wZOgU8qlgZlozDJtL6o1cPWNzSmLGmmuvRg6Tr1OkX0i8"
+PROJ_CLUE_TOKEN = "30163876-h8eLKbPqOR3QAjuakwMTWjk45jgtitn0gQmwtMxk8"
+PROJ_CLUE_TOKEN_SECRET = "PArLmsMPEGZOagLNSd8gkejjNje4mcmEFhNkAOdOF1SSy"
+
+
+TWITTER_CLIENT = Twitter::REST::Client.new do |config|
+  config.consumer_key    = PROJ_CLUE_CONSUMER_KEY
+  config.consumer_secret = PROJ_CLUE_CONSUMER_SECRET
+end
+
+
 
 module Clue
   class Application < Rails::Application
