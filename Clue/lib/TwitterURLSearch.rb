@@ -23,6 +23,7 @@ end
 
 puts "*" * 30
 client = TwitterURLSearch.new
+
 client.set_params("mm4a.org/1wA1qCl")
 ap client.get_response
 puts "*" * 30
