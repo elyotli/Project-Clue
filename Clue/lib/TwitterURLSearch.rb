@@ -17,16 +17,18 @@ class TwitterURLSearch < APIControl
   end
 
   def get_response
-    parse_JSON(get_request)["count"]
+    parse_JSON(get_request)#["count"]
   end
 end
 
+puts "*" * 30
 client = TwitterURLSearch.new
-client.set_params("http://trove.com/me/content/QmcWA")
-p client.get_response
-client.set_params("washingtonpost.com/voters-dont-seem-to-view-the-minimum-wage-as-a-partisan-political-issue/")
-p client.get_response
 
-client.set_params("google")
-p client.get_response
-
+client.set_params("mm4a.org/1wA1qCl")
+ap client.get_response
+puts "*" * 30
+puts "*" * 30
+client2 = TwitterURLSearch.new
+client2.set_params("http://mediamatters.org/research/2014/11/06/cable-news-election-night-coverage-ignored-impa/201475")
+ap client2.get_response
+puts "*" * 30
