@@ -1,10 +1,10 @@
 def USAToday(topic) #this has articles sorted by most read for whatever topic you pass in.  Put a count of 50 on
      url =  "http://api.usatoday.com/open/articles?tag=#{topic}&count=50&most=read&encoding=json&api_key=gc66vcg4q8v5bhbsbzz4evzy"
      getResponse(url)
-  end
+end
 
 
-  require_relative "API_control"
+require_relative "API_control"
 
 class USATodayArticleSearch < APIControl
   @@base_url = "http://api.usatoday.com/open/articles?keyword="
