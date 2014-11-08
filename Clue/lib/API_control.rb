@@ -23,3 +23,10 @@ class APIControl
     JSON.parse(response)
   end
 end
+
+
+class Article
+  attr_accessor :title, :url, :abstract, :source, :image_url, :published_at
+  def initialize
+  end
+end
