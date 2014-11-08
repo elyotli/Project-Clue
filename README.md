@@ -25,3 +25,11 @@ Project-Clue
 		(*) I would like to be able to upvote or downvote an article depending on relevance
 		(*) forward tracking of topics
 		(*) default articles when a topic is first chosen should be over the entire timeline
+
+![whiteboard_backlog](project management/whiteboard_backlog.jpg)
+
+![whiteboard_algorithm](project management/whiteboard_algorithm.jpg)
+
+![wireframe](project management/wireframe.jpg)
+
+![db_schema_final](project management/db_schema_final.png)
