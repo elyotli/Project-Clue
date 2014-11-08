@@ -26,7 +26,8 @@ class TwitterWordSearch < APIControl
   end
 
   def search_tweet(search_word, find_before=nil)
-    parsed_search_word = URI.parse(search_word)
+    # parsed_search_word = URI.parse(search_word)
+    parsed_search_word = search_word.split(" ").join("+")
     twit_search = TWITTER_CLIENT.search("#{parsed_search_word}", :lang => "en", :result_type => "recent", :max_id => find_before).take(100)
     num_results = twit_search.count
 
@@ -40,15 +41,19 @@ class TwitterWordSearch < APIControl
     if num_results > 99 && @tweet_id_arr.length < 999
       search_tweet(search_word, @current_tweet_id)
     end
-    results = {"time:" => @time_elapsed.to_i, "retweets:" => @total_retweets}
+    results = {"time" => @time_elapsed.to_i, "retweets" => @total_retweets}
     return results
   end
 end
 
 # puts "*" * 30
-# ebola_search = TwitterWordSearch.new
-# puts "Ebola:"
-# ap ebola_search.search_tweet("Ebola")
+# kard_search = TwitterWordSearch.new
+# puts "Kim Kardashian:"
+# ap kard_search.search_tweet("Kim")
+# puts "*" * 30
+
+# puts "Kim Kardashian:"
+# ap kard_search.search_tweet("Kardashian")
 # puts "*" * 30
 
 # obama_search = TwitterWordSearch.new
