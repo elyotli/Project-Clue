@@ -32,4 +32,4 @@ Project-Clue
 
 ![wireframe](project management/wireframe.jpg)
 
-![db_schema_final](project management/db_schema_final.jpg)
+![db_schema_final](project management/db_schema_final.png)
