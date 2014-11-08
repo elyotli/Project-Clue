@@ -45,6 +45,6 @@ class NYTMostPopularAPI < APIControl
   end
 end
 
-NYTclient = NYTMostPopularAPI.new
-NYTclient.set_params("view", "all", "1")
-ap NYTclient.get_response
+client = NYTMostPopularAPI.new
+client.set_params("view", "all", "1")
+ap client.get_response
