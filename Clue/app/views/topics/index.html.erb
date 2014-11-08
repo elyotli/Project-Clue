@@ -6,7 +6,9 @@
 	    <div class="row-fluid">
 	    <!-- images go in these divs -->
 	    	<div class="col-md-3">
-	    		image 1
+	    		<% @topics.each do |topic| %>
+	    		  <%= link_to "#{topic.title}", topic_path(topic) %>
+	    		  <% end %>
 	    	</div>
 	    	<div class="col-md-3">
 	    		image 2
@@ -20,7 +22,7 @@
 <!-- 	    	<div class="col-md-3">
 	    		image 5
 	    	</div> -->
-	    
+
 	  </div>
 	</div>
 </div>
