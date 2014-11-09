@@ -27,8 +27,8 @@ class TwitterWordSearch < APIControl
 
   def search_tweet(search_word, find_before=nil)
     # parsed_search_word = URI.parse(search_word)
-    parsed_search_word = search_word.split(" ").join("+")
-    twit_search = TWITTER_CLIENT.search("#{parsed_search_word}", :lang => "en", :result_type => "recent", :max_id => find_before).take(100)
+     #parsed_search_word = search_word.split(" ").join("+")
+    twit_search = TWITTER_CLIENT.search("#{search_word}", :lang => "en", :result_type => "recent", :max_id => find_before).take(100)
     num_results = twit_search.count
 
     twit_search.each do |tweet|
@@ -36,15 +36,20 @@ class TwitterWordSearch < APIControl
       @total_retweets += tweet.retweet_count
       @current_tweet_id = tweet.id
       @current_tweet_time = tweet.created_at
+      ap tweet.text
+      ap tweet.created_at
     end
     @time_elapsed = Time.now - @current_tweet_time
     if num_results > 99 && @tweet_id_arr.length < 999
       search_tweet(search_word, @current_tweet_id)
     end
-    results = {"time" => @time_elapsed.to_i, "retweets" => @total_retweets}
+    results = {"time" => @time_elapsed.to_i, "retweets" => @total_retweets, "num tweets" => @tweet_id_arr.length}
     return results
   end
 end
+
+#test = TwitterWordSearch.new
+#ap test.search_tweet("http://www.nytimes.com/2014/11/07/opinion/paul-krugman-triumph-of-the-wrong.html")
 
 # puts "*" * 30
 # kard_search = TwitterWordSearch.new

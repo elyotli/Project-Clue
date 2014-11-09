@@ -23,13 +23,14 @@ class WaPoArticleSearch < APIControl
   end
 
   def create_article(article_json)
-    article = Article.new
+    article = Story.new
     article.title = article_json["displayName"]
     article.url = article_json["url"]
     article.abstract = article_json["snippet"]
     article.source = article_json["source"]["displayName"]
     article.image_url = "WaPoIsLame"
     article.published_at = article_json["published"]
+    article.twitter_popularity = get_tweet_count(article)
     return article
   end
 end

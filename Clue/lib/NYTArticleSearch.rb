@@ -43,6 +43,6 @@ end
 # t = time.now()
 # begin_date = t.year
 
-client = NYTArticleSearch.new
-client.set_params("minimum wage", "20141030", "newest")
-ap client.get_response
+# client = NYTArticleSearch.new
+# client.set_params("minimum wage", "20141030", "newest")
+# ap client.get_response

@@ -31,13 +31,14 @@ class USATodayArticleSearch < APIControl
   end
 
   def create_article(article_json)
-    article = Article.new
+    article = Story.new
     article.title = article_json["title"]
     article.url = article_json["link"]
     article.abstract = article_json["description"]
     article.source = "www.usatoday.com"
     article.image_url = "USAIsLame"
     article.published_at = article_json["pubDate"]
+    article.twitter_popularity = get_tweet_count(article)
     return article
   end
 end
