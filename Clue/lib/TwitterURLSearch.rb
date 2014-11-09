@@ -1,11 +1,11 @@
-require_relative "API_Control"
+require_relative "API_control"
 require 'uri'
 require 'net/http'
 require 'json'
 require 'awesome_print'
 
 
-class TwitterURLSearch < APIControl
+module TwitterURLSearch
   @@base_url = "http://urls.api.twitter.com/1/urls/count.json?url="
 
   def initialize
@@ -19,6 +19,24 @@ class TwitterURLSearch < APIControl
   def get_response
     parse_JSON(get_request)#["count"]
   end
+
+  def get_request
+    uri = URI.parse(@processed_url)
+    request = Net::HTTP::Get.new(uri)
+    response = Net::HTTP.start(uri.host, uri.port) do |http|
+      http.request request
+    end
+    return response.body
+  end
+
+  def get_tweet_count(article)
+    client = TwitterURLSearch.new
+    client.set_params(article.url)
+    client.get_response["count"]
+  end
+
+
+
 end
 
 # puts "*" * 30

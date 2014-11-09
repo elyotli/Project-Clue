@@ -21,7 +21,7 @@ DayTopic.create!(topic_id: ferguson.id, day_id: today.id )
 DayTopic.create!(topic_id: election.id, day_id: today.id )
 DayTopic.create!(topic_id: teletubbies.id, day_id: today.id )
 
-ebo1 =Article.create!(title: "Ebola Volunteers Wrestle With Quarantine Mandates", url: "http://abcnews.go.com/Health/wireStory/ebola-volunteers-wrestle-quarantine-mandates-26776349")
+ebo1 =Article.create!(title: "Ebola Volunteers Wrestle With Quarantine Mandates", url: "http://abcnews.go.com/Health/wireStory/ebola-volunteers-wrestle-quarantine-mandates-26776349", published_at: Date.yesterday)
 ebo2 = Article.create!(url: "http://www.bbc.com/news/world-africa-29967124", title: "Ebola outbreak: Africa sets up $28.5m crisis fund")
 
 ferg1 = Article.create!(title: "Man beaten at Ferguson protest strategy meeting", url: "http://www.stltoday.com/news/local/crime-and-courts/man-beaten-at-ferguson-protest-strategy-meeting/article_ba9ebc92-cb6f-57d9-bc00-1c99edc3c99c.html")
