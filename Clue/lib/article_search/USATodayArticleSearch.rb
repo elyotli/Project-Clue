@@ -31,13 +31,14 @@ class USATodayArticleSearch < APIControl
   end
 
   def create_article(article_json)
-    article = Article.new
+    article = Story.new
     article.title = article_json["title"]
     article.url = article_json["link"]
     article.abstract = article_json["description"]
     article.source = "www.usatoday.com"
     article.image_url = "USAIsLame"
     article.published_at = article_json["pubDate"]
+    article.twitter_popularity = get_tweet_count(article)
     return article
   end
 end
@@ -48,14 +49,14 @@ end
 
 
 # keywords = ["Global Warming", "United States", "Republican Party", "Midterm Elections (2014)", "Boehner, John A"]
-keywords = ["Global Warming", "United States"]
-all_articles = {}
+# keywords = ["Global Warming", "United States"]
+# all_articles = {}
 
-keywords.each do |keyphrase|
-  all_articles[keyphrase] = []
-usa_today = USATodayArticleSearch.new
-  usa_today.set_params(keyphrase)
-  all_articles[keyphrase] += usa_today.get_response
-end
+# keywords.each do |keyphrase|
+#   all_articles[keyphrase] = []
+# usa_today = USATodayArticleSearch.new
+#   usa_today.set_params(keyphrase)
+#   all_articles[keyphrase] += usa_today.get_response
+# end
 
-ap all_articles
+# ap all_articles

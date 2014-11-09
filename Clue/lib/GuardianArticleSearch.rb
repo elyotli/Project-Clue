@@ -33,6 +33,8 @@ class GuardianArticleSearch < APIControl
     article.source = "TheGuardian"
     article.image_url = ""
     article.published_at = article_json["webPublicationDate"]
+    article.twitter_popularity = get_tweet_count(article)
+
     return article
   end
 end

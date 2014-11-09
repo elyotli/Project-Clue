@@ -24,11 +24,12 @@ class NYTArticleSearch < APIControl
   end
 
   def create_article(article_json)
-    article = Article.new
+    article = Story.new
     article.title = article_json["headline"]["main"]
     article.url = article_json["web_url"]
     article.abstract = article_json["abstract"]
     article.source = article_json["source"]
+    article.twitter_popularity = get_tweet_count(article)
     if article_json["multimedia"].length > 0 #you suck nyt
       article.image_url = "http://graphics8.nytimes.com/" + article_json["multimedia"][1]["url"]
     else
