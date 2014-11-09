@@ -34,10 +34,15 @@ class NYTMostPopularAPI < APIControl
   def parse_response(response_hash)
     results = response_hash["results"]
     key_words = []
+    ap results
     results.each do |result|
-      key_words << result["adx_keywords"].split(";")
+      # p result["des_facet"]
+      key_words += result["des_facet"] unless result["des_facet"] == ""
+      key_words += result["per_facet"] unless result["per_facet"] == ""
+      key_words += result["org_facet"] unless result["org_facet"] == ""
+      key_words += result["geo_facet"] unless result["geo_facet"] == ""
     end
-    key_words.flatten
+    key_words
   end
 
   def get_response
@@ -45,6 +50,7 @@ class NYTMostPopularAPI < APIControl
   end
 end
 
-# client = NYTMostPopularAPI.new
-# client.set_params("view", "all", "1")
-# ap client.get_response
+client = NYTMostPopularAPI.new
+client.set_params("share", "all", "1")
+ap client.get_response
+
