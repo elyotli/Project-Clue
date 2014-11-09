@@ -26,13 +26,14 @@ class GuardianArticleSearch < APIControl
   end
 
   def create_article(article_json)
-    article = Article.new
+    article = Story.new
     article.title = article_json["webTitle"]
     article.url = article_json["webUrl"]
     article.abstract = ""
     article.source = "TheGuardian"
     article.image_url = ""
     article.published_at = article_json["webPublicationDate"]
+    article.twitter_popularity = get_tweet_count(article)
     return article
   end
 end
