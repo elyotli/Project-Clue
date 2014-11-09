@@ -49,3 +49,4 @@ gem 'twitter'
 gem 'nokogiri'
 gem 'xml-simple'
 gem 'whenever', :require => false
+gem 'simple-rss'
