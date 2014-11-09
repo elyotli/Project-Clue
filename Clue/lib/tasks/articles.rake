@@ -9,7 +9,8 @@ require_relative "../article_search/WaPoArticleSearch"
 namespace :articles do
   desc "get new articles and topics"
   task update_articles: :environment do
-  require "Date"
+    require "Date"
+    require "awesome_print"
 
     client = NYTMostPopularAPI.new
     client.set_params("view", "all", "1")
@@ -21,6 +22,7 @@ namespace :articles do
 
     keywords_time_lapsed = {}
     keywords_retweets = {}
+    ap top_
 
     top_keywords.each do |keyword|
       search = TwitterWordSearch.new
@@ -62,6 +64,11 @@ namespace :articles do
 
     #We then create a new Article object for each of the articles.
 
-    ap all_articles
+    top_five_keywords.each do |keyword|
+      all_articles[keyword].sort! {|a,b| b.twitter_popularity <=> a.twitter_popularity }
+      shown_articles << all_articles[keyword].slice(0, 5)
+    end
+
+    ap shown_articles
   end
 end
