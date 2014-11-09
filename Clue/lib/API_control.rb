@@ -3,7 +3,6 @@ require 'uri'
 require 'net/http'
 require 'json'
 require 'awesome_print'
-# require_relative "TwitterURLSearch"
 
 class APIControl
   def initialize
@@ -15,14 +14,7 @@ class APIControl
     response = Net::HTTP.start(uri.host, uri.port) do |http|
       http.request request
     end
-    p response
     return response.body
-  end
-
-  def get_tweet_count(article)
-    client = TwitterURLSearch.new
-    client.set_params(article.url)
-    client.get_response["count"]
   end
 
   private

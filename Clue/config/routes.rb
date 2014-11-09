@@ -7,9 +7,14 @@ Rails.application.routes.draw do
 
   resources :topics
 
-  get 'day/:id' => 'day#show', as: :day
+#when user clicks a date on the graph
+  get 'topics/:topic_id/date/:date_id/articles' => 'articles#show', as: :topics_days_articles
+#iono
+  get 'days/:id' => 'days#show', as: :day
+#
+  get '/topics/:topic_id/statistics/popularity' => 'topics#popularity'
 
-
+  get 'topics/:topic_id' => 'topics#show'
 
 
   # Example of regular route:
