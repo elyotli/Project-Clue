@@ -3,7 +3,7 @@ require 'uri'
 require 'net/http'
 require 'json'
 require 'awesome_print'
-require_relative "TwitterURLSearch"
+# require_relative "TwitterURLSearch"
 
 class APIControl
   def initialize

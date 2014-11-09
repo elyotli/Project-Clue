@@ -41,10 +41,10 @@ class GoogleTrendsClient < APIControl
 
 end
 
-client = GoogleTrendsClient.new
-#available month_span: 1, 3
-client.set_params("minimum wage", "3")
-ap client.get_response
+# client = GoogleTrendsClient.new
+# #available month_span: 1, 3
+# client.set_params("minimum wage", "3")
+# ap client.get_response
 
 
 # c = Curl::Easy.perform("http://www.google.com/trends/fetchComponent?hl=en-US&cmpt=q&content=1&export=5&cid=TIMESERIES_GRAPH_0&q=minimum+wage&date=today+3-m")
