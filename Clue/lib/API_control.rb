@@ -15,6 +15,7 @@ class APIControl
     response = Net::HTTP.start(uri.host, uri.port) do |http|
       http.request request
     end
+    p response
     return response.body
   end
 
