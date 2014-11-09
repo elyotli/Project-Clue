@@ -1,7 +1,8 @@
 class TopicsController < ApplicationController
 	def index
     params[:date_id] ? day = Day.find(params[:date_id]) : day = Day.last
-    @topics = day.topics
+    @topics = day.topics.first(4);
+    @articles = @topics.first().articles.first(4);
 	end
 
   def show
