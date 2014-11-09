@@ -16,7 +16,7 @@ namespace :articles do
     # gets me today's keywords in all categories by most-viewed
     keywords_NYT = client.get_response
 
-    num_keywords = 2
+    num_keywords = 10
     top_keywords = keywords_NYT[0..(num_keywords - 1)]
 
     keywords_time_lapsed = {}
@@ -34,6 +34,8 @@ namespace :articles do
 
     Hash[keywords_retweets.sort_by{|k, v| v}.reverse]
     top_five_keywords = keywords_retweets.keys[0..4]
+
+    #find articles from all news sources based on each of the top five keywords:
 
     all_articles = {}
     top_five_keywords.each do |keyphrase|
@@ -56,6 +58,10 @@ namespace :articles do
       guardian.set_params(keyphrase, "newest", "10")
       all_articles[keyphrase] += guardian.get_response
     end
+    #all_articles will have a large number of articles, this is where we want to filter down to a set number of articles per keyword
+
+    #We then create a new Article object for each of the articles.
+
     ap all_articles
   end
 end
