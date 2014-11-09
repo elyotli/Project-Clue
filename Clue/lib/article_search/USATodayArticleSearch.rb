@@ -48,14 +48,14 @@ end
 
 
 # keywords = ["Global Warming", "United States", "Republican Party", "Midterm Elections (2014)", "Boehner, John A"]
-keywords = ["Global Warming", "United States"]
-all_articles = {}
+# keywords = ["Global Warming", "United States"]
+# all_articles = {}
 
-keywords.each do |keyphrase|
-  all_articles[keyphrase] = []
-usa_today = USATodayArticleSearch.new
-  usa_today.set_params(keyphrase)
-  all_articles[keyphrase] += usa_today.get_response
-end
+# keywords.each do |keyphrase|
+#   all_articles[keyphrase] = []
+# usa_today = USATodayArticleSearch.new
+#   usa_today.set_params(keyphrase)
+#   all_articles[keyphrase] += usa_today.get_response
+# end
 
-ap all_articles
+# ap all_articles

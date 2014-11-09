@@ -1,4 +1,5 @@
 require_relative "../API_control"
+require "Date"
 
 class NYTArticleSearch < APIControl
   @@base_url = "http://api.nytimes.com/svc/search/v2/articlesearch.json?"
@@ -42,7 +43,13 @@ end
 
 # t = time.now()
 # begin_date = t.year
-
-# client = NYTArticleSearch.new
-# client.set_params("minimum wage", "20141030", "newest")
-# ap client.get_response
+# keyword = ["minimum wage"]
+# all_articles = {}
+# keyword.each do |keyphrase|
+#   all_articles[keyphrase] = []
+#   client = NYTArticleSearch.new
+#   time_spam_nyt = Date.today.prev_day.strftime.gsub(/-/, "")
+#   client.set_params(keyphrase, time_spam_nyt, "newest")
+#   all_articles[keyphrase] += client.get_response
+# end
+# ap "All Articles: #{all_articles}"
