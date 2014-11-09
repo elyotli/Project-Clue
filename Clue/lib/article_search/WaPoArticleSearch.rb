@@ -1,4 +1,5 @@
 require_relative "../API_control"
+require_relative "../PopularitySearch"
 
 class WaPoArticleSearch < APIControl
   @@base_url = "http://api.washingtonpost.com/trove/v1/search?q="
@@ -30,7 +31,10 @@ class WaPoArticleSearch < APIControl
     article.source = article_json["source"]["displayName"]
     article.image_url = "WaPoIsLame"
     article.published_at = article_json["published"]
-    article.twitter_popularity = get_tweet_count(article)
+    popularity_client = PopularitySearch.new
+    popularity_client.set_params(article.url)
+    article.twitter_popularity = popularity_client.get_twitter_popularity
+    article.facebook_popularity = popularity_client.get_facebook_popularity
     return article
   end
 end

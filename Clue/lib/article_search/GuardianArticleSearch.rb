@@ -1,4 +1,6 @@
   require_relative "../API_control"
+  require_relative "../PopularitySearch"
+
 
 class GuardianArticleSearch < APIControl
   @@base_url = "http://content.guardianapis.com/search?"
@@ -33,7 +35,10 @@ class GuardianArticleSearch < APIControl
     article.source = "TheGuardian"
     article.image_url = ""
     article.published_at = article_json["webPublicationDate"]
-    article.twitter_popularity = get_tweet_count(article)
+    popularity_client = PopularitySearch.new
+    popularity_client.set_params(article.url)
+    article.twitter_popularity = popularity_client.get_twitter_popularity
+    article.facebook_popularity = popularity_client.get_facebook_popularity
     return article
   end
 end

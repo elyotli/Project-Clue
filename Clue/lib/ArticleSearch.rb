@@ -1,6 +1,6 @@
 Dir["article_search/*.rb"].each {|file| require_relative file }
 require_relative 'TwitterWordSearch'
-require_relative 'TwitterURLSearch'
+require_relative 'PopularitySearch'
 
 
 require 'active_record'
@@ -40,10 +40,10 @@ all_articles = {}
 keywords.each do |keyphrase|
   all_articles[keyphrase] = []
 
-  # nyt = NYTArticleSearch.new
-  # time_spam_nyt = Date.today.prev_day.strftime.gsub(/-/, "")
-  # nyt.set_params(keyphrase, time_spam_nyt, "newest")
-  # all_articles[keyphrase] += nyt.get_response
+  nyt = NYTArticleSearch.new
+  time_spam_nyt = Date.today.prev_day.strftime.gsub(/-/, "")
+  nyt.set_params(keyphrase, time_spam_nyt, "newest")
+  all_articles[keyphrase] += nyt.get_response
 
   usa_today = USATodayArticleSearch.new
   usa_today.set_params(keyphrase)
@@ -57,16 +57,20 @@ keywords.each do |keyphrase|
   guardian.set_params(keyphrase, "newest", "10")
   all_articles[keyphrase] += guardian.get_response
 end
-shown_articles = []
+ap all_articles
 
-keywords.each do |keyword|
-   all_articles[keyword].sort! {|a,b| b.twitter_popularity <=> a.twitter_popularity }
-   shown_articles << all_articles[keyword].slice(0, 5)
- end
+# shown_articles = []
 
-  shown_articles.each do |article|
-    Article.create!(article)
-  end
+# # keywords.each do |keyword|
+# #    all_articles[keyword].sort! {|a,b| b.twitter_popularity <=> a.twitter_popularity }
+# #    shown_articles << all_articles[keyword].slice(0, 5)
+# #  end
+
+#  ap shown_articles
+
+  # shown_articles.each do |article|
+  #   Article.create!(article)
+  # end
 
 
 

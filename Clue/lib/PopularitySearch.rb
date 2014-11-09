@@ -5,23 +5,22 @@ require 'json'
 require 'awesome_print'
 
 
-module TwitterURLSearch
-  @@base_url = "http://urls.api.twitter.com/1/urls/count.json?url="
+class PopularitySearch
+  @@twitter_base_url = "http://urls.api.twitter.com/1/urls/count.json?url="
+  @@facebook_base_url = "http://graph.facebook.com/?id="
 
   def initialize
-    @processed_url = ""
+    @twitter_processed_url = ""
+    @facebook_processed_url = ""
   end
 
   def set_params(url)
-    @processed_url = @@base_url + url
+    @twitter_processed_url = @@twitter_base_url + url
+    @facebook_processed_url = @@facebook_base_url + url
   end
 
-  def get_response
-    parse_JSON(get_request)#["count"]
-  end
-
-  def get_request
-    uri = URI.parse(@processed_url)
+  def get_request(url)
+    uri = URI.parse(url)
     request = Net::HTTP::Get.new(uri)
     response = Net::HTTP.start(uri.host, uri.port) do |http|
       http.request request
@@ -29,13 +28,15 @@ module TwitterURLSearch
     return response.body
   end
 
-  def get_tweet_count(article)
-    client = TwitterURLSearch.new
-    client.set_params(article.url)
-    client.get_response["count"]
+  def get_twitter_popularity
+    result_json = JSON.parse(get_request(@twitter_processed_url))
+    result_json["count"]
   end
 
-
+  def get_facebook_popularity
+    result_json = JSON.parse(get_request(@facebook_processed_url))
+    result_json["shares"]
+  end
 
 end
 
