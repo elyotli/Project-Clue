@@ -36,11 +36,11 @@ class NYTArticleSearch < APIControl
     article.twitter_popularity = popularity_client.get_twitter_popularity
     article.facebook_popularity = popularity_client.get_facebook_popularity
 
-    if article_json["multimedia"].length > 0 #you suck nyt
-      article.image_url = "http://graphics8.nytimes.com/" + article_json["multimedia"][1]["url"]
-    else
-      article.image_url = ""
-    end
+    # if article_json["multimedia"].length > 0 #you suck nyt
+    #   article.image_url = "http://graphics8.nytimes.com/" + article_json["multimedia"][1]["url"]
+    # else
+    #   article.image_url = ""
+    # end
      # to pull a smaller image, change the multimedia index 0
     article.published_at = article_json["pub_date"]
     return article

@@ -39,7 +39,7 @@ class USATodayArticleSearch < APIControl
     article.url = article_json["link"]
     article.abstract = article_json["description"]
     article.source = "www.usatoday.com"
-    article.image_url = "USAIsLame"
+    article.image_url = "USAtodayIsLame"
     article.published_at = article_json["pubDate"]
     popularity_client = PopularitySearch.new
     popularity_client.set_params(article.url)
