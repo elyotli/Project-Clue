@@ -15,10 +15,14 @@
 # Learn more: http://github.com/javan/whenever
 
 
-# every 1.day, at: '6:00 am' do
-#   rake "articles:update_articles"
-# end
+every 1.day, at: '6:00 am' do
+  rake "articles:update_articles"
+end
 
-# every 1.day, :at => '6:50 pm' do
+every 1.day at: '12:01 am' do
+  Day.create!(Date.today)
+end
+
+# every 1.day, :at => '5:10 pm' do
 #   command "touch ~/Desktop/Project-Clue/Clue/whenever_test.txt"
 # end
