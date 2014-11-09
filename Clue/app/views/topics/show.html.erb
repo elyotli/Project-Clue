@@ -1,1 +1,5 @@
-this page shows topic: <%= @topic.title %>
+this page shows topic: <%= @topic.title %><br>
+
+articles for this topic are <% @topic.articles.each do |article| %>
+<br><%= article.title  %>
+<% end %>
