@@ -14,12 +14,12 @@ def search_tweet(search_word)
   # tweet_arr = []
   search_word = URI.parse(search_word)
   # word_to_search = ARGV[0..-1]
-  TWITTER_CLIENT.search("#{search_word}", :lang => "en", :result_type => "popular").take(5).each do |tweet|
-    ap tweet.attrs
-    # p "Tweet Text: "
-    # ap tweet.text
-    # p "Tweet Retweet Count: "
-    # ap tweet.retweet_count
+  TWITTER_CLIENT.search("#{search_word}", :lang => "en", :result_type => "popular").take(100).each do |tweet|
+    # ap tweet.attrs
+     p "Tweet Text: "
+     ap tweet.text
+     p "Tweet Retweet Count: "
+     ap tweet.retweet_count
     # p "Tweet Favorite Count: "
     # ap tweet.favorite_count
     # p "Tweet Created at: "
@@ -28,7 +28,7 @@ def search_tweet(search_word)
   end
 end
 
-search_tweet("Election")
+search_tweet("Ferguson")
 
   # def get_url(url)
   #   uri = URI.parse(url)
