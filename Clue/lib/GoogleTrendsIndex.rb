@@ -34,6 +34,6 @@ query_option = {
 # past 3 months
 # &date=today+3-m
 
-client = GoogleTrendsClient.new
-client.set_params("minimum wage", "7")
-ap client.get_response
+# client = GoogleTrendsClient.new
+# client.set_params("minimum wage", "7")
+# ap client.get_response

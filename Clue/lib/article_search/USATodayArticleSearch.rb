@@ -4,7 +4,7 @@ def USAToday(topic) #this has articles sorted by most read for whatever topic yo
 end
 
 
-require_relative "API_control"
+require_relative "../API_control"
 
 class USATodayArticleSearch < APIControl
   @@base_url = "http://api.usatoday.com/open/articles?keyword="
@@ -16,7 +16,7 @@ class USATodayArticleSearch < APIControl
 
   def set_params(keywords)
     @processed_url = @@base_url + keywords.split(" ").join("+")
-    @processed_url += "&count=50&most=read&encoding=json"
+    @processed_url += "&count=10&most=read&encoding=json"
     @processed_url += "&api_key=" + @@app_key
   end
 
@@ -42,6 +42,20 @@ class USATodayArticleSearch < APIControl
   end
 end
 
-client = USATodayArticleSearch.new
-client.set_params("poop")
-ap client.get_response
+# client = USATodayArticleSearch.new
+# client.set_params("Midterm Elections (2014)")
+# ap client.get_response
+
+
+# keywords = ["Global Warming", "United States", "Republican Party", "Midterm Elections (2014)", "Boehner, John A"]
+# keywords = ["Global Warming", "United States"]
+# all_articles = {}
+
+# keywords.each do |keyphrase|
+#   all_articles[keyphrase] = []
+# usa_today = USATodayArticleSearch.new
+#   usa_today.set_params(keyphrase)
+#   all_articles[keyphrase] += usa_today.get_response
+# end
+
+# ap all_articles
