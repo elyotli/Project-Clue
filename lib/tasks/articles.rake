@@ -10,7 +10,7 @@ require_relative "../article_search/RSSGrabber"
 namespace :articles do
   desc "get new articles and topics"
   task update_articles: :environment do
-    require "Date"
+    # require "Date"
     require "awesome_print"
 
     client = NYTMostPopularAPI.new
@@ -71,114 +71,106 @@ namespace :articles do
       guardian = GuardianArticleSearch.new
       guardian.set_params(keyphrase, "newest", "10")
       all_articles[keyphrase] += guardian.get_response
-
     end
 
-      puts "inside cnn rss thingy"
-      client = RSSGrabber.new
-
-       cnn_top = client.get_response("http://rss.cnn.com/rss/cnn_topstories.rss")
-       cnn_top_count = search.get_follower_count("cnn")/1000000
-       cnn_top.each do |article|
-        article["counts"] = cnn_top_count
-        end
-
-
-       reuters_top = client.get_response("http://feeds.reuters.com/reuters/topNews")
-       reuters_top_count = search.get_follower_count("reuters")/1000000
-       reuters_top.each do |article|
-        article["counts"] = reuters_top_count
-        end
-
-
-      nbc_news_top = client.get_response("http://feeds.nbcnews.com/feeds/topstories")
-      nbc_news_top_count = search.get_follower_count("NBCNews")/1000000
-      nbc_news_top.each do |article|
-        article["counts"] = nbc_news_top_count
-      end
-
-
-      abc_news_top = client.get_response("http://feeds.abcnews.com/abcnews/topstories")
-      abc_news_top_count = search.get_follower_count("ABC")/1000000
-      abc_news_top.each do |article|
-        article["counts"] = abc_news_top_count
-      end
-      abc_count = search.get_follower_count("ABC")
-
-      ap_top = client.get_response("http://hosted.ap.org/lineups/TOPHEADS.rss?SITE=AP&SECTION=HOME")
-      ap_top_count =  search.get_follower_count("AP")/1000000
-      ap_top.each do |article|
-        article["counts"] = ap_top_count
-      end
-
-
-      npr_most = client.get_response("http://www.npr.org/rss/rss.php?id=100")
-      npr_most_count = search.get_follower_count("nprnews")/1000000
-      npr_most.each do |article|
-        article["counts"] = npr_most_count
-      end
-
-      fox_news_most = client.get_response("http://feeds.foxnews.com/foxnews/most-popular")
-      fox_news_most_count = search.get_follower_count("FoxNews")/1000000
-      fox_news_most.each do |article|
-        article["counts"] = fox_news_most_count
-      end
-
-
-      bbc_us_can = client.get_response("http://feeds.bbci.co.uk/news/world/us_and_canada/rss.xml")
-      bbc_us_can.each do |article|
-        article["counts"] = 5 #interesting case, don't know how to handle
-      end
-
-      cbs_news_top = client.get_response("http://www.cbsnews.com/latest/rss/main")
-      cbs_news_top_count = search.get_follower_count("CBSNews")/1000000
-      cbs_news_top.each do |article|
-        article["counts"] = cbs_news_top_count
-      end
-
-
-
-
-      p "cnn: #{cnn_top.count}"
-      p "reuters: #{reuters_top.count}"
-      p "nbc: #{nbc_news_top.count}"
-      p "abc: #{abc_news_top.count}"
-      p "npr: #{npr_most.count}"
-      p "fox: #{fox_news_most.count}"
-      p "bbc: #{bbc_us_can.count}"
-      p "cbs: #{cbs_news_top.count}"
-
-
-      all_rss = []
-      all_rss += cnn_top
-      all_rss += reuters_top
-      all_rss += nbc_news_top
-      all_rss += abc_news_top
-      all_rss += npr_most
-      all_rss += fox_news_most
-      all_rss += bbc_us_can
-
-      rss_articles = []
-      p all_rss.count
-      all_rss.each do |item|
-        article = Story.new
-        ap item[:title]
-        article.title = item[:title]
-        article.url = item[:guid]
-        article.abstract = item[:description].match(/.*[.][&]/).to_s
-        article.published_at = item[:pubDate]
-        popularity_client = PopularitySearch.new
-        popularity_client.set_params(article.url)
-        article.twitter_popularity = popularity_client.get_twitter_popularity/item["counts"]
-        article.facebook_popularity = popularity_client.get_facebook_popularity
-        rss_articles << article
+    puts "inside cnn rss thingy"
+    client = RSSGrabber.new
+    cnn_top = client.get_response("http://rss.cnn.com/rss/cnn_topstories.rss")
+    cnn_top_count = search.get_follower_count("cnn")/1000000
+    cnn_top.each do |article|
+      article["counts"] = cnn_top_count
     end
 
-      rss_articles.each do |article|
-        top_five_keywords.each do |keyphrase|
+    reuters_top = client.get_response("http://feeds.reuters.com/reuters/topNews")
+    reuters_top_count = search.get_follower_count("reuters")/1000000
+    reuters_top.each do |article|
+      article["counts"] = reuters_top_count
+    end
+
+    nbc_news_top = client.get_response("http://feeds.nbcnews.com/feeds/topstories")
+    nbc_news_top_count = search.get_follower_count("NBCNews")/1000000
+    nbc_news_top.each do |article|
+      article["counts"] = nbc_news_top_count
+    end
+
+
+    abc_news_top = client.get_response("http://feeds.abcnews.com/abcnews/topstories")
+    abc_news_top_count = search.get_follower_count("ABC")/1000000
+    abc_news_top.each do |article|
+      article["counts"] = abc_news_top_count
+    end
+
+    abc_count = search.get_follower_count("ABC")
+    ap_top = client.get_response("http://hosted.ap.org/lineups/TOPHEADS.rss?SITE=AP&SECTION=HOME")
+    ap_top_count =  search.get_follower_count("AP")/1000000
+    ap_top.each do |article|
+      article["counts"] = ap_top_count
+    end
+
+
+    npr_most = client.get_response("http://www.npr.org/rss/rss.php?id=100")
+    npr_most_count = search.get_follower_count("nprnews")/1000000
+    npr_most.each do |article|
+      article["counts"] = npr_most_count
+    end
+
+    fox_news_most = client.get_response("http://feeds.foxnews.com/foxnews/most-popular")
+    fox_news_most_count = search.get_follower_count("FoxNews")/1000000
+    fox_news_most.each do |article|
+      article["counts"] = fox_news_most_count
+    end
+
+
+    bbc_us_can = client.get_response("http://feeds.bbci.co.uk/news/world/us_and_canada/rss.xml")
+    bbc_us_can.each do |article|
+      article["counts"] = 5 #interesting case, don't know how to handle
+    end
+
+    cbs_news_top = client.get_response("http://www.cbsnews.com/latest/rss/main")
+    cbs_news_top_count = search.get_follower_count("CBSNews")/1000000
+    cbs_news_top.each do |article|
+      article["counts"] = cbs_news_top_count
+    end
+
+    p "cnn: #{cnn_top.count}"
+    p "reuters: #{reuters_top.count}"
+    p "nbc: #{nbc_news_top.count}"
+    p "abc: #{abc_news_top.count}"
+    p "npr: #{npr_most.count}"
+    p "fox: #{fox_news_most.count}"
+    p "bbc: #{bbc_us_can.count}"
+    p "cbs: #{cbs_news_top.count}"
+
+    all_rss = []
+    all_rss += cnn_top
+    all_rss += reuters_top
+    all_rss += nbc_news_top
+    all_rss += abc_news_top
+    all_rss += npr_most
+    all_rss += fox_news_most
+    all_rss += bbc_us_can
+
+    rss_articles = []
+    p all_rss.count
+    all_rss.each do |item|
+      article = Story.new
+      ap item[:title]
+      article.title = item[:title]
+      article.url = item[:guid]
+      article.abstract = item[:description].match(/.*[.][&]/).to_s
+      article.published_at = item[:pubDate]
+      popularity_client = PopularitySearch.new
+      popularity_client.set_params(article.url)
+      article.twitter_popularity = popularity_client.get_twitter_popularity/item["counts"]
+      article.facebook_popularity = popularity_client.get_facebook_popularity
+      rss_articles << article
+    end
+
+    rss_articles.each do |article|
+      top_five_keywords.each do |keyphrase|
         all_articles[keyphrase] << article if article.title.downcase.include?(keyphrase.downcase) || article.abstract.downcase.include?(keyphrase.downcase)
-        end
       end
+    end
 
 
     # puts all_articles.length
