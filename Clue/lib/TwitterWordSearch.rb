@@ -1,4 +1,4 @@
-require_relative "API_control"
+require_relative "APIControl"
 
 require 'json'
 require 'awesome_print'
