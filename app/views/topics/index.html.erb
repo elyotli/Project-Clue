@@ -44,7 +44,8 @@
 	var dayId = <%= @day.id %>;
 	var articlePage = 1;
 	var articlePageTotal = <%= (@total_articles / @articles_per_page.to_f).ceil %>;
-	var maxDate = <%= @maxDate %>
+	var maxDate = '<%= @maxDay %>';
+	var minDate = '<%= @minDay %>';
 
 	var parseDate = d3.time.format("%Y-%m-%d").parse;
 	var currentStatistic = 'twitter_popularity';

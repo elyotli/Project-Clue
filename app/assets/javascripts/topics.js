@@ -67,20 +67,31 @@ $(document).on('click', '.topic', function(e){
 
 // click on topic carousel buttons
 $(document).on('click', '#topics .btn', function(e) {
-	// if($(e.target).hasClass('btn_l')) {
-		
-	// }
-	// else {
-		
-	// }
-	// if() {
-	// 	$.ajax({
-	// 		url: ,
-	// 		type: 'get',
-	// 		dataType: 'html',
-	// 		success: function(response) {
-				
-	// 		}
-	// 	});
-	// }
+	var currentDateStr = $('#date').text().replace(/-/g,'');
+	var year = currentDateStr.substr(0,4);
+	var month = currentDateStr.substr(4,2) - 1;
+	var day = currentDateStr.substr(6);
+	var currentDateMilliSeconds = new Date(year, month, day).valueOf();
+	var dayInMilliSeconds = 60*60*24*1000;
+	var targetDateMilliSeconds = 0;
+	var targetDateStr = '';
+
+	if($(e.target).hasClass('btn_l')) {
+		targetDateMilliSeconds = currentDateMilliSeconds - dayInMilliSeconds;
+	}
+	else {
+		targetDateMilliSeconds = currentDateMilliSeconds + dayInMilliSeconds;
+	}
+	targetDateStr = new Date(targetDateMilliSeconds).toISOString().replace(/T.*/i,'');
+	console.log(targetDateStr+' '+minDate+' '+maxDate);
+	if(targetDateStr >= minDate && targetDateStr <= maxDate) {
+		$.ajax({
+			url: 'days/' + targetDateStr,
+			type: 'get',
+			dataType: 'html',
+			success: function(response) {
+				console.log(response);
+			}
+		});
+	}
 });
