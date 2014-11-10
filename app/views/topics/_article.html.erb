@@ -2,12 +2,12 @@
 <a href='<%= article.url %>' target='_blank'>
 	<div class='article' data-article-id='<%= article.id %>' data-total-articles='<%= @total_articles %>'>
 		<%= image_tag article.image_url %>
-		<h3>New <%= article.title %></h3>
+		<h3><span><%= article.title %></span></h3>
 		<p class='abstract'><%= article.abstract %></p>
-		<p class='stat'>Twitter Popularity: <span><%= article.twitter_popularity %></span></p>
+		<!-- <p class='stat'>Twitter Popularity: <span><%= article.twitter_popularity %></span></p>
 		<p class='stat'>Facebook Popularity: <span><%= article.facebook_popularity %></span></p>
 		<p class='stat'>Google Trends Index: <span><%= article.google_trend_index %></span></p>
-		<p class='source'><%= article.source %></p>
+		<p class='source'><%= article.source %> </p>-->
 	</div>
 </a>
 <% end %>

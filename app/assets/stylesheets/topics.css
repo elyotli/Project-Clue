@@ -1,4 +1,7 @@
-body { padding: 0; }
+body { 
+	padding: 0; 
+	margin: 0;
+}
 
 hr {
 	position: relative;
@@ -6,68 +9,94 @@ hr {
 	clear: both;
 }
 
+#header {
+	height: 40px;
+	background-color: #cf423a;
+	padding-bottom: 0.7em;
+	padding-top: 0.7em;
+}
+#header{
+	text-align: center;
+}
+
+.xxlarge { 
+	margin: 0px; 
+	font-size: 250%;
+	display: inline-block; 
+}
+
+.title{
+	color: white;
+}
+
 #container {
-	width: 960px;
+	width: 60%;
 	margin: 0 auto;
 	text-align: center;
 }
 
-#header {
-	height: 50px;
-	margin-bottom: 12px;
-	background-color: #ccc;
-	padding-top: 10px;
-}
-
-h1 { 
-	margin: 0px; 
-	display: inline-block; 
+.datebox{
+	height: 1.5em;
+	margin-bottom: 0.5em;
 }
 
 #date { 
+	margin-top: 3px;
+	margin-bottom: 3px;
 	display: inline-block; 
-	margin: 0 0 0 25px;
 }
 
 #topics {
 	margin-bottom: 12px;
 	background-color: #fff;
-	height: 300px;
+	height: 230px;
 }
 
 #topics .btn_l {
 	/*display: inline-block;*/
 	float: left;
-	width: 40px;
+	width: 4%;
 	height: 100%;
-	background-color: #ddd;
+	background-color: #89c4e2;
 }
 
 #topics .topic {
 	/*display: inline-block;*/
 	float: left;
-	width: 185px;
-	margin-left: 12px;
+	width: 20%;
+	margin-left: 1%;
 	padding: 10px;
 	background-color: #999;
-	height: 280px;
+	position:relative;
 }
 
 #topics .topic img {
-	width: 155px;
+	width: 100%;
+	
 }
 
 #topics .topic h2 {
+	position: absolute;
+	top: 20%;
+	text-align: center
 	font-size: 18px;
 	font-weight: normal;
+}
+
+#topics .topic h2 span { 
+   color: white; 
+   font: bold 24px/45px Helvetica, Sans-Serif; 
+   letter-spacing: -1px;  
+   background: rgb(0, 0, 0); /* fallback color */
+   background: rgba(0, 0, 0, 0.7);
 }
 
 #topics .btn_r {
 	/*display: inline-block;*/
 	float: right;
-	width: 40px;
+	width: 4%;
 	height: 100%;
-	background-color: #ddd;
+	background-color: #89c4e2;
 }
 
 #statistics {
@@ -75,20 +104,16 @@ h1 {
 	margin-bottom: 12px;
 }
 
-.buttons {
-	margin-bottom: 12px;
-	margin-left: 285px;
-}
-
 .buttons div {
-	width: 115px;
+	width: 80px;
 	height: 20px;
-	background-color: #ddd;
-	float: left;
+	/*background-color: #ddd;*/
+	float: right;
 }
 
 .buttons div {
-	margin-left: 12px;
+	/*margin-left: 12px;*/
+	font-style: italic;
 }
 
 .btn:hover, #topics .btn:hover, #articles .btn:hover {
@@ -105,39 +130,50 @@ h1 {
 
 #articles {
 	background-color: #fff;
-	height: 380px;
+	height: 230px;
+	position: relative;
 }
 
 #articles .btn_l {
 	float: left;
 	width: 40px;
 	height: 100%;
-	background-color: #ddd;
+	background-color: #89c4e2;
 }
 
 #articles .article {
 	float: left;
-	width: 185px;
-	margin-left: 12px;
-	padding: 10px;
 	background-color: #999;
-	height: 360px;
+/*	height: 360px;*/
+	width: 20%;
+	margin-left: 1%;
+	padding: 10px;
 }
 
 .article img {
-	width: 155px;
+	width: 100%;
 }
 
 .article h3 {
-	font-size: 16px;
+	top: 20%;
+	/*font-size: 16px;*/
 	font-weight: normal;
+	position:absolute;
+}
+
+#article .article h3 span { 
+   color: white; 
+   font: bold 24px/45px Helvetica, Sans-Serif; 
+   letter-spacing: -1px;  
+   background: rgb(0, 0, 0); /* fallback color */
+   background: rgba(0, 0, 0, 0.7);
 }
 
 #articles .btn_r {
 	float: right;
 	width: 40px;
 	height: 100%;
-	background-color: #ddd;
+	background-color: #89c4e2;
 }
 
 #article-page {
@@ -147,8 +183,10 @@ h1 {
 }
 
 #footer {
-	height: 30px;
-	background-color: #ccc;
+	height: 20px;
+	background-color: black;
+	color: white;
+	text-align: center;
 }
 
 svg {
