@@ -10,5 +10,5 @@ class Article < ActiveRecord::Base
 	end
 
 
-
+  #can you put the twitter_popularity,facebook_popularity value population in some kind of lifecycle hook?
 end

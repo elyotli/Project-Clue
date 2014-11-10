@@ -2,6 +2,7 @@ require_relative "../APIControl"
 require_relative "../PopularitySearch"
 
 class WaPoArticleSearch < APIControl
+  #Constants
   @@base_url = "http://api.washingtonpost.com/trove/v1/search?q="
   @@app_key = "27D7BE94-8E90-48AA-8BF0-4AF5D19C4F25"
   @@followers = 3.6
@@ -10,6 +11,7 @@ class WaPoArticleSearch < APIControl
     @processed_url = ""
   end
 
+  #Initialize
   def set_params(keywords)
     @processed_url = @@base_url + keywords.split(" ").join("+")
     @processed_url += "&key=" + @@app_key
@@ -24,6 +26,8 @@ class WaPoArticleSearch < APIControl
     return articles
   end
 
+  #private?
+  private
   def create_article(article_json)
     article = Story.new
     article.title = article_json["displayName"]
@@ -32,6 +36,8 @@ class WaPoArticleSearch < APIControl
     article.source = article_json["source"]["displayName"]
     article.image_url = "WaPoIsLame"
     article.published_at = article_json["published"]
+
+    #Maybe this belongs elsewhere?
     popularity_client = PopularitySearch.new
     popularity_client.set_params(article.url)
     article.twitter_popularity = popularity_client.get_twitter_popularity/@@followers

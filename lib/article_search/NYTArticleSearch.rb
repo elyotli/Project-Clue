@@ -6,7 +6,8 @@ class NYTArticleSearch < APIControl
   @@app_key = "295f07d2db55fce19a6bdd330412d2ff:0:70154133"
   @@followers = 14
 
-  def initialize
+  def initialize(pop_search)
+    @pop_search = pop_search
     @processed_url = ""
   end
 
@@ -31,10 +32,15 @@ class NYTArticleSearch < APIControl
     article.url = article_json["web_url"]
     article.abstract = article_json["abstract"]
     article.source = article_json["source"]
-    popularity_client = PopularitySearch.new
-    popularity_client.set_params(article.url)
-    article.twitter_popularity = popularity_client.get_twitter_popularity/@@followers
-    article.facebook_popularity = popularity_client.get_facebook_popularity
+
+    #Another thing to look at
+    article.twitter_popularity = pop_client.twitter(article.url)
+    article.facebook_popularity = pop_client.facebook(article.url)
+
+    # popularity_client = PopularitySearch.new
+    # popularity_client.set_params(article.url)
+    # article.twitter_popularity = popularity_client.get_twitter_popularity/@@followers
+    # article.facebook_popularity = popularity_client.get_facebook_popularity
 
     # if article_json["multimedia"].length > 0 #you suck nyt
     #   article.image_url = "http://graphics8.nytimes.com/" + article_json["multimedia"][1]["url"]

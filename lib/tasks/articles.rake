@@ -41,15 +41,47 @@ namespace :articles do
     # top_five_keywords = keywords_retweets.keys[0..4]
 
     # top_five_keywords = top_keywords.slice(0,4)
-    top_five_keywords = ["ebola", "obama", "ferguson"]
+
+
+    #Food for thought
+    # top_five_keywords = ["ebola", "obama", "ferguson"]
+    # all_articles = {}
+    # news_sources = [
+    #   NewYorkTimes.new()
+    #   WaPo.new(),
+    #   Guardian.new(),
+    #   Cnn.new(),
+    #   Abc.new()
+    # ]
+
+    # top_five_keywords.each do |keyword|
+    #   all_articles[keyword] = news_sources
+    #     .map {|source| source.search(keyword) }
+    #     .flatten
+    #     .sort_by(&:twitter_popularity)
+    #     .take(5)
+    # end
+
+    # all_articles
+
+
 
     # puts "top 5 keywords"
      # top_five_keywords = ["Obama", "Republican", "Ebola", "republican", "kim kardashian", "School" ]
     #find articles from all news sources based on each of the top five keywords:
 
+
+
     all_articles = {}
     top_five_keywords.each do |keyphrase|
       all_articles[keyphrase] = []
+
+
+      # nyt_articles = nyt.search(keyphrase)
+      # wapo_articles = wapo.search(keyphrase)
+      # guardian_articles = guardian.search(keyphrase, "newest", 10)
+      # cnn_articles = cnn.search(keyphrase)
+      # all_articles[keyphrase] = nyt_articles + wapo_articles + guardian_articles
 
       puts "finding articles for #{keyphrase} in NYT"
       nyt = NYTArticleSearch.new
@@ -72,6 +104,13 @@ namespace :articles do
       guardian.set_params(keyphrase, "newest", "10")
       all_articles[keyphrase] += guardian.get_response
     end
+
+    #nyt = NewYorkTimes.new()
+    #ferguson_articles = nyt.search("ferguson")
+    #wapo = WaPo.new()
+    #ferguson_articles = wapo.search("ferguson")
+    #cnn = Cnn.new()
+    #cnn.search("???")
 
     puts "inside cnn rss thingy"
     client = RSSGrabber.new
@@ -180,7 +219,7 @@ namespace :articles do
 
     shown_articles = []
     top_five_keywords.each do |keyword|
-      all_articles[keyword].sort! {|a,b| b.twitter_popularity <=> a.twitter_popularity }
+      all_articles[keyword].sort_by(&:twitter_popularity)# {|a,b| b.twitter_popularity <=> a.twitter_popularity }
       shown_articles << all_articles[keyword].slice(0, 5)
     end
 
