@@ -1,45 +1,34 @@
 // Onload
 
-// function parseDateToNumber(date) {
-// 	return date.replace('-',',');
-// }
+// click on stats toggle (twitter, etc.)
+$(document).on('click', '.buttons', function(e) {
+	var id = $(e.target).attr('id');
+	if (id != currentStatistic) {
+		currentStatistic = id;
+		dataset = partialDataset();
+		populateGraph();
+	}
+});
 
-// function parseDateToString(date) {
-// 	return date.toJSON().replace(/T.*/i,'');
-// }
 
-// var date = '2014-04-04';
-// date = Date.parse(parseDateToNumber(date));
-// var dayInMilliSeconds = 24*60*60*1000;
-
-// // App
-
-// $(document).on('click', '#topics .btn_l', function(){
-// 	var targetDate = date - dayInMilliSeconds;
-	
-// });
-
-// $(document).on('click', '#topics .btn_r', function(){
-
-// });
-
-// $(document).on('click', '.topic', function(){
-
-// });
-
-// $(document).on('click', '#twitter', function() {
-
-// });
-
-// $(document).on('click', '#facebook', function() {
-
-// });
-
-// $(document).on('click', '#articles .btn_l', function() {
-
-// });
-
-// $(document).on('click', '#articles .btn_r', function() {
-
-// });
-
+// click on article carousel buttons
+$(document).on('click', '#articles .btn', function(e) {
+	var articlePageTarget = 0;
+	if($(e.target).hasClass('btn_l')) {
+		articlePageTarget = articlePage - 1;
+	}
+	else {
+		articlePageTarget = articlePage + 1;
+	}
+	if(articlePageTarget > 0 && articlePageTarget <= articlePageTotal) {
+		$.ajax({
+			url: 'topics/' + topicId + '/date/' + dayId + '/articles/' + articlePageTarget,
+			type: 'get',
+			dataType: 'html',
+			success: function(response) {
+				articlePage = articlePageTarget;
+				$('#article_list').html(response);
+			}
+		});
+	}
+});
