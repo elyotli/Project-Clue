@@ -1,3 +1,5 @@
+require 'date'
+
 topics = [
 	{ title: "Ebola",
 		image_url: 'https://assets.digitalocean.com/articles/Unicorn_Ruby/img1.png',
@@ -66,7 +68,9 @@ topics = [
 	}
 ]
 
-days = [Date.yesterday.yesterday, Date.yesterday, Date.today]
+days = (1..31).to_a.map do |day|
+	Date.new(2014, 10, day).to_s
+end
 
 def randomPopularity()
 	(rand*1000).round
@@ -95,15 +99,19 @@ days.each do |day|
 				counter += 1
 			end
 		end
+	end
+end
 
-		30.times do
-			Popularity.create!(
-				topic_id: topicObj.id,
-				day_id: dayObj.id,
-				twitter_popularity: randomPopularity,
-				facebook_popularity: randomPopularity,
-				google_trend_index: randomPopularity
-			)
-		end
+days = Day.all
+topics = Topic.all
+topics.each do |topic|
+	days.each do |day|
+		Popularity.create!(
+			topic_id: topic.id,
+			day_id: day.id,
+			twitter_popularity: randomPopularity,
+			facebook_popularity: randomPopularity,
+			google_trend_index: randomPopularity
+		)
 	end
 end

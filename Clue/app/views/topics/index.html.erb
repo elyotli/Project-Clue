@@ -42,11 +42,13 @@
 	<div id='footer'>Created by: Vince Li, Alex Drennen, Shomari Ewing, Dustin Snyder</footer>
 </div>
 <script type='text/javascript'>
+	var parseDate = d3.time.format("%Y-%m-%d").parse;
+
 	function partialDataset() {
 		var newSet = [];
 		for(var i=0; i < fullDataset.length; i++) {
 			newSet.push({
-				date: fullDataset[i].date,
+				date: parseDate(fullDataset[i].date),
 				facebook_count: fullDataset[i].facebook_count
 			});
 		}
@@ -56,5 +58,55 @@
 	var fullDataset=JSON.parse('<%= raw @dataset %>');
 	var dataset = partialDataset();
 	
-	populateGraph();
+	var margin = {top: 20, right: 30, bottom: 30, left: 50},
+	    width = 865 - margin.left - margin.right,
+	    height = 288 - margin.top - margin.bottom;
+
+	var xScale = d3.time.scale()
+		.range([0, width]);
+
+	var yScale = d3.scale.linear()
+		.range([height, 0]);
+
+	var xAxis = d3.svg.axis()
+		.scale(xScale)
+		.orient('bottom');
+
+	var yAxis = d3.svg.axis()
+		.scale(yScale)
+		.orient('left');
+
+	var area = d3.svg.area()
+		.x(function(d) { return xScale(d.date); })
+		.y0(height)
+		.y1(function(d) { return yScale(d.facebook_count); });
+
+	var svg = d3.select("#chart").append("svg")
+		.attr("width", width + margin.left + margin.right)
+		.attr("height", height + margin.top + margin.bottom)
+		.append("g")
+		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+	xScale.domain(d3.extent(dataset, function(d) { return d.date; }));
+	yScale.domain(d3.extent(dataset, function(d) { return d.facebook_count; }));
+
+	svg.append("path")
+		.datum(dataset)
+		.attr("class", "area")
+		.attr("d", area);
+
+	svg.append("g")
+		.attr("class", "x axis")
+		.attr("transform", "translate(0," + height + ")")
+		.call(xAxis);
+
+	svg.append("g")
+		.attr("class", "y axis")
+		.call(yAxis)
+		.append("text")
+		.attr("transform", "rotate(-90)")
+		.attr("y", 6)
+		.attr("dy", ".71em")
+		.style("text-anchor", "end")
+		.text("Tweets");
 </script>
