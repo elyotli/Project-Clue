@@ -102,6 +102,7 @@
 		d3.selectAll('.axis').remove();
 		d3.selectAll('.area').remove();
 		d3.selectAll('text').remove();
+		d3.selectAll('circle').remove();
 
 		xScale.domain(d3.extent(dataset, function(d) { return d.date; }));
 		yScale.domain(d3.extent(dataset, function(d) { return d[currentStatistic]; }));
@@ -125,7 +126,6 @@
 			.attr("dy", ".71em")
 			.style("text-anchor", "end")
 			.text(currentStatistic.replace(/_/g, ' '));
-		}
 
 		svg.selectAll('circle').data(dataset).enter()
 			.append('circle')
@@ -133,4 +133,5 @@
 			.attr('r', '5px')
 			.attr('cx', function(d) { return xScale(d.date); })
 			.attr('cy', function(d) { return yScale(d[currentStatistic]); });
+		}
 </script>
