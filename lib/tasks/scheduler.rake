@@ -21,23 +21,40 @@ require_relative "../article_search/WaPoArticleSearch"
 require_relative "../article_search/RSSGrabber"
 
 desc "get new articles and topics"
-task update_articles: :environment do
+task :update_articles => :environment do
   require "awesome_print"
+
+  Day.create(date: Date.today)
 
   client = NYTMostPopularAPI.new
   search = TwitterWordSearch.new
   client.set_params("view", "all", "1")
   keywords_NYT = client.get_response
 
-  num_keywords = 10
+  num_keywords = 5
   top_keywords = keywords_NYT[0..(num_keywords - 1)]
 
   keywords_time_lapsed = {}
   keywords_retweets = {}
 
-  top_five_keywords = ["ebola", "obama", "ferguson"]
+  top_keywords.each do |keyword|
+    search_result = search.search_tweet(keyword)
+    keywords_time_lapsed[keyword] = search_result["time"]
+    keywords_retweets[keyword] = search_result["retweets"]
+  end
+
+  # pull top 5 key, plug them into the article searches
+  # use .keys on the resulting hash, like my_hash.keys[0..4]
+
+  Hash[keywords_retweets.sort_by{|k, v| v}.reverse]
+  top_five_keywords = keywords_retweets.keys[0..4]
+  top_five_keywords = top_keywords.slice(0,4)
+  #To hardcode keywords:
+  # top_five_keywords = ["ebola", "obama", "ferguson"]
+
   all_articles = {}
   top_five_keywords.each do |keyphrase|
+    DayTopic.create!(topic_id: Topic.create!(title: keyphrase).id, day_id: Day.find_by(date: Date.today).id)
     all_articles[keyphrase] = []
 
     nyt = NYTArticleSearch.new
@@ -138,9 +155,17 @@ task update_articles: :environment do
     end
   end
 
-  shown_articles = []
+  shown_articles = {}
   top_five_keywords.each do |keyword|
     all_articles[keyword].sort! {|a,b| b.twitter_popularity <=> a.twitter_popularity }
-    shown_articles << all_articles[keyword].slice(0, 5)
+    shown_articles[keyword] = all_articles[keyword].slice(0, 5)
+  end
+
+  # top_five_keywords.each do |keyword|
+  shown_articles.each do |keyword, articles|
+    articles.each do |article|
+      a = Article.create!(article)
+      ArticleTopic.create!(topic_id: (Topic.find_by(title: keyword)).id, article_id: a.id)
+    end
   end
 end
