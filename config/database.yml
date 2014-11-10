@@ -16,8 +16,8 @@
 #
 default: &default
   adapter: postgresql
-  # encoding: unicode
-  encoding: utf8
+  encoding: unicode
+  # encoding: utf8
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: 5
@@ -82,7 +82,7 @@ test:
 production:
   <<: *default
   database: Clue_production
-  username: Clue
-  password: <%= ENV['CLUE_DATABASE_PASSWORD'] %>
-  adapter: postgresql
-  encoding: utf8
+  # username: Clue
+  # password: <%= ENV['CLUE_DATABASE_PASSWORD'] %>
+  # adapter: postgresql
+  # encoding: utf8
