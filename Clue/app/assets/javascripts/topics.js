@@ -64,3 +64,23 @@ $(document).on('click', '.topic', function(e){
 		}
 	});
 });
+
+// click on topic carousel buttons
+$(document).on('click', '#topics .btn', function(e) {
+	// if($(e.target).hasClass('btn_l')) {
+		
+	// }
+	// else {
+		
+	// }
+	// if() {
+	// 	$.ajax({
+	// 		url: ,
+	// 		type: 'get',
+	// 		dataType: 'html',
+	// 		success: function(response) {
+				
+	// 		}
+	// 	});
+	// }
+});
