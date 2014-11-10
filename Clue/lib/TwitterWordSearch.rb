@@ -36,8 +36,6 @@ class TwitterWordSearch < APIControl
       @total_retweets += tweet.retweet_count
       @current_tweet_id = tweet.id
       @current_tweet_time = tweet.created_at
-      ap tweet.text
-      ap tweet.created_at
     end
     @time_elapsed = Time.now - @current_tweet_time
     if num_results > 99 && @tweet_id_arr.length < 999

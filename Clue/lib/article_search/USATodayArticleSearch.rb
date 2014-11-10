@@ -1,3 +1,6 @@
+require_relative "../API_control"
+require_relative "../PopularitySearch"
+
 def USAToday(topic) #this has articles sorted by most read for whatever topic you pass in.  Put a count of 50 on
      url =  "http://api.usatoday.com/open/articles?tag=#{topic}&count=50&most=read&encoding=json&api_key=gc66vcg4q8v5bhbsbzz4evzy"
      getResponse(url)
@@ -36,9 +39,12 @@ class USATodayArticleSearch < APIControl
     article.url = article_json["link"]
     article.abstract = article_json["description"]
     article.source = "www.usatoday.com"
-    article.image_url = "USAIsLame"
+    article.image_url = "USAtodayIsLame"
     article.published_at = article_json["pubDate"]
-    article.twitter_popularity = get_tweet_count(article)
+    popularity_client = PopularitySearch.new
+    popularity_client.set_params(article.url)
+    article.twitter_popularity = popularity_client.get_twitter_popularity
+    article.facebook_popularity = popularity_client.get_facebook_popularity
     return article
   end
 end

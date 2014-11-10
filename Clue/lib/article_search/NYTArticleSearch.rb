@@ -1,4 +1,5 @@
 require_relative "../API_control"
+require_relative "../PopularitySearch"
 require "Date"
 
 class NYTArticleSearch < APIControl
@@ -30,12 +31,16 @@ class NYTArticleSearch < APIControl
     article.url = article_json["web_url"]
     article.abstract = article_json["abstract"]
     article.source = article_json["source"]
-    article.twitter_popularity = get_tweet_count(article)
-    if article_json["multimedia"].length > 0 #you suck nyt
-      article.image_url = "http://graphics8.nytimes.com/" + article_json["multimedia"][1]["url"]
-    else
-      article.image_url = ""
-    end
+    popularity_client = PopularitySearch.new
+    popularity_client.set_params(article.url)
+    article.twitter_popularity = popularity_client.get_twitter_popularity
+    article.facebook_popularity = popularity_client.get_facebook_popularity
+
+    # if article_json["multimedia"].length > 0 #you suck nyt
+    #   article.image_url = "http://graphics8.nytimes.com/" + article_json["multimedia"][1]["url"]
+    # else
+    #   article.image_url = ""
+    # end
      # to pull a smaller image, change the multimedia index 0
     article.published_at = article_json["pub_date"]
     return article

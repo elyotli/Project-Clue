@@ -3,7 +3,6 @@ require 'uri'
 require 'net/http'
 require 'json'
 require 'awesome_print'
-#require_relative "TwitterURLSearch"
 
 class APIControl
   def initialize
@@ -27,7 +26,7 @@ end
 
 
 class Story
-  attr_accessor :title, :url, :abstract, :source, :image_url, :published_at, :twitter_popularity
+  attr_accessor :title, :url, :abstract, :source, :image_url, :published_at, :twitter_popularity, :facebook_popularity
   def initialize
   end
 end
