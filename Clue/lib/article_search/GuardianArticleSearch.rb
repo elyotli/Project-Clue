@@ -5,6 +5,7 @@
 class GuardianArticleSearch < APIControl
   @@base_url = "http://content.guardianapis.com/search?"
   @@app_key = "sfrv3wukd7uaw7amha8cd2e6"
+  @@followers = 2.8
 
   def initialize
     @processed_url = ""
@@ -37,7 +38,7 @@ class GuardianArticleSearch < APIControl
     article.published_at = article_json["webPublicationDate"]
     popularity_client = PopularitySearch.new
     popularity_client.set_params(article.url)
-    article.twitter_popularity = popularity_client.get_twitter_popularity
+    article.twitter_popularity = popularity_client.get_twitter_popularity/@@followers
     article.facebook_popularity = popularity_client.get_facebook_popularity
     return article
   end

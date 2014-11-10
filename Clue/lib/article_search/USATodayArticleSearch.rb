@@ -12,6 +12,7 @@ require_relative "../API_control"
 class USATodayArticleSearch < APIControl
   @@base_url = "http://api.usatoday.com/open/articles?keyword="
   @@app_key = "gc66vcg4q8v5bhbsbzz4evzy"
+  @@followers = 1.3
 
   def initialize
     @processed_url = ""
@@ -43,7 +44,7 @@ class USATodayArticleSearch < APIControl
     article.published_at = article_json["pubDate"]
     popularity_client = PopularitySearch.new
     popularity_client.set_params(article.url)
-    article.twitter_popularity = popularity_client.get_twitter_popularity
+    article.twitter_popularity = popularity_client.get_twitter_popularity/@@followers
     article.facebook_popularity = popularity_client.get_facebook_popularity
     return article
   end

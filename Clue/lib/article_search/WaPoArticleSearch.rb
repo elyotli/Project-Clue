@@ -4,6 +4,7 @@ require_relative "../PopularitySearch"
 class WaPoArticleSearch < APIControl
   @@base_url = "http://api.washingtonpost.com/trove/v1/search?q="
   @@app_key = "27D7BE94-8E90-48AA-8BF0-4AF5D19C4F25"
+  @@followers = 3.6
 
   def initialize
     @processed_url = ""
@@ -33,7 +34,7 @@ class WaPoArticleSearch < APIControl
     article.published_at = article_json["published"]
     popularity_client = PopularitySearch.new
     popularity_client.set_params(article.url)
-    article.twitter_popularity = popularity_client.get_twitter_popularity
+    article.twitter_popularity = popularity_client.get_twitter_popularity/@@followers
     article.facebook_popularity = popularity_client.get_facebook_popularity
     return article
   end
