@@ -4,12 +4,14 @@
 	</div>
 	<div id='topics'>
 		<div class='btn btn_l'></div>
-		<% @topics.each do |topic| %>
-		<div class='topic' data-id='<%= topic.id %>'>
-			<%= image_tag topic.image_url %>
-			<h2><%= topic.title %></h2>
+		<div id='topic_list'>
+			<% @topics.each do |topic| %>
+			<div class='topic' data-id='<%= topic.id %>'>
+				<%= image_tag topic.image_url %>
+				<h2><%= topic.title %></h2>
+			</div>
+			<% end %>
 		</div>
-		<% end %>
 		<div class='btn btn_r'></div>
 		<hr>
 	</div>
