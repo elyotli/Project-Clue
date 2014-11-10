@@ -3,7 +3,7 @@ require 'uri'
 require 'net/http'
 require 'json'
 require 'awesome_print'
-require_relative '../API_control'
+require_relative '../APIControl'
 
 class RSSGrabber
   attr_accessor :titles, :links, :descriptions
