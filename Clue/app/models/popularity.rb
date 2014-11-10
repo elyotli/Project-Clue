@@ -11,9 +11,9 @@ class Popularity < ActiveRecord::Base
     popularities.each do |popobj|
       my_hash = {
         date: popobj.day.date.to_s,
-        twitter_count: popobj.twitter_popularity,
-        facebook_count: popobj.facebook_popularity,
-        google_count: popobj.google_trend_index
+        twitter_popularity: popobj.twitter_popularity,
+        facebook_popularity: popobj.facebook_popularity,
+        google_trend_index: popobj.google_trend_index
       }
       pop_array << my_hash
     end
