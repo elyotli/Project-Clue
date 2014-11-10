@@ -68,6 +68,10 @@ topics = [
 
 days = [Date.yesterday.yesterday, Date.yesterday, Date.today]
 
+def randomPopularity()
+	(rand*1000).round
+end
+
 days.each do |day|
 	dayObj = Day.create!(date: day)
 
@@ -83,12 +87,23 @@ days.each do |day|
 					url: article[:url],
 					published_at: day,
 					image_url: article[:image_url],
-					twitter_popularity: (rand*1000).round,
-	        facebook_popularity: (rand*1000).round,
-	        google_trend_index: (rand*1000).round
+					twitter_popularity: randomPopularity,
+	        facebook_popularity: randomPopularity,
+	        google_trend_index: randomPopularity
 				)
 				ArticleTopic.create!(topic_id: topicObj.id , article_id: articleObj.id)
+				counter += 1
 			end
+		end
+
+		30.times do
+			Popularity.create!(
+				topic_id: topicObj.id,
+				day_id: dayObj.id,
+				twitter_popularity: randomPopularity,
+				facebook_popularity: randomPopularity,
+				google_trend_index: randomPopularity
+			)
 		end
 	end
 end

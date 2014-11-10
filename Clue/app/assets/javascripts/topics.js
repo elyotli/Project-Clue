@@ -144,32 +144,25 @@ var yAxis = d3.svg.axis()
 	.scale(yScale)
 	.orient('left');
 
-var area = d3.svg.area()
-	.x(function(d) { return xScale(d.date); })
-	.y0(height)
-	.y1(function(d) { return yScale(d.close); });
-
-var svg = d3.select("#chart").append("svg")
+function populateGraph() {
+	var svg = d3.select("#chart").append("svg")
 		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
-	.append("g")
+		.append("g")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var dataset = [];
-var parseDate = d3.time.format("%d-%b-%y").parse;
-
-d3.csv('data/goog.csv',function(data){
-	data.forEach(function(d){
-		dataset.push({date: parseDate(d.Date), close: +d.Close});
-	});
-
 	xScale.domain(d3.extent(dataset, function(d) { return d.date; }));
-	yScale.domain(d3.extent(dataset, function(d) { return d.close; }));
+	yScale.domain(d3.extent(dataset, function(d) { return d.facebook_count; }));
+
+	// var area = d3.svg.area()
+	// 	.x(function(d) { return xScale(d.date); })
+	// 	.y0(height)
+	// 	.y1(function(d) { return yScale(d.facebook_count); });
 
 	svg.append("path")
 		.datum(dataset)
-		.attr("class", "area")
-		.attr("d", area);
+		.attr("class", "area");
+		//.attr("d", area);
 
 	svg.append("g")
 		.attr("class", "x axis")
@@ -185,7 +178,4 @@ d3.csv('data/goog.csv',function(data){
 		.attr("dy", ".71em")
 		.style("text-anchor", "end")
 		.text("Tweets");
-
-});
-
-
+}
