@@ -5,6 +5,7 @@ require "Date"
 class NYTArticleSearch < APIControl
   @@base_url = "http://api.nytimes.com/svc/search/v2/articlesearch.json?"
   @@app_key = "295f07d2db55fce19a6bdd330412d2ff:0:70154133"
+  @@followers = 14
 
   def initialize
     @processed_url = ""
@@ -33,7 +34,7 @@ class NYTArticleSearch < APIControl
     article.source = article_json["source"]
     popularity_client = PopularitySearch.new
     popularity_client.set_params(article.url)
-    article.twitter_popularity = popularity_client.get_twitter_popularity
+    article.twitter_popularity = popularity_client.get_twitter_popularity/@@followers
     article.facebook_popularity = popularity_client.get_facebook_popularity
 
     # if article_json["multimedia"].length > 0 #you suck nyt

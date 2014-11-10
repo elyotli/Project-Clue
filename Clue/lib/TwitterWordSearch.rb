@@ -44,9 +44,15 @@ class TwitterWordSearch < APIControl
     results = {"time" => @time_elapsed.to_i, "retweets" => @total_retweets, "num tweets" => @tweet_id_arr.length}
     return results
   end
+
+  def get_follower_count(user)
+    follower = TWITTER_CLIENT.user("#{user}")
+    follower.followers_count
+  end
 end
 
-#test = TwitterWordSearch.new
+test = TwitterWordSearch.new
+test.get_follower_count("washingtonpost")
 #ap test.search_tweet("http://www.nytimes.com/2014/11/07/opinion/paul-krugman-triumph-of-the-wrong.html")
 
 # puts "*" * 30
