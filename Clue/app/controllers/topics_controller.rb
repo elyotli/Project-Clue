@@ -6,14 +6,14 @@ class TopicsController < ApplicationController
     @dataset = Popularity.popularitiesAsJSON(@topics.first.popularities.first(30))
 	end
 
-  def show
-    @topic = Topic.find(params[:id])
-    @articles = @topic.articles
-  end
-
   def popularity
     @popularities = Popularity.where(topic_id: params[:topic_id])
     Popularity.popularitiesAsJSON(@popularities)
+  end
+
+  def show
+    @topic = Topic.find(params[:id])
+    @articles = @topic.articles
   end
 end
 

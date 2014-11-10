@@ -3,26 +3,27 @@
 		<h1>CLUE?</h1>
 	</div>
 	<div id='topics'>
-		<div class='btn_l'></div>
+		<div class='btn btn_l'></div>
 		<% @topics.each do |topic| %>
 		<div class='topic'>
 			<%= image_tag topic.image_url %>
 			<h2><%= topic.title %></h2>
 		</div>
 		<% end %>
-		<div class='btn_r'></div>
+		<div class='btn btn_r'></div>
 		<hr>
 	</div>
 	<div id='statistics'>
 		<div class='buttons'>
-			<div id='twitter'>Twitter</div>
-			<div id='facebook'>Facebook</div>
+			<div class='btn' id='twitter_popularity'>Twitter</div>
+			<div class='btn' id='facebook_popularity'>Facebook</div>
+			<div class='btn' id='google_trend_index'>Google</div>
 			<hr>
 		</div>
 		<div id='chart'></div>
 	</div>
 	<div id='articles'>
-		<div class='btn_l'></div>
+		<div class='btn btn_l'></div>
 		<% @articles.each do |article| %>
 		<a href='<%= article.url %>' target='_blank'>
 			<div class='article'>
@@ -36,21 +37,24 @@
 			</div>
 		</a>
 		<% end %>
-		<div class='btn_r'></div>
+		<div class='btn btn_r'></div>
 		<hr>
 	</div>
 	<div id='footer'>Created by: Vince Li, Alex Drennen, Shomari Ewing, Dustin Snyder</footer>
 </div>
 <script type='text/javascript'>
+	var topicId = <%= @topics[0].id %>;
 	var parseDate = d3.time.format("%Y-%m-%d").parse;
+	var currentStatistic = 'twitter_popularity';
 
 	function partialDataset() {
 		var newSet = [];
+		var newObj = {};
 		for(var i=0; i < fullDataset.length; i++) {
-			newSet.push({
-				date: parseDate(fullDataset[i].date),
-				facebook_count: fullDataset[i].facebook_count
-			});
+			newObj = {};
+			newObj['date'] = parseDate(fullDataset[i].date);
+			newObj[currentStatistic] = fullDataset[i][currentStatistic]
+			newSet.push(newObj);
 		}
 		return newSet;
 	}
@@ -79,7 +83,7 @@
 	var area = d3.svg.area()
 		.x(function(d) { return xScale(d.date); })
 		.y0(height)
-		.y1(function(d) { return yScale(d.facebook_count); });
+		.y1(function(d) { return yScale(d[currentStatistic]); });
 
 	var svg = d3.select("#chart").append("svg")
 		.attr("width", width + margin.left + margin.right)
@@ -87,26 +91,34 @@
 		.append("g")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-	xScale.domain(d3.extent(dataset, function(d) { return d.date; }));
-	yScale.domain(d3.extent(dataset, function(d) { return d.facebook_count; }));
+	populateGraph();
 
-	svg.append("path")
-		.datum(dataset)
-		.attr("class", "area")
-		.attr("d", area);
+	function populateGraph() {
+		d3.selectAll('.axis').remove();
+		d3.selectAll('.area').remove();
+		d3.selectAll('text').remove();
 
-	svg.append("g")
-		.attr("class", "x axis")
-		.attr("transform", "translate(0," + height + ")")
-		.call(xAxis);
+		xScale.domain(d3.extent(dataset, function(d) { return d.date; }));
+		yScale.domain(d3.extent(dataset, function(d) { return d[currentStatistic]; }));
 
-	svg.append("g")
-		.attr("class", "y axis")
-		.call(yAxis)
-		.append("text")
-		.attr("transform", "rotate(-90)")
-		.attr("y", 6)
-		.attr("dy", ".71em")
-		.style("text-anchor", "end")
-		.text("Tweets");
+		svg.append("path")
+			.datum(dataset)
+			.attr("class", "area")
+			.attr("d", area);
+
+		svg.append("g")
+			.attr("class", "x axis")
+			.attr("transform", "translate(0," + height + ")")
+			.call(xAxis);
+
+		svg.append("g")
+			.attr("class", "y axis")
+			.call(yAxis)
+			.append("text")
+			.attr("transform", "rotate(-90)")
+			.attr("y", 6)
+			.attr("dy", ".71em")
+			.style("text-anchor", "end")
+			.text(currentStatistic.replace(/_/g, ' '));
+		}
 </script>

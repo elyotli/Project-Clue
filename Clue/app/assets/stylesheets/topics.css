@@ -69,7 +69,7 @@ h1 { margin: 0px; }
 
 .buttons {
 	margin-bottom: 12px;
-	margin-left: 360px;
+	margin-left: 285px;
 }
 
 .buttons div {
@@ -79,8 +79,13 @@ h1 { margin: 0px; }
 	float: left;
 }
 
-.buttons div:nth-child(2) {
+.buttons div {
 	margin-left: 12px;
+}
+
+.btn:hover, #topics .btn:hover, #articles .btn:hover {
+	cursor: pointer;
+	background-color: #999;
 }
 
 #chart {
