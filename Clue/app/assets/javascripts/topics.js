@@ -36,17 +36,31 @@ $(document).on('click', '#articles .btn', function(e) {
 // click on topic
 $(document).on('click', '.topic', function(e){
 	var id = $(e.target).closest('.topic').data('id');
-	console.log(id)
+	topicId = id;
 	var url = 'topics/'+id+'/statistics/popularity';
 	$.ajax({
 		url: url,
 		type: 'get',
 		dataType: 'json',
 		success: function(response) {
+			//update graph
 			fullDataset=response;
 			currentStatistic = 'twitter_popularity';
 			dataset = partialDataset();
 			populateGraph();
+
+			//update articles
+
+			var articlePageTarget = 1;
+			$.ajax({
+				url: 'topics/' + topicId + '/date/' + dayId + '/articles/' + articlePageTarget,
+				type: 'get',
+				dataType: 'html',
+				success: function(response) {
+					articlePage = articlePageTarget;
+					$('#article_list').html(response);
+				}
+			});
 		}
 	});
 });
