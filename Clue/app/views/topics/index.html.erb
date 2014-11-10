@@ -1,6 +1,6 @@
 <div id='container'>
 	<div id='header'>
-		<h1>CLUE?</h1>
+		<h1>CLUE?</h1><h2 id='date'><%= @day.date.to_s %></h2>
 	</div>
 	<div id='topics'>
 		<div class='btn btn_l'></div>
@@ -24,26 +24,39 @@
 	</div>
 	<div id='articles'>
 		<div class='btn btn_l'></div>
-		<% @articles.each do |article| %>
-		<a href='<%= article.url %>' target='_blank'>
-			<div class='article'>
-				<%= image_tag article.image_url %>
-				<h3><%= article.title %></h3>
-				<p class='abstract'><%= article.abstract %></p>
-				<p class='stat'>Twitter Popularity: <span><%= article.twitter_popularity %></span></p>
-				<p class='stat'>Facebook Popularity: <span><%= article.facebook_popularity %></span></p>
-				<p class='stat'>Google Trends Index: <span><%= article.google_trend_index %></span></p>
-				<p class='source'><%= article.source %></p>
-			</div>
-		</a>
-		<% end %>
+		<div id='article_list'>
+			<% @articles.each do |article| %>
+			<a href='<%= article.url %>' target='_blank'>
+				<div class='article'>
+					<%= image_tag article.image_url %>
+					<h3><%= article.title %></h3>
+					<p class='abstract'><%= article.abstract %></p>
+					<p class='stat'>Twitter Popularity: <span><%= article.twitter_popularity %></span></p>
+					<p class='stat'>Facebook Popularity: <span><%= article.facebook_popularity %></span></p>
+					<p class='stat'>Google Trends Index: <span><%= article.google_trend_index %></span></p>
+					<p class='source'><%= article.source %></p>
+				</div>
+			</a>
+			<% end %>
+		</div>
 		<div class='btn btn_r'></div>
 		<hr>
+	</div>
+	<div id='article-page'>
+	<% if @articles.count == 1 %>
+		Article 1 of 1
+	<% else %>
+		<p>Articles <span id='article-page-indicator'>1-<%= @articles.count %></span> of <%= @total_articles %> Total</p>
+	<% end %>
 	</div>
 	<div id='footer'>Created by: Vince Li, Alex Drennen, Shomari Ewing, Dustin Snyder</footer>
 </div>
 <script type='text/javascript'>
 	var topicId = <%= @topics[0].id %>;
+	var dayId = <%= @day.id %>;
+	var articlePage = 1;
+	var articlePageTotal = <%= (@total_articles / @articles_per_page.to_f).ceil %>;
+
 	var parseDate = d3.time.format("%Y-%m-%d").parse;
 	var currentStatistic = 'twitter_popularity';
 
