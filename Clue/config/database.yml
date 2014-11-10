@@ -78,8 +78,12 @@ test:
 #   production:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
-production:
-  <<: *default
-  database: Clue_production
-  username: Clue
-  password: <%= ENV['CLUE_DATABASE_PASSWORD'] %>
+
+#Per DO's instructions:
+production: &production
+  adapter: mysql2
+  encoding: utf8
+  database: rails
+  socket: /var/run/mysqld/mysqld.sock
+  username: rails
+  password: xxxxxxxxx
