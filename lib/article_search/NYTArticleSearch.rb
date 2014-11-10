@@ -1,6 +1,5 @@
 require_relative "../APIControl"
 require_relative "../PopularitySearch"
-require "Date"
 
 class NYTArticleSearch < APIControl
   @@base_url = "http://api.nytimes.com/svc/search/v2/articlesearch.json?"

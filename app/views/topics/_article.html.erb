@@ -1,6 +1,6 @@
 <% @articles.each do |article| %>
 <a href='<%= article.url %>' target='_blank'>
-	<div class='article'>
+	<div class='article' data-article-id='<%= article.id %>' data-total-articles='<%= @total_articles %>'>
 		<%= image_tag article.image_url %>
 		<h3><span><%= article.title %></span></h3>
 		<p class='abstract'><%= article.abstract %></p>
