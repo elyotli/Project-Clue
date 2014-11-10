@@ -1,5 +1,5 @@
 require_relative "../TwitterWordSearch"
-require_relative "../API_control"
+require_relative "../APIControl"
 require_relative "../article_search/NYTMostPopularAPI"
 require_relative "../article_search/NYTArticleSearch"
 require_relative "../article_search/GuardianArticleSearch"

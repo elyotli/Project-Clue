@@ -1,4 +1,4 @@
-require_relative "API_Control"
+require_relative "APIControl"
 
 class NYTMostPopularAPI < APIControl
 
