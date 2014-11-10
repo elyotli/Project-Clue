@@ -1,31 +1,60 @@
-<!-- <div class="container-fluid">
-	<div class="row"> -->
-	<div class="jumbotron">
-	 <!--  <div class="col-md-12"> -->
-	 <div class="container-fluid">
-	    <div class="row-fluid">
-	    <!-- images go in these divs -->
-	    	<div class="col-md-3">
-	    		<% @topics.each do |topic| %>
-	    		  <%= link_to "#{topic.title}", topics_path(topic => topic.id) %>
-	    		  <% end %>
-	    	</div>
-	    	<div class="col-md-3">
-	    		image 2
-	    	</div>
-	    	<div class="col-md-3">
-	    		image 3
-	    	</div>
-	    	<div class="col-md-3">
-	    		image 4
-	    	</div>
-	  </div>
-	  <div class="row">
-	  	<div class="col-md-8 col-md-offset-2">
-
-
-	  	</div>
-	  </div>
-
+<div id='container'>
+	<div id='header'>
+		<h1>CLUE?</h1>
 	</div>
+	<div id='topics'>
+		<div class='btn_l'></div>
+		<% @topics.each do |topic| %>
+		<div class='topic'>
+			<%= image_tag topic.image_url %>
+			<h2><%= topic.title %></h2>
+		</div>
+		<% end %>
+		<div class='btn_r'></div>
+		<hr>
+	</div>
+	<div id='statistics'>
+		<div class='buttons'>
+			<div id='twitter'>Twitter</div>
+			<div id='facebook'>Facebook</div>
+			<hr>
+		</div>
+		<div id='chart'></div>
+	</div>
+	<div id='articles'>
+		<div class='btn_l'></div>
+		<% @articles.each do |article| %>
+		<a href='<%= article.url %>' target='_blank'>
+			<div class='article'>
+				<%= image_tag article.image_url %>
+				<h3><%= article.title %></h3>
+				<p class='abstract'><%= article.abstract %></p>
+				<p class='stat'>Twitter Popularity: <span><%= article.twitter_popularity %></span></p>
+				<p class='stat'>Facebook Popularity: <span><%= article.facebook_popularity %></span></p>
+				<p class='stat'>Google Trends Index: <span><%= article.google_trend_index %></span></p>
+				<p class='source'><%= article.source %></p>
+			</div>
+		</a>
+		<% end %>
+		<div class='btn_r'></div>
+		<hr>
+	</div>
+	<div id='footer'>Created by: Vince Li, Alex Drennen, Shomari Ewing, Dustin Snyder</footer>
 </div>
+<script type='text/javascript'>
+	function partialDataset() {
+		var newSet = [];
+		for(var i=0; i < fullDataset.length; i++) {
+			newSet.push({
+				date: fullDataset[i].date,
+				facebook_count: fullDataset[i].facebook_count
+			});
+		}
+		return newSet;
+	}
+
+	var fullDataset=JSON.parse('<%= raw @dataset %>');
+	var dataset = partialDataset();
+	
+	populateGraph();
+</script>

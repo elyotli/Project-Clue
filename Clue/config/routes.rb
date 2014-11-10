@@ -2,20 +2,11 @@ Rails.application.routes.draw do
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
-  # You can have the root of your site routed with "root"
   root 'topics#index'
-
-  resources :topics
-
-#when user clicks a date on the graph
   get 'topics/:topic_id/date/:date_id/articles' => 'articles#show', as: :topics_days_articles
-#iono
   get 'days/:id' => 'days#show', as: :day
-#
   get '/topics/:topic_id/statistics/popularity' => 'topics#popularity'
-
   get 'topics/:topic_id' => 'topics#show'
-
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
