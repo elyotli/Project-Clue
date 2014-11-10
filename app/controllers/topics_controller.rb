@@ -8,7 +8,8 @@ class TopicsController < ApplicationController
     @dataset = Popularity.popularitiesAsJSON(@topics.first.popularities.first(30))
     @articles_per_page = 4
     @total_articles = @topics.first().articles.count
-    @maxDate = Day.last().date.to_s
+    @maxDay = Day.last().date.to_s
+    @minDay = Day.first().date.to_s
 	end
 
   def articles_page

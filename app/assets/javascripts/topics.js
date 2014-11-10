@@ -67,20 +67,70 @@ $(document).on('click', '.topic', function(e){
 
 // click on topic carousel buttons
 $(document).on('click', '#topics .btn', function(e) {
-	// if($(e.target).hasClass('btn_l')) {
-		
-	// }
-	// else {
-		
-	// }
-	// if() {
-	// 	$.ajax({
-	// 		url: ,
-	// 		type: 'get',
-	// 		dataType: 'html',
-	// 		success: function(response) {
-				
-	// 		}
-	// 	});
-	// }
+	var currentDateStr = $('#date').text().replace(/-/g,'');
+	var year = currentDateStr.substr(0,4);
+	var month = currentDateStr.substr(4,2) - 1;
+	var day = currentDateStr.substr(6);
+	var currentDateMilliSeconds = new Date(year, month, day).valueOf();
+	var dayInMilliSeconds = 60*60*24*1000;
+	var targetDateMilliSeconds = 0;
+	var targetDateStr = '';
+
+	if($(e.target).hasClass('btn_l')) {
+		targetDateMilliSeconds = currentDateMilliSeconds - dayInMilliSeconds;
+	}
+	else {
+		targetDateMilliSeconds = currentDateMilliSeconds + dayInMilliSeconds;
+	}
+	targetDateStr = new Date(targetDateMilliSeconds).toISOString().replace(/T.*/i,'');
+	if(targetDateStr >= minDate && targetDateStr <= maxDate) {
+		var articlesURL = 'days/'+targetDateStr+'/articles';
+		var statisticsURL = 'days/'+targetDateStr+'/popularity';
+		var topicsURL = 'days/'+targetDateStr+'/topics';
+		var responseCounter = 0;
+
+		$.ajax({
+			url: 'days/' + targetDateStr + '/topics',
+			type: 'get',
+			dataType: 'html',
+			success: function(response) {
+				$('#topic_list').html(response);
+				responseCounter++;
+			}
+		});
+
+		$.ajax({
+			url: 'days/' + targetDateStr + '/articles',
+			type: 'get',
+			dataType: 'html',
+			success: function(response) {
+				$('#article_list').html(response);
+				responseCounter++;
+			}
+		});
+
+		$.ajax({
+			url: 'days/' + targetDateStr + '/popularity',
+			type: 'get',
+			dataType: 'json',
+			success: function(response) {
+				currentStatistic = 'twitter_popularity';
+				fullDataset = response;
+				dataset = partialDataset();
+				populateGraph();
+				responseCounter++;
+			}
+		});
+
+		var responseChecker=setInterval(function () {
+			if(responseCounter == 3) {
+				topicId = $('.topic').first().data('id');
+				dayId = $('.topic').first().data('day-id');
+				articlePage = 1;
+				articlePageTotal = $('.article').first().data('total-articles');
+				$('#date').text($('.topic').first().data('day-string'));
+				window.clearInterval(responseChecker);
+			}
+		}, 100);
+	}
 });
