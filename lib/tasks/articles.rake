@@ -10,7 +10,7 @@ require_relative "../article_search/RSSGrabber"
 namespace :articles do
   desc "get new articles and topics"
   task update_articles: :environment do
-    require "Date"
+    # require "Date"
     require "awesome_print"
 
     client = NYTMostPopularAPI.new
