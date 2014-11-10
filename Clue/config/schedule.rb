@@ -19,8 +19,8 @@ every 1.day, at: '6:00 am' do
   rake "articles:update_articles"
 end
 
-every 1.day at: '12:01 am' do
-  Day.create!(Date.today)
+every 1.day, at: '5:54 pm' do
+  rake "day:create_day"
 end
 
 # every 1.day, :at => '5:10 pm' do
