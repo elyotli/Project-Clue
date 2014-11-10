@@ -5,7 +5,7 @@
 	<div id='topics'>
 		<div class='btn btn_l'></div>
 		<% @topics.each do |topic| %>
-		<div class='topic'>
+		<div class='topic' data-id='<%= topic.id %>'>
 			<%= image_tag topic.image_url %>
 			<h2><%= topic.title %></h2>
 		</div>
@@ -25,19 +25,7 @@
 	<div id='articles'>
 		<div class='btn btn_l'></div>
 		<div id='article_list'>
-			<% @articles.each do |article| %>
-			<a href='<%= article.url %>' target='_blank'>
-				<div class='article'>
-					<%= image_tag article.image_url %>
-					<h3><%= article.title %></h3>
-					<p class='abstract'><%= article.abstract %></p>
-					<p class='stat'>Twitter Popularity: <span><%= article.twitter_popularity %></span></p>
-					<p class='stat'>Facebook Popularity: <span><%= article.facebook_popularity %></span></p>
-					<p class='stat'>Google Trends Index: <span><%= article.google_trend_index %></span></p>
-					<p class='source'><%= article.source %></p>
-				</div>
-			</a>
-			<% end %>
+			<%= render partial: 'topics/article', local: @articles, layout: false %>
 		</div>
 		<div class='btn btn_r'></div>
 		<hr>

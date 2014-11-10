@@ -4,8 +4,8 @@ Rails.application.routes.draw do
 
   root 'topics#index'
   get "/topics/:topic_id/date/:date_id/articles/:page" => 'topics#articles_page'
-
   get '/topics/:topic_id/statistics/popularity' => 'topics#popularity'
+  
   get 'topics/:topic_id/date/:date_id/articles' => 'articles#show', as: :topics_days_articles
   get 'days/:id' => 'days#show', as: :day
   get 'topics/:topic_id' => 'topics#show'

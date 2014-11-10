@@ -20,7 +20,7 @@ class TopicsController < ApplicationController
 
   def popularity
     @popularities = Popularity.where(topic_id: params[:topic_id])
-    Popularity.popularitiesAsJSON(@popularities)
+    render json: Popularity.popularitiesAsJSON(@popularities)
   end
 
   def show

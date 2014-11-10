@@ -32,3 +32,21 @@ $(document).on('click', '#articles .btn', function(e) {
 		});
 	}
 });
+
+// click on topic
+$(document).on('click', '.topic', function(e){
+	var id = $(e.target).closest('.topic').data('id');
+	console.log(id)
+	var url = 'topics/'+id+'/statistics/popularity';
+	$.ajax({
+		url: url,
+		type: 'get',
+		dataType: 'json',
+		success: function(response) {
+			fullDataset=response;
+			currentStatistic = 'twitter_popularity';
+			dataset = partialDataset();
+			populateGraph();
+		}
+	});
+});
