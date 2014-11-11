@@ -232,13 +232,28 @@
 			  var rectX = parseFloat(d3.select('rect.left-bracket').attr('x'));
 
 			  var width = mouseX - rectX - margin.left;
-			  console.log(width);
-
-			  // d3.selectAll('rect.left-bracket')
-			  //  	.attr('width', function() {
-			  //  		return x - this.getAttribute('x') - margin.left;
-			  //  	});  
-			 }
+			  
+			  if(width < 0) {
+			  	svgActive = false;
+			  	svg.select("rect.left-bracket").remove();
+			  // 	if(d3.select('rect.left-bracket').attr('data-start')) {
+			  // 		width = d3.select('rect.left-bracket').attr('data-start') - mouseX;
+			  // 		d3.select('rect.left-bracket')
+			  // 			.attr('x', mouseX - margin.left)
+			  // 			.attr('width', width);
+			  // 	}
+			  // 	else {
+				 //  	d3.select('rect.left-bracket')
+				 //  		.attr('data-start', mouseX)
+				 //  		.attr('x', mouseX - margin.left);
+				 //  }
+			  }
+			  else {
+			  	d3.selectAll('rect.left-bracket')
+			  		.attr('data-start',false)
+			  	 	.attr('width', width);
+			  }
+			}
 		});
 
 		d3.select('svg').on('mouseup', function(){
