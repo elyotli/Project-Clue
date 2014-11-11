@@ -10,6 +10,8 @@ class NYTArticleSearch < APIControl
     @processed_url = ""
   end
 
+  # Example: http://api.nytimes.com/svc/search/v2/articlesearch.json?q=Obama&begin_date=20141109&api-key=295f07d2db55fce19a6bdd330412d2ff:0:70154133
+
   def set_params(keywords, begin_date, sort_method)
     @processed_url = @@base_url + "q=" + keywords.split(" ").join("+")
     @processed_url += "&begin_date=" + begin_date
