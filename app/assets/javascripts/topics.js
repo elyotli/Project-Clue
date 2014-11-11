@@ -12,9 +12,9 @@ $(document).on('click', '.buttons', function(e) {
 
 
 // click on article carousel buttons
-$(document).on('click', '#articles .btn', function(e) {
+$(document).on('click', '#articles .fa', function(e) {
 	var articlePageTarget = 0;
-	if($(e.target).hasClass('btn_l')) {
+	if($(e.target).hasClass('fa-chevron-left')) {
 		articlePageTarget = articlePage - 1;
 	}
 	else {
@@ -34,7 +34,7 @@ $(document).on('click', '#articles .btn', function(e) {
 });
 
 // click on topic
-$(document).on('click', '.topic', function(e){
+$(document).on('click', '.topic *', function(e){
 	var id = $(e.target).closest('.topic').data('id');
 	topicId = id;
 	var url = 'topics/'+id+'/statistics/popularity';
@@ -66,21 +66,71 @@ $(document).on('click', '.topic', function(e){
 });
 
 // click on topic carousel buttons
-$(document).on('click', '#topics .btn', function(e) {
-	// if($(e.target).hasClass('btn_l')) {
-		
-	// }
-	// else {
-		
-	// }
-	// if() {
-	// 	$.ajax({
-	// 		url: ,
-	// 		type: 'get',
-	// 		dataType: 'html',
-	// 		success: function(response) {
-				
-	// 		}
-	// 	});
-	// }
+$(document).on('click', '#topics .fa', function(e) {
+	var currentDateStr = $('#date').find('span').text();
+	var year = currentDateStr.substr(0,4);
+	var month = currentDateStr.substr(5,2) - 1;
+	var day = currentDateStr.substr(8,2);
+	var currentDateMilliSeconds = new Date(year, month, day).valueOf();
+	var dayInMilliSeconds = 60*60*24*1000;
+	var targetDateMilliSeconds = 0;
+	var targetDateStr = '';
+
+	if($(e.target).hasClass('fa-chevron-left')) {
+		targetDateMilliSeconds = currentDateMilliSeconds - dayInMilliSeconds;
+	}
+	else {
+		targetDateMilliSeconds = currentDateMilliSeconds + dayInMilliSeconds;
+	}
+	targetDateStr = new Date(targetDateMilliSeconds).toISOString().replace(/T.*/i,'');
+	if(targetDateStr >= minDate && targetDateStr <= maxDate) {
+		var articlesURL = 'days/'+targetDateStr+'/articles';
+		var statisticsURL = 'days/'+targetDateStr+'/popularity';
+		var topicsURL = 'days/'+targetDateStr+'/topics';
+		var responseCounter = 0;
+
+		$.ajax({
+			url: 'days/' + targetDateStr + '/topics',
+			type: 'get',
+			dataType: 'html',
+			success: function(response) {
+				$('#topic_list').html(response);
+				responseCounter++;
+			}
+		});
+
+		$.ajax({
+			url: 'days/' + targetDateStr + '/articles',
+			type: 'get',
+			dataType: 'html',
+			success: function(response) {
+				$('#article_list').html(response);
+				responseCounter++;
+			}
+		});
+
+		$.ajax({
+			url: 'days/' + targetDateStr + '/popularity',
+			type: 'get',
+			dataType: 'json',
+			success: function(response) {
+				currentStatistic = 'twitter_popularity';
+				fullDataset = response;
+				dataset = partialDataset();
+				populateGraph();
+				responseCounter++;
+			}
+		});
+
+		var responseChecker=setInterval(function () {
+			if(responseCounter == 3) {
+				topicId = $('.topic').first().data('id');
+				dayId = $('.topic').first().data('day-id');
+				articlePage = 1;
+				articlePageTotal = $('.article').first().data('total-articles');
+				$('#date').find('span').text($('.topic').first().data('day-string'));
+				window.clearInterval(responseChecker);
+			}
+		}, 100);
+	}
 });

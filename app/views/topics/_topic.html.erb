@@ -1,0 +1,6 @@
+<% @topics.each do |topic| %>
+<div class='topic' data-id='<%= topic.id %>' data-day-id='<%= @day.id %>' data-day-string='<%= @day.date.to_s %>'>
+	<%= image_tag topic.image_url %>
+	<h2><span><%= topic.title %></span></h2>
+</div>
+<% end %>
