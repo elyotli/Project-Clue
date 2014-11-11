@@ -27,15 +27,15 @@ module Requests_and_Responses
   end
 
   # Specific to Guardian:
-  def get_response_guardian
-    articles = []
-    response = JSON.parse(get_request)
-    response["response"]["results"].each do |item|
-      new_article = create_guardian_article(item)
-      articles << new_article
-    end
-    return articles # This should be an array of article objects
-  end
+  # def get_response_guardian
+  #   articles = []
+  #   response = JSON.parse(get_request)
+  #   response["response"]["results"].each do |item|
+  #     new_article = create_guardian_article(item)
+  #     articles << new_article
+  #   end
+  #   return articles # This should be an array of article objects
+  # end
 
   # def create_guardian_article(article_json)
   #   article = Article.new
