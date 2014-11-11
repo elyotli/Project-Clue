@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   get "topics/:topic_id/date/:date_id/articles/:page" => 'topics#articles_page'
   get 'topics/:topic_id/statistics/popularity' => 'topics#popularity'
+  get "topics/:topic_id/date/:date/articles" => 'topics#articles'
 
   get 'days/:date/articles' => 'days#articles'
   get 'days/:date/topics' => 'days#topics'
