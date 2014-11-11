@@ -13,7 +13,8 @@ class Popularity < ActiveRecord::Base
         date: popobj.day.date.to_s,
         twitter_popularity: popobj.twitter_popularity,
         facebook_popularity: popobj.facebook_popularity,
-        google_trend_index: popobj.google_trend_index
+        google_trend_index: popobj.google_trend_index,
+        day: popobj.day.id
       }
       pop_array << my_hash
     end

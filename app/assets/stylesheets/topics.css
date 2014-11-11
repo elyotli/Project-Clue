@@ -153,6 +153,10 @@ h1 {
 
 svg {
 	font: 10px sans-serif;
+
+	background: linear-gradient(#f9f9f9,#e3e3e3);
+	box-shadow: 0 0 4px #999;
+	border-radius: 5px;
 }
 
 .axis path,
@@ -165,3 +169,12 @@ svg {
 .area {
   fill: steelblue;
 }
+
+circle {
+	cursor: pointer;
+}
+
+/*circle.hidden:hover {
+	fill: black;
+}*/
+

@@ -58,7 +58,8 @@
 		for(var i=0; i < fullDataset.length; i++) {
 			newObj = {};
 			newObj['date'] = parseDate(fullDataset[i].date);
-			newObj[currentStatistic] = fullDataset[i][currentStatistic]
+			newObj[currentStatistic] = fullDataset[i][currentStatistic];
+			newObj['day'] = fullDataset[i].day;
 			newSet.push(newObj);
 		}
 		return newSet;
@@ -86,6 +87,9 @@
 		.orient('left');
 
 	var area = d3.svg.area()
+		//.interpolate("basis")
+		.interpolate("monotone")
+		//.interpolate("cardinal")
 		.x(function(d) { return xScale(d.date); })
 		.y0(height)
 		.y1(function(d) { return yScale(d[currentStatistic]); });
@@ -112,6 +116,7 @@
 			.attr("class", "area")
 			.attr("d", area);
 
+
 		svg.append("g")
 			.attr("class", "x axis")
 			.attr("transform", "translate(0," + height + ")")
@@ -127,11 +132,36 @@
 			.style("text-anchor", "end")
 			.text(currentStatistic.replace(/_/g, ' '));
 
-		svg.selectAll('circle').data(dataset).enter()
+		var circles = svg.selectAll('circle').data(dataset).enter()
 			.append('circle')
-			.attr('fill','black')
+			.attr('fill','steelblue')
+			.attr('stroke', 'white')
+			.attr('stroke-width', '2px')
 			.attr('r', '5px')
 			.attr('cx', function(d) { return xScale(d.date); })
 			.attr('cy', function(d) { return yScale(d[currentStatistic]); });
-		}
+
+		d3.selectAll('circle').on('mouseover',function(){
+			d3.select(this).attr('fill','white').attr('stroke','black');
+		});
+		d3.selectAll('circle').on('mouseout',function(){
+			d3.select(this).attr('fill','steelblue').attr('stroke','white');
+		});
+		d3.selectAll('circle').on('click',function(){
+			var date = this.__data__.date.toISOString().replace(/T.*/i,'');
+			var day = this.__data__.day;
+			var url = 'topics/'+topicId+'/date/'+day+'/articles/1';
+			$.ajax({
+				url: url,
+				type: 'get',
+				dataType: 'html',
+				success: function(response) {
+					dayId = day;
+					articlePage = 1;
+					$('#article_list').html(response);
+					articlePageTotal = $('.article').first().data('total-articles');
+				}
+			});
+		});
+	}
 </script>
