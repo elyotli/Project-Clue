@@ -6,19 +6,18 @@
 require "./GetKeywords"
 require "./Requests_and_Responses"
 
-require 'awesome_print'
-require 'json'
 
-class Guardian
-  GUARDIAN_BASE_URL = "http://content.guardianapis.com/search?"
-  GUARDIAN_APP_KEY = "sfrv3wukd7uaw7amha8cd2e6"
-  GUARDIAN_SEARCH_URL = "http://content.guardianapis.com/search?"
-  attr_accessor :all_articles, :initial_articles, :searched_articles
+require 'awesome_print'
+require 'Date'
+class NewYorkTimesSearch
+  attr_accessor :searched_articles
+
+  NYT_APP_KEY = "295f07d2db55fce19a6bdd330412d2ff:0:70154133"
+  NY_BASE_SEARCH_URL = "http://api.nytimes.com/svc/search/v2/articlesearch.json?"
+  include GetKeywords
   include Requests_and_Responses
 
   def initialize
-    # @initial_articles = {}
-    # @all_articles = []
     @searched_articles = []
   end
 
@@ -26,9 +25,11 @@ class Guardian
     articles.each do |article|
       article[:twitter_pop] = get_twitter_popularity(article[:url])
       article[:facebook_pop] = get_facebook_popularity(article[:url])
+
       unless article[:twitter_pop] == nil && article[:facebook_pop] == nil
         article[:total_popularity] = article[:twitter_pop].to_i + article[:facebook_pop].to_i
-        # @all_articles << article
+        # @searched_articles << article
+        # ap @searched_articles
       end
     end
     return sort_by_pop
@@ -39,15 +40,15 @@ class Guardian
     @searched_articles = sorted.reverse
   end
 
-  def search(keywords)
-    url = GUARDIAN_SEARCH_URL + "api-key=" + GUARDIAN_APP_KEY + "&q=" + keywords.split(" ").join("%20") + "&order-bynewest&page-size=10"
-    response = JSON.parse(get_request(url))["response"]["results"]
-    response.each do |a|
-      article = {
-                :title => a["webTitle"],
-                :pub_date => a["webPublicationDate"],
-                :url => a["webUrl"],
-                :source => "TheGuardian"
+  def search(keyword)
+    timespan = Date.today.prev_day.strftime.gsub(/-/, "")
+    url = NY_BASE_SEARCH_URL + "q=" + keyword.split(" ").join("+") + "&begin_date=" + timespan + "&api-key=" + NYT_APP_KEY
+    response = JSON.parse(get_request(url))["response"]
+    response["docs"].each do |item|
+      article = { title: item["headline"]["main"],
+                  url: item["web_url"],
+                  abstract: item["abstract"],
+                  source: item["source"]
                 }
       @searched_articles << article
     end
@@ -55,8 +56,6 @@ class Guardian
   end
 end
 
-# Driver Code:
-# keywords = ["Ebola", "Obama"]
-# guard = Guardian.new
-# keywords.each { |word| guard.search(word) }
-# ap guard.all_articles
+# nyt_search = NewYorkTimesSearch.new
+# nyt_search.search("Ebola")
+# ap nyt_search.searched_articles
