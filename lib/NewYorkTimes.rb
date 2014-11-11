@@ -9,7 +9,7 @@ class NewYorkTimes
   NYT_BASE_URL ="http://api.nytimes.com/svc/mostpopular/v2"
   NYT_APP_KEY = "295f07d2db55fce19a6bdd330412d2ff:0:70154133"
   NY_BASE_SEARCH_URL = "http://api.nytimes.com/svc/search/v2/articlesearch.json?"
-  attr_accessor :all_articles, :initial_articles
+  attr_accessor :all_articles, :initial_articles, :searched_articles
   include GetKeywords
   include Requests_and_Responses
 
@@ -37,7 +37,8 @@ class NewYorkTimes
   end
 
   def sort_by_pop
-    @all_articles.sort_by!{ |article| article[:total_popularity] }
+    sorted = @all_articles.sort_by!{ |article| article[:total_popularity] }
+    @all_articles = sorted.reverse
   end
 
   def search(keyword)
