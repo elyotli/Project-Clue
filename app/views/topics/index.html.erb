@@ -188,7 +188,7 @@
 			});
 		});
 
-		d3.selectAll('circle').on('mousedown',function(){
+		d3.selectAll('circle.standard').on('mousedown',function(){
 			circleActive = true;
 			d3.selectAll('circle.standard').attr('stroke','white');
 			d3.select(this).attr('stroke','red');
