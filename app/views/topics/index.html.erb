@@ -227,12 +227,17 @@
 		});
 
 		d3.select('svg').on('mousemove', function () {
-			if(!circleActive) {
-			  x = d3.mouse(this)[0];
-			  d3.selectAll('rect.left-bracket')
-			   	.attr('width', function() {
-			   		return x - this.getAttribute('x') - margin.left;
-			   	});  
+			if(svgActive && !circleActive) {
+			  var mouseX = d3.mouse(this)[0];
+			  var rectX = parseFloat(d3.select('rect.left-bracket').attr('x'));
+
+			  var width = mouseX - rectX - margin.left;
+			  console.log(width);
+
+			  // d3.selectAll('rect.left-bracket')
+			  //  	.attr('width', function() {
+			  //  		return x - this.getAttribute('x') - margin.left;
+			  //  	});  
 			 }
 		});
 
