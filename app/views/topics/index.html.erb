@@ -195,26 +195,38 @@
 		});
 
 		d3.select('svg').on('mousedown', function(){
-			svg.append("line")
+			svg.append("rect")
 				.attr('class','left-bracket')
 				.attr('opacity',0.5)
-				.attr('stroke','black')
-				.attr('stroke-width','2px')
-				.attr("x1", d3.mouse(this)[0]-margin.left)
-				.attr("y1", 0)
-				.attr("x2", d3.mouse(this)[0]-margin.left)
-				.attr("y2", height);
+				.attr("x", d3.mouse(this)[0]-margin.left)
+				.attr("y", 0)
+				.attr('width',2)
+				.attr('height', height);
 		});
 
 		d3.select('svg').on('mouseup', function(){
-			svg.select("line.left-bracket").remove();
+			var selection = svg.select("rect.left-bracket");
+			
+			var selectionWidth = parseFloat(selection.attr('width'));
+			var selectionXLeftBound = parseFloat(selection.attr('x'));
+			var selectionXRightBound = selectionWidth + selectionXLeftBound;
+			
+			d3.selectAll('circle.standard').each(function(){
+				xPos = parseFloat($(this).attr('cx'));
+				if(xPos >= selectionXLeftBound && xPos <= selectionXRightBound) {
+					$(this).attr('stroke','red');
+				}
+			});
+
+			selection.remove();
 		});
 
 		d3.select('svg').on('mousemove', function () {
 		  x = d3.mouse(this)[0];
-		  d3.selectAll('line.left-bracket')
-		   	.attr('x1', (x-margin.left)+'px')
-		   	.attr('x2', (x-margin.left)+'px');    
+		  d3.selectAll('rect.left-bracket')
+		   	.attr('width', function() {
+		   		return x - this.getAttribute('x') - margin.left;
+		   	});  
 		});
 
 		$('#chart').on('mousedown',function(e){
