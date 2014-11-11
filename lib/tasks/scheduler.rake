@@ -18,6 +18,11 @@ task :update_feed => :environment do
   puts "done."
 end
 
+task wootvince: :environment do
+	puts "just work please"
+
+end
+
 #-------------uncomment below for original code
 
 # require_relative "../TwitterWordSearch"
