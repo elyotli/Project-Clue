@@ -1,18 +1,24 @@
-<div id='container'>
-	<div id='header'>
-		<h1>CLUE?</h1><h2 id='date'><%= @day.date.to_s %></h2>
+<div id='header'>
+	<h1 class='xxlarge title'>Project Clue</h1>
+
+	<div class='datebox'>
+		<h3 id='date'>
+			Headline - <span><%= @day.date.to_s %></span>
+		</h3>
 	</div>
+</div>
+
+<div id='container'>
 	<div id='topics'>
-		<div class='btn btn_l'></div>
-		<div id='topic_list'>
-			<% @topics.each do |topic| %>
-			<div class='topic' data-id='<%= topic.id %>'>
-				<%= image_tag topic.image_url %>
-				<h2><%= topic.title %></h2>
-			</div>
-			<% end %>
+		<div class='btn btn_l'>
+			<i class="fa fa-chevron-left"></i>
 		</div>
-		<div class='btn btn_r'></div>
+		<div id='topic_list'>
+			<%= render partial: 'topics/topic', local: @topics, layout: false %>
+			</div>
+		<div class='btn btn_r'>
+			<i class="fa fa-chevron-right	fa-5"></i>
+		</div>
 		<hr>
 	</div>
 	<div id='statistics'>
@@ -25,11 +31,15 @@
 		<div id='chart'></div>
 	</div>
 	<div id='articles'>
-		<div class='btn btn_l'></div>
+		<div class='btn btn_l'>
+			<i class="fa fa-chevron-left	fa-5"></i>
+		</div>
 		<div id='article_list'>
 			<%= render partial: 'topics/article', local: @articles, layout: false %>
 		</div>
-		<div class='btn btn_r'></div>
+		<div class='btn btn_r'>
+			<i class="fa fa-chevron-right	fa-5"></i>
+		</div>
 		<hr>
 	</div>
 	<div id='article-page'>
@@ -39,8 +49,10 @@
 		<p>Articles <span id='article-page-indicator'>1-<%= @articles.count %></span> of <%= @total_articles %> Total</p>
 	<% end %>
 	</div>
-	<div id='footer'>Created by: Vince Li, Alex Drennen, Shomari Ewing, Dustin Snyder</footer>
 </div>
+<div id='footer'>
+	Created by: Vince Li, Alex Drennen, Shomari Ewing, Dustin Snyder
+</footer>
 <script type='text/javascript'>
 	var topicId = <%= @topics[0].id %>;
 	var dayId = <%= @day.id %>;
