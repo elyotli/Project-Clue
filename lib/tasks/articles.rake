@@ -1,11 +1,3 @@
-task :update_feed => :environment do
-  puts "Updating feed..."
-  Topic.create!(title: "omg")
-  puts "done."
-end
-
-
-
 require_relative "../TwitterWordSearch"
 require_relative "../APIControl"
 require_relative "../article_search/NYTMostPopularAPI"

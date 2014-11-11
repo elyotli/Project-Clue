@@ -18,11 +18,8 @@ task :update_feed => :environment do
   puts "done."
 end
 
-namespace :job do
-	task :wootvince => :environment do
-		puts "just work please"
-
-	end
+task :wootvince => :environment do
+	puts "just work please"
 end
 
 #-------------uncomment below for original code
