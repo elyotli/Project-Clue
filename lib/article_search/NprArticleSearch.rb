@@ -11,7 +11,7 @@ class NprArticleSearch < RSSGrabber
 		search = TwitterWordSearch.new
 		@articles = get_response("http://rss.cnn.com/rss/cnn_topstories.rss")
 		@followers = search.get_follower_count("nprnews")/1000000
-		convert(self.articles)
+		@articles = convert(self.articles)
 	end
 
 end

@@ -11,7 +11,7 @@ class ReutersArticleSearch < RSSGrabber
 		search = TwitterWordSearch.new
 		@articles = get_response("http://feeds.reuters.com/reuters/topNews")
 		@followers = search.get_follower_count("reuters")/1000000
-		convert(self.articles)
+		@articles = convert(self.articles)
 	end
 
 end
