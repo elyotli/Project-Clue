@@ -59,16 +59,43 @@ task :get_topics => :environment do
 
     # all_articles
 
-  news_sources = [NewYorkTimesSearch.new, WashPost.new, Guardian.new]
+  news_APIs = [NewYorkTimesSearch.new,
+                  Guardian.new,
+                  WashPost.new]
+
+  news_RSS = [AbcNewsArticleSearch.new,
+              BbcNewsArticleSearch.new,
+              CbsNewsArticleSearch.new,
+              CNNArticleSearch.new,
+              FoxNewsArticleSearch.new,
+              NbcNewsArticleSearch.new,
+              NprArticleSearch.new,
+              ReutersArticleSearch.new]
 
   todays_articles = {}
+  articles_to_save = {}
   topics.each do |topic|
-    todays_articles[topic] = news_sources.map{ |source| source.search(topic) }
-        # .flatten
-        # .sort_by(&:twitter_popularity)
-        # .take(5)
+    todays_articles[topic] = []
+    todays_articles[topic] = news_APIs.map do |source|
+      p "searching for #{topic} in #{source.class}"
+      source.search(topic)
+    end.flatten
+    todays_articles[topic] += news_RSS.map do |source|
+      # binding.pry
+      source.search(topic)
+    end
+
+    todays_articles[topic].flatten!
+
+    todays_articles[topic] = todays_articles[topic].sort_by{ |article| article[:twitter_pop] }.reverse
+    articles_to_save[topic] = todays_articles[topic][0..3]
+
+    # .flatten
+    # .sort_by(&:twitter_popularity)
+    # .take(5)
   end
-  ap todays_articles
+
+  ap articles_to_save
 
   # topics_today = today.topics
 

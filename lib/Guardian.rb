@@ -25,7 +25,7 @@ class Guardian
   def get_popularity(articles)
     articles.each do |article|
       article[:twitter_pop] = get_twitter_popularity(article[:url])
-      article[:facebook_pop] = get_facebook_popularity(article[:url])
+      # article[:facebook_pop] = get_facebook_popularity(article[:url])
       unless article[:twitter_pop] == nil && article[:facebook_pop] == nil
         article[:total_popularity] = article[:twitter_pop].to_i + article[:facebook_pop].to_i
         # @all_articles << article
@@ -37,9 +37,11 @@ class Guardian
   def sort_by_pop
     sorted = @searched_articles.sort_by!{ |article| article[:total_popularity] }
     @searched_articles = sorted.reverse
+    return @searched_articles
   end
 
   def search(keywords)
+    searched_articles = []
     url = GUARDIAN_SEARCH_URL + "api-key=" + GUARDIAN_APP_KEY + "&q=" + keywords.split(" ").join("%20") + "&order-bynewest&page-size=10"
     response = JSON.parse(get_request(url))["response"]["results"]
     response.each do |a|
@@ -49,9 +51,18 @@ class Guardian
                 :url => a["webUrl"],
                 :source => "TheGuardian"
                 }
-      @searched_articles << article
+      searched_articles << article
     end
-    return get_popularity(@searched_articles)
+    # return get_popularity(@searched_articles)
+    searched_articles.each do |article|
+      article[:twitter_pop] = get_twitter_popularity(article[:url])
+      unless article[:twitter_pop] == nil && article[:facebook_pop] == nil
+        article[:total_popularity] = article[:twitter_pop].to_i + article[:facebook_pop].to_i
+      end
+    end
+    sorted = searched_articles.sort_by!{ |article| article[:total_popularity] }
+    sorted.reverse!
+    return sorted
   end
 end
 

@@ -23,6 +23,8 @@ module Requests_and_Responses
   end
 
   def get_facebook_popularity(url)
+    # p "http://graph.facebook.com/?id=" + url.to_s
+    # p get_request("http://graph.facebook.com/?id=" + url.to_s)
     JSON.parse(get_request("http://graph.facebook.com/?id=" + url.to_s))["shares"]
   end
 
