@@ -6,6 +6,22 @@ require_relative "../article_search/GuardianArticleSearch"
 require_relative "../article_search/USATodayArticleSearch"
 require_relative "../article_search/WaPoArticleSearch"
 require_relative "../article_search/RSSGrabber"
+require_relative "../article_search/CNNArticleSearch"
+require_relative "../article_search/AbcNewsArticleSearch"
+require_relative "../article_search/CbsNewsArticleSearch"
+require_relative "../article_search/FoxNewsArticleSearch"
+require_relative "../article_search/ReutersArticleSearch"
+require_relative "../article_search/NbcNewsArticleSearch"
+require_relative "../article_search/NprArticleSearch"
+require_relative "../article_search/BbcNewsArticleSearch"
+
+
+
+#get articles
+#twitter word search to rank those keywords
+#rss search on top keyword, try not to get 5 articles
+#run again if we don't 
+
 
 namespace :articles do
   desc "get new articles and topics"
@@ -27,59 +43,73 @@ namespace :articles do
     client.set_params("view", "serious", "1", "80")
     nyt5 = client.get_response
 
-    keywords_NYT = nyt1 += nyt2 += nyt3 += nyt4 += nyt5
+    nyt_top_articles = nyt1 += nyt2 += nyt3 += nyt4 += nyt5
 
 
-    keywords_NYT.each do |contender|      
+    nyt_top_articles.each do |contender|      
       popularity_client = PopularitySearch.new
-      popularity_client.set_params(contender[:url])
+      popularity_client.set_params(contender[:url]) 
       contender[:tweets] = popularity_client.get_twitter_popularity
       contender[:shares] = popularity_client.get_facebook_popularity
+      contender[:socialpop] = contender[:tweets] + contender [:shares]
     end
 
-     keywords_NYT.sort!{|a,b| b[:tweets] <=> a[:tweets]}
-     keywords_NYT.each_with_index do |article, index|
-      if article[:key_words].length < 1
-        keywords_NYT[index].delete
-      end
-    end
 
-     ap keywords_NYT
-   
+    #     #&:tweets
+    #   #tried to combine these two conditions with an || but got errors
+     nyt_top_articles.delete_if do |article| 
+       article[:url].include? "blogs.nytimes"
+     end 
 
-    # client.set_params("view", "all", "1")
-    # # gets me today's keywords in all categories by most-viewed
-    # keywords_NYT = client.get_response
+     nyt_top_articles.delete_if do |article| 
+       article[:key_words].length < 1
+     end 
+
+     nyt_top_articles.sort! {|a,b| b[:socialpop] <=> a[:socialpop]}
+     champions = nyt_top_articles.take(20)
+     puts "got champions"
+   # ###############################################
+
+   # #champions is an array that has five objects in it
+   #  p champions.class
+   #  p champions.length
+   #  ap champio
+
 
     # num_keywords = 10
     # top_keywords = keywords_NYT[0..(num_keywords - 1)]
 
     # keywords_time_lapsed = {}
-    # keywords_retweets = {}
+    # # keywords_retweets = {}
 
-    # puts "keywords before twitter filtering"
-    # ap top_keywords
+    # # puts "keywords before twitter filtering"
+    # # ap top_keywords
 
     # top_keywords.each do |keyword|
-    # #   search_result = search.search_tweet(keyword)
-    # #   keywords_time_lapsed[keyword] = search_result["time"]
-    # #   keywords_retweets[keyword] = search_result["retweets"]
-    # # end
+    #   search_result = search.search_tweet(keyword)
+    #   keywords_time_lapsed[keyword] = search_result["time"]
+    #   keywords_retweets[keyword] = search_result["retweets"]
+    # end
 
-    # # pull top 5 key, plug them into the article searches
-    # # use .keys on the resulting hash, like my_hash.keys[0..4]
+    # # # pull top 5 key, plug them into the article searches
+    # # # use .keys on the resulting hash, like my_hash.keys[0..4]
 
-    # # Hash[keywords_retweets.sort_by{|k, v| v}.reverse]
-    # # top_five_keywords = keywords_retweets.keys[0..4]
+    # Hash[keywords_retweets.sort_by{|k, v| v}.reverse]
+    # top_five_keywords = keywords_retweets.keys[0..4]
 
-    # # top_five_keywords = top_keywords.slice(0,4)
-    # top_five_keywords = ["ebola", "obama", "ferguson"]
+    # # # top_five_keywords = top_keywords.slice(0,4)
 
-    # # puts "top 5 keywords"
-    #  # top_five_keywords = ["Obama", "Republican", "Ebola", "republican", "kim kardashian", "School" ]
+    #######################################
+
+
+    # puts "top 5 keywords"
+     # top_five_keywords = ["Obama", "Republican", "Ebola", "republican", "kim kardashian", "School" ]
     # #find articles from all news sources based on each of the top five keywords:
 
     # all_articles = {}
+    # nyt_articles = nil
+    # wapo_articles = nil
+    # guardian_articles = nil
     # top_five_keywords.each do |keyphrase|
     #   all_articles[keyphrase] = []
 
@@ -87,119 +117,72 @@ namespace :articles do
     #   nyt = NYTArticleSearch.new
     #   time_spam_nyt = Date.today.prev_day.strftime.gsub(/-/, "")
     #   nyt.set_params(keyphrase, time_spam_nyt, "newest")
-    #   all_articles[keyphrase] += nyt.get_response
+    #   nyt_articles = nyt.get_response
+    #   # all_articles[keyphrase] += nyt.get_response
 
     #   # # puts "finding articles for #{keyphrase} in usa today"
     #   # # usa_today = USATodayArticleSearch.new
     #   # # usa_today.set_params(keyphrase)
     #   # # all_articles[keyphrase] += usa_today.get_response
 
-    #   puts "finding articles for #{keyphrase} in wapo"
-    #   wapo = WaPoArticleSearch.new
-    #   wapo.set_params(keyphrase)
-    #   all_articles[keyphrase] += wapo.get_response
+    #   # puts "finding articles for #{keyphrase} in wapo"
+    #   # wapo = WaPoArticleSearch.new
+    #   # wapo.set_params(keyphrase)
+    #   # wapo_articles = wapo.get_response
+    #   # all_articles[keyphrase] += wapo.get_response
 
-    #   puts "finding articles for #{keyphrase} in guardian"
-    #   guardian = GuardianArticleSearch.new
-    #   guardian.set_params(keyphrase, "newest", "10")
-    #   all_articles[keyphrase] += guardian.get_response
+    # puts "finding articles for #{keyphrase} in guardian"
+    # guardian = GuardianArticleSearch.new
+    # guardian.set_params(keyphrase, "newest", "10")
+    # guardian_articles = guardian.get_response
+    #   # all_articles[keyphrase] += guardian.get_response
     # end
+    # api_articles = []
+    # api_articles += nyt_articles
+    # # api_articles += wapo_articles
+    # api_articles += guardian_articles
 
-    # puts "inside cnn rss thingy"
-    # client = RSSGrabber.new
-    # cnn_top = client.get_response("http://rss.cnn.com/rss/cnn_topstories.rss")
-    # cnn_top_count = search.get_follower_count("cnn")/1000000
-    # cnn_top.each do |article|
-    #   article["counts"] = cnn_top_count
-    # end
+    cnn = CNNArticleSearch.new
+    nbc = NbcNewsArticleSearch.new
+    bbc = BbcNewsArticleSearch.new
+    cbs = CbsNewsArticleSearch.new
+    reu = ReutersArticleSearch.new
+    npr = NprArticleSearch.new
+    fox = FoxNewsArticleSearch.new
+    abc = AbcNewsArticleSearch.new
 
-    # reuters_top = client.get_response("http://feeds.reuters.com/reuters/topNews")
-    # reuters_top_count = search.get_follower_count("reuters")/1000000
-    # reuters_top.each do |article|
-    #   article["counts"] = reuters_top_count
-    # end
+    puts "initalized all rss feeds"
+    shown_articles = {}
+    champions.each do |article|
+     matches = []
+     matches << cnn.find_articles_by_topic(article.keyword[0])
+     matches << nbc.find_articles_by_topic(article.keyword[0])
+     matches << abc.find_articles_by_topic(article.keyword[0])
+     matches << fox.find_articles_by_topic(article.keyword[0])
+     matches << reu.find_articles_by_topic(article.keyword[0])
+     matches << npr.find_articles_by_topic(article.keyword[0])
+     matches << cbs.find_articles_by_topic(article.keyword[0])
+     if matches.legnth > 5
+        matches.sort! {|a, b| b.twitter_popularity <=> a.twitter_popularity}
+        shown_articles[article.keyword[0]] = matches.take(5)      
+     end
+     break if shown_articles.length > 4
+    end
 
-    # nbc_news_top = client.get_response("http://feeds.nbcnews.com/feeds/topstories")
-    # nbc_news_top_count = search.get_follower_count("NBCNews")/1000000
-    # nbc_news_top.each do |article|
-    #   article["counts"] = nbc_news_top_count
-    # end
+    ap shown_articles
+      
 
-
-    # abc_news_top = client.get_response("http://feeds.abcnews.com/abcnews/topstories")
-    # abc_news_top_count = search.get_follower_count("ABC")/1000000
-    # abc_news_top.each do |article|
-    #   article["counts"] = abc_news_top_count
-    # end
-
-    # abc_count = search.get_follower_count("ABC")
-    # ap_top = client.get_response("http://hosted.ap.org/lineups/TOPHEADS.rss?SITE=AP&SECTION=HOME")
-    # ap_top_count =  search.get_follower_count("AP")/1000000
-    # ap_top.each do |article|
-    #   article["counts"] = ap_top_count
-    # end
-
-
-    # npr_most = client.get_response("http://www.npr.org/rss/rss.php?id=100")
-    # npr_most_count = search.get_follower_count("nprnews")/1000000
-    # npr_most.each do |article|
-    #   article["counts"] = npr_most_count
-    # end
-
-    # fox_news_most = client.get_response("http://feeds.foxnews.com/foxnews/most-popular")
-    # fox_news_most_count = search.get_follower_count("FoxNews")/1000000
-    # fox_news_most.each do |article|
-    #   article["counts"] = fox_news_most_count
-    # end
+      #if the story has the keyword in it, a
 
 
-    # bbc_us_can = client.get_response("http://feeds.bbci.co.uk/news/world/us_and_canada/rss.xml")
-    # bbc_us_can.each do |article|
-    #   article["counts"] = 5 #interesting case, don't know how to handle
-    # end
-
-    # cbs_news_top = client.get_response("http://www.cbsnews.com/latest/rss/main")
-    # cbs_news_top_count = search.get_follower_count("CBSNews")/1000000
-    # cbs_news_top.each do |article|
-    #   article["counts"] = cbs_news_top_count
-    # end
-
-    # p "cnn: #{cnn_top.count}"
-    # p "reuters: #{reuters_top.count}"
-    # p "nbc: #{nbc_news_top.count}"
-    # p "abc: #{abc_news_top.count}"
-    # p "npr: #{npr_most.count}"
-    # p "fox: #{fox_news_most.count}"
-    # p "bbc: #{bbc_us_can.count}"
-    # p "cbs: #{cbs_news_top.count}"
-
-    # all_rss = []
-    # all_rss += cnn_top
-    # all_rss += reuters_top
-    # all_rss += nbc_news_top
-    # all_rss += abc_news_top
-    # all_rss += npr_most
-    # all_rss += fox_news_most
-    # all_rss += bbc_us_can
-
-    # rss_articles = []
-    # p all_rss.count
-    # all_rss.each do |item|
-    #   article = Story.new
-    #   ap item[:title]
-    #   article.title = item[:title]
-    #   article.url = item[:guid]
-    #   article.abstract = item[:description].match(/.*[.][&]/).to_s
-    #   article.published_at = item[:pubDate]
-    #   popularity_client = PopularitySearch.new
-    #   popularity_client.set_params(article.url)
-    #   article.twitter_popularity = popularity_client.get_twitter_popularity/item["counts"]
-    #   article.facebook_popularity = popularity_client.get_facebook_popularity
-    #   rss_articles << article
-    # end
+    # top_five_keywords = ["Mormons", "Police", "Education"]
 
     # rss_articles.each do |article|
     #   top_five_keywords.each do |keyphrase|
+    #     ap article
+    #     if article.abstract == nil
+    #       article.abstract = " "
+    #     end
     #     all_articles[keyphrase] << article if article.title.downcase.include?(keyphrase.downcase) || article.abstract.downcase.include?(keyphrase.downcase)
     #   end
     # end
@@ -216,6 +199,6 @@ namespace :articles do
     #   shown_articles << all_articles[keyword].slice(0, 5)
     # end
 
-    # ap shown_articles
+    # ap shown_articles.each
   end
 end
