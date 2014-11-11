@@ -146,6 +146,7 @@
 
 		var circles = svg.selectAll('circle').data(dataset).enter()
 			.append('circle')
+			.attr('class', 'standard')
 			.attr('fill','steelblue')
 			.attr('stroke', 'white')
 			.attr('stroke-width', '2px')
@@ -153,12 +154,29 @@
 			.attr('cx', function(d) { return xScale(d.date); })
 			.attr('cy', function(d) { return yScale(d[currentStatistic]); });
 
-		d3.selectAll('circle').on('mouseover',function(){
-			d3.select(this).attr('fill','white').attr('stroke','black');
+		var circles = svg.selectAll('circle.overlay').data(dataset).enter()
+			.append('circle')
+			.attr('class', 'overlay')
+			.attr('fill','transparent')
+			.attr('stroke-width', '1px')
+			.attr('r', '20px')
+			.attr('cx', function(d) { return xScale(d.date); })
+			.attr('cy', function(d) { return yScale(d[currentStatistic]); });
+
+		d3.selectAll('circle.overlay').on('mouseover',function(){
+			var data = this.__data__.date;
+			d3.selectAll('circle.standard').attr('fill', function(d){
+				return this.__data__.date == data ? 'black' : 'steelblue';
+			});
 		});
-		d3.selectAll('circle').on('mouseout',function(){
-			d3.select(this).attr('fill','steelblue').attr('stroke','white');
+
+		d3.selectAll('circle.overlay').on('mouseout',function(){
+			var data = this.__data__.date;
+			d3.selectAll('circle.standard').attr('fill', function(d){
+				return 'steelblue';
+			});
 		});
+
 		d3.selectAll('circle').on('click',function(){
 			var date = this.__data__.date.toISOString().replace(/T.*/i,'');
 			var day = this.__data__.day;
