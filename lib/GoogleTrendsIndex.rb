@@ -1,9 +1,10 @@
-require_relative "APIControl"
+require 'json'
 require 'rubygems'
 require 'open-uri'
 require 'nokogiri'
 require 'json'
 require 'awesome_print'
+require 'mechanize'
 
 class GoogleTrendsClient
   attr_accessor :data_hash
@@ -107,3 +108,9 @@ client = GoogleTrendsClient.new("midterm election", "3")
 #available month_span: 1, 3
 ap client.process_data
 ap client.detect_trend(15)
+
+# mech_client1 = Mechanize.new
+# mech_client1.get("http://www.google.com/")
+# cookiejar = mech_client1.cookie_jar
+
+# ap cookiejar.cookies
