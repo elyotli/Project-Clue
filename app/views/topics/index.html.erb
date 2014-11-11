@@ -1,16 +1,24 @@
-<div id='container'>
-	<div id='header'>
-		<h1>CLUE?</h1><h2 id='date'><%= @day.date.to_s %></h2>
+<div id='header'>
+	<h1 class='xxlarge title'>Project Clue</h1>
+
+	<div class='datebox'>
+		<h3 id='date'>
+			Headline - <span><%= @day.date.to_s %></span>
+		</h3>
 	</div>
+</div>
+
+<div id='container'>
 	<div id='topics'>
-		<div class='btn btn_l'></div>
-		<% @topics.each do |topic| %>
-		<div class='topic' data-id='<%= topic.id %>'>
-			<%= image_tag topic.image_url %>
-			<h2><%= topic.title %></h2>
+		<div class='btn btn_l'>
+			<i class="fa fa-chevron-left"></i>
 		</div>
-		<% end %>
-		<div class='btn btn_r'></div>
+		<div id='topic_list'>
+			<%= render partial: 'topics/topic', local: @topics, layout: false %>
+			</div>
+		<div class='btn btn_r'>
+			<i class="fa fa-chevron-right	fa-5"></i>
+		</div>
 		<hr>
 	</div>
 	<div id='statistics'>
@@ -23,11 +31,15 @@
 		<div id='chart'></div>
 	</div>
 	<div id='articles'>
-		<div class='btn btn_l'></div>
+		<div class='btn btn_l'>
+			<i class="fa fa-chevron-left	fa-5"></i>
+		</div>
 		<div id='article_list'>
 			<%= render partial: 'topics/article', local: @articles, layout: false %>
 		</div>
-		<div class='btn btn_r'></div>
+		<div class='btn btn_r'>
+			<i class="fa fa-chevron-right	fa-5"></i>
+		</div>
 		<hr>
 	</div>
 	<div id='article-page'>
@@ -37,14 +49,17 @@
 		<p>Articles <span id='article-page-indicator'>1-<%= @articles.count %></span> of <%= @total_articles %> Total</p>
 	<% end %>
 	</div>
-	<div id='footer'>Created by: Vince Li, Alex Drennen, Shomari Ewing, Dustin Snyder</footer>
 </div>
+<div id='footer'>
+	Created by: Vince Li, Alex Drennen, Shomari Ewing, Dustin Snyder
+</footer>
 <script type='text/javascript'>
 	var topicId = <%= @topics[0].id %>;
 	var dayId = <%= @day.id %>;
 	var articlePage = 1;
 	var articlePageTotal = <%= (@total_articles / @articles_per_page.to_f).ceil %>;
-	var maxDate = <%= @maxDate %>
+	var maxDate = '<%= @maxDay %>';
+	var minDate = '<%= @minDay %>';
 
 	var parseDate = d3.time.format("%Y-%m-%d").parse;
 	var currentStatistic = 'twitter_popularity';
@@ -55,7 +70,8 @@
 		for(var i=0; i < fullDataset.length; i++) {
 			newObj = {};
 			newObj['date'] = parseDate(fullDataset[i].date);
-			newObj[currentStatistic] = fullDataset[i][currentStatistic]
+			newObj[currentStatistic] = fullDataset[i][currentStatistic];
+			newObj['day'] = fullDataset[i].day;
 			newSet.push(newObj);
 		}
 		return newSet;
@@ -83,6 +99,9 @@
 		.orient('left');
 
 	var area = d3.svg.area()
+		//.interpolate("basis")
+		.interpolate("monotone")
+		//.interpolate("cardinal")
 		.x(function(d) { return xScale(d.date); })
 		.y0(height)
 		.y1(function(d) { return yScale(d[currentStatistic]); });
@@ -99,6 +118,7 @@
 		d3.selectAll('.axis').remove();
 		d3.selectAll('.area').remove();
 		d3.selectAll('text').remove();
+		d3.selectAll('circle').remove();
 
 		xScale.domain(d3.extent(dataset, function(d) { return d.date; }));
 		yScale.domain(d3.extent(dataset, function(d) { return d[currentStatistic]; }));
@@ -107,6 +127,7 @@
 			.datum(dataset)
 			.attr("class", "area")
 			.attr("d", area);
+
 
 		svg.append("g")
 			.attr("class", "x axis")
@@ -122,5 +143,55 @@
 			.attr("dy", ".71em")
 			.style("text-anchor", "end")
 			.text(currentStatistic.replace(/_/g, ' '));
-		}
+
+		var circles = svg.selectAll('circle').data(dataset).enter()
+			.append('circle')
+			.attr('class', 'standard')
+			.attr('fill','steelblue')
+			.attr('stroke', 'white')
+			.attr('stroke-width', '2px')
+			.attr('r', '5px')
+			.attr('cx', function(d) { return xScale(d.date); })
+			.attr('cy', function(d) { return yScale(d[currentStatistic]); });
+
+		var circles = svg.selectAll('circle.overlay').data(dataset).enter()
+			.append('circle')
+			.attr('class', 'overlay')
+			.attr('fill','transparent')
+			.attr('stroke-width', '1px')
+			.attr('r', '20px')
+			.attr('cx', function(d) { return xScale(d.date); })
+			.attr('cy', function(d) { return yScale(d[currentStatistic]); });
+
+		d3.selectAll('circle.overlay').on('mouseover',function(){
+			var data = this.__data__.date;
+			d3.selectAll('circle.standard').attr('fill', function(d){
+				return this.__data__.date == data ? 'black' : 'steelblue';
+			});
+		});
+
+		d3.selectAll('circle.overlay').on('mouseout',function(){
+			var data = this.__data__.date;
+			d3.selectAll('circle.standard').attr('fill', function(d){
+				return 'steelblue';
+			});
+		});
+
+		d3.selectAll('circle').on('click',function(){
+			var date = this.__data__.date.toISOString().replace(/T.*/i,'');
+			var day = this.__data__.day;
+			var url = 'topics/'+topicId+'/date/'+day+'/articles/1';
+			$.ajax({
+				url: url,
+				type: 'get',
+				dataType: 'html',
+				success: function(response) {
+					dayId = day;
+					articlePage = 1;
+					$('#article_list').html(response);
+					articlePageTotal = $('.article').first().data('total-articles');
+				}
+			});
+		});
+	}
 </script>

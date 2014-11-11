@@ -1,3 +1,6 @@
+# This file is no longer needed.
+# Use the NewYorkTimes class instead.
+
 require_relative "../APIControl"
 
 class NYTMostPopularAPI < APIControl

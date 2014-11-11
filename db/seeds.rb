@@ -103,15 +103,33 @@ days.each do |day|
 end
 
 days = Day.all
-topics = Topic.all
-topics.each do |topic|
+topicObjs = Topic.all
+topicObjs.each do |to|
 	days.each do |day|
 		Popularity.create!(
-			topic_id: topic.id,
+			topic_id: to.id,
 			day_id: day.id,
 			twitter_popularity: randomPopularity,
 			facebook_popularity: randomPopularity,
 			google_trend_index: randomPopularity
 		)
+		counter = 0
+		topics.each do |topic|
+			3.times do
+				topic[:articles].each do |article|
+					articleObj = Article.create!(
+						title: "#{day.date.to_s} #{topic[:title]} #{counter} #{article[:title]}",
+						url: article[:url],
+						published_at: day.date.to_s,
+						image_url: article[:image_url],
+						twitter_popularity: randomPopularity,
+		        facebook_popularity: randomPopularity,
+		        google_trend_index: randomPopularity
+					)
+					ArticleTopic.create!(topic_id: to.id , article_id: articleObj.id)
+					counter += 1
+				end
+			end
+		end
 	end
 end

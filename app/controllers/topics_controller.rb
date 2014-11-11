@@ -8,7 +8,8 @@ class TopicsController < ApplicationController
     @dataset = Popularity.popularitiesAsJSON(@topics.first.popularities.first(30))
     @articles_per_page = 4
     @total_articles = @topics.first().articles.count
-    @maxDate = Day.last().date.to_s
+    @maxDay = Day.last().date.to_s
+    @minDay = Day.first().date.to_s
 	end
 
   def articles_page
@@ -16,12 +17,22 @@ class TopicsController < ApplicationController
     date = Day.find(params[:date_id]).date.to_s
     page = params[:page].to_i - 1
     @articles = Topic.find(params[:topic_id]).articles.where(published_at: date).offset(page * articles_per_page).limit(4)
+    @total_articles = Topic.find(params[:topic_id]).articles.where(published_at: date).count
     render partial: 'topics/article', local: @articles, layout: false
   end
 
   def popularity
     @popularities = Popularity.where(topic_id: params[:topic_id])
     render json: Popularity.popularitiesAsJSON(@popularities)
+  end
+
+  def articles
+    @day = Day.where(date: params[:date]).first
+    @topics = @day.topics.first(4)
+    @articles = @topics.first().articles.first(4)
+    @articles_per_page = 4
+    @total_articles = @topics.first().articles.count
+    render partial: 'topics/article', local: @articles, layout: false
   end
 
   def show

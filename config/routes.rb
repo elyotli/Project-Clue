@@ -3,12 +3,14 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   root 'topics#index'
-  get "/topics/:topic_id/date/:date_id/articles/:page" => 'topics#articles_page'
-  get '/topics/:topic_id/statistics/popularity' => 'topics#popularity'
 
-  get 'topics/:topic_id/date/:date_id/articles' => 'articles#show', as: :topics_days_articles
-  get 'days/:id' => 'days#show', as: :day
-  get 'topics/:topic_id' => 'topics#show'
+  get "topics/:topic_id/date/:date_id/articles/:page" => 'topics#articles_page'
+  get 'topics/:topic_id/statistics/popularity' => 'topics#popularity'
+  get "topics/:topic_id/date/:date/articles" => 'topics#articles'
+
+  get 'days/:date/articles' => 'days#articles'
+  get 'days/:date/topics' => 'days#topics'
+  get 'days/:date/popularity' => 'days#popularity'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
