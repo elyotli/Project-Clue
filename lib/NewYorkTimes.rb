@@ -9,7 +9,6 @@ require "./Requests_and_Responses"
 
 
 require 'awesome_print'
-require 'Date'
 
 class NewYorkTimes
   NYT_BASE_URL ="http://api.nytimes.com/svc/mostpopular/v2"
@@ -61,5 +60,5 @@ end
 
 
 # Driver Code:
-nyt = NewYorkTimes.new
+# nyt = NewYorkTimes.new
 # nyt.get_initial_articles
