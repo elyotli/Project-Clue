@@ -191,6 +191,7 @@
 		d3.selectAll('circle').on('mousedown',function(){
 			circleActive = true;
 			d3.selectAll('circle.standard').attr('stroke','white');
+			d3.select(this).attr('stroke','red');
 			var date = this.__data__.date.toISOString().replace(/T.*/i,'');
 			var day = this.__data__.day;
 			var url = 'topics/'+topicId+'/date/'+day+'/articles/1';
