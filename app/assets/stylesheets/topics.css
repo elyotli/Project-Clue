@@ -263,6 +263,10 @@ hr {
 	bottom: 0;
 }
 
+.hidden {
+	display: none;
+}
+
 svg {
 	font: 10px sans-serif;
 

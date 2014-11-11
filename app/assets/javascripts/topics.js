@@ -14,17 +14,48 @@ $(document).on('click', '.buttons', function(e) {
 // click on article carousel buttons
 $(document).on('click', '#articles .fa', function(e) {
 	var articlePageTarget = 0;
-	if($(e.target).hasClass('fa-chevron-left')) {
-		articlePageTarget = articlePage - 1;
+	
+	var articlesSet = $('#articles-set');
+	if(articlesSet.length != 0) {
+		var articlesData = articlesSet.data();
+		articlePageTotal = articlesData.totalPages;
+		if($(e.target).hasClass('fa-chevron-left')) {
+			articlePageTarget = articlesData.page - 1;
+		}
+		else {
+			articlePageTarget = articlesData.page + 1;
+		}
 	}
 	else {
-		articlePageTarget = articlePage + 1;
+		if($(e.target).hasClass('fa-chevron-left')) {
+			articlePageTarget = articlePage - 1;
+		}
+		else {
+			articlePageTarget = articlePage + 1;
+		}
 	}
-	if(articlePageTarget > 0 && articlePageTarget <= articlePageTotal) {
+	if(articlePageTarget >= 0 && articlePageTarget <= articlePageTotal) {
+		var url = '';
+		var data = '';
+		var type = '';
+
+		if(articlesSet.length != 0) {
+			data = 'articles_set=' + JSON.stringify(articlesData.articlesSet) + 
+							'&page=' + articlePageTarget;
+			type = 'post';
+			url = "topics/1/date_range";
+		}
+		else {
+			data = '';
+			type = 'get';
+			url = 'topics/' + topicId + '/date/' + dayId + '/articles/' + articlePageTarget;
+		}
+
 		$.ajax({
-			url: 'topics/' + topicId + '/date/' + dayId + '/articles/' + articlePageTarget,
-			type: 'get',
+			url: url,
+			type: type,
 			dataType: 'html',
+			data: data,
 			success: function(response) {
 				articlePage = articlePageTarget;
 				$('#article_list').html(response);
