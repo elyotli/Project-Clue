@@ -54,7 +54,7 @@ class GoogleTrendsClient
     filtered = filtered.gsub(/(new Date)\D\d{4}\D\d{1,2}\D\d{1,2}\D/)  { |s| s = '"' + s + '"' }
     filtered = filtered[1..-3]
     response_JSON = JSON.parse(filtered)
-    @data_hash = build_objects(response_JSON) 
+    @data_hash = build_objects(response_JSON)
   end
 
   def build_objects(response_JSON)
@@ -104,10 +104,10 @@ class GoogleTrendsClient
 
 end
 
-client = GoogleTrendsClient.new("midterm election", "3")
-#available month_span: 1, 3
-ap client.process_data
-ap client.detect_trend(15)
+# client = GoogleTrendsClient.new("midterm election", "3")
+# #available month_span: 1, 3
+# ap client.process_data
+# ap client.detect_trend(15)
 
 # mech_client1 = Mechanize.new
 # mech_client1.get("http://www.google.com/")
