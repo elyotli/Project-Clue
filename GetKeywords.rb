@@ -38,11 +38,13 @@ module GetKeywords
 
     contenders = []
     results.each do |result|
+      parsed = result["adx_keywords"].split(";")
+      parsed.map! {|keyword| keyword.gsub(/\(.*/, "") }
       contender = {
                   :title => result["title"],
                   :abstract => result["abstract"],
                   :source => result["source"],
-                  :keywords => result["adx_keywords"].split(";"),
+                  :keywords => parsed,
                   :url => result["url"]
                   }
       contenders << contender

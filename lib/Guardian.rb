@@ -8,11 +8,15 @@ require "./Requests_and_Responses"
 
 require 'awesome_print'
 require 'json'
+require 'date'
 
 class Guardian
   GUARDIAN_BASE_URL = "http://content.guardianapis.com/search?"
   GUARDIAN_APP_KEY = "sfrv3wukd7uaw7amha8cd2e6"
   GUARDIAN_SEARCH_URL = "http://content.guardianapis.com/search?"
+  GUARDIAN_FROM_DATE = Date.today.prev_day.strftime('%Y-%m-%d')
+
+ 
   attr_accessor :all_articles, :initial_articles, :searched_articles
   include Requests_and_Responses
 
@@ -42,9 +46,10 @@ class Guardian
 
   def search(keywords)
     searched_articles = []
-    url = GUARDIAN_SEARCH_URL + "api-key=" + GUARDIAN_APP_KEY + "&q=" + keywords.split(" ").join("%20") + "&order-bynewest&page-size=10"
+    url = GUARDIAN_SEARCH_URL + "api-key=" + GUARDIAN_APP_KEY + "&q=" + keywords.split(" ").join("%20") + "&from-date=" + GUARDIAN_FROM_DATE
     response = JSON.parse(get_request(url))["response"]["results"]
     response.each do |a|
+
       article = {
                 :title => a["webTitle"],
                 :pub_date => a["webPublicationDate"],
@@ -66,8 +71,8 @@ class Guardian
   end
 end
 
-# Driver Code:
-# keywords = ["Ebola", "Obama"]
+
+# keywords = ["potatoe"]
 # guard = Guardian.new
 # keywords.each { |word| guard.search(word) }
-# ap guard.all_articles
+# # ap guard.all_articles

@@ -16,6 +16,7 @@ module RSS_topic_search
 		# puts "topic for this search is #{topic}"
 		matches = []
 		self.articles.each do |article|
+
 			if article[:abstract] == nil
 	      article[:abstract] = "a"
 	    end
@@ -24,6 +25,7 @@ module RSS_topic_search
 			 	matches << article
 			 	# puts "found #{matches.length} matches for #{topic}"
 			end
+
 		end
 
 		return matches
