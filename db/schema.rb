@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 20141107164640) do
 
   create_table "articles", force: true do |t|
     t.string   "title"
-    t.string   "abstract"
+    t.text     "abstract"
     t.string   "url"
     t.string   "source"
     t.string   "image_url"
