@@ -21,10 +21,35 @@ class NewYorkTimesSearch
     @searched_articles = []
   end
 
+  def search(keyword)
+    searched_articles = []
+    timespan = Date.today.prev_day.strftime.gsub(/-/, "")
+    url = NY_BASE_SEARCH_URL + "q=" + keyword.split(" ").join("+") + "&begin_date=" + timespan + "&api-key=" + NYT_APP_KEY
+    response = JSON.parse(get_request(url))["response"]
+    response["docs"].each do |item|
+      article = { title: item["headline"]["main"],
+                  url: item["web_url"],
+                  abstract: item["abstract"],
+                  source: item["source"]
+                }
+      searched_articles << article
+    end
+    # return get_popularity(searched_articles)
+    searched_articles.each do |article|
+      article[:twitter_pop] = get_twitter_popularity(article[:url])
+      unless article[:twitter_pop] == nil && article[:facebook_pop] == nil
+        article[:total_popularity] = article[:twitter_pop].to_i + article[:facebook_pop].to_i
+      end
+    end
+    sorted = searched_articles.sort_by!{ |article| article[:total_popularity] }
+    sorted.reverse!
+    return sorted
+  end
+
   def get_popularity(articles)
     articles.each do |article|
       article[:twitter_pop] = get_twitter_popularity(article[:url])
-      article[:facebook_pop] = get_facebook_popularity(article[:url])
+      # article[:facebook_pop] = get_facebook_popularity(article[:url])
 
       unless article[:twitter_pop] == nil && article[:facebook_pop] == nil
         article[:total_popularity] = article[:twitter_pop].to_i + article[:facebook_pop].to_i
@@ -37,22 +62,8 @@ class NewYorkTimesSearch
 
   def sort_by_pop
     sorted = @searched_articles.sort_by!{ |article| article[:total_popularity] }
-    @searched_articles = sorted.reverse
-  end
-
-  def search(keyword)
-    timespan = Date.today.prev_day.strftime.gsub(/-/, "")
-    url = NY_BASE_SEARCH_URL + "q=" + keyword.split(" ").join("+") + "&begin_date=" + timespan + "&api-key=" + NYT_APP_KEY
-    response = JSON.parse(get_request(url))["response"]
-    response["docs"].each do |item|
-      article = { title: item["headline"]["main"],
-                  url: item["web_url"],
-                  abstract: item["abstract"],
-                  source: item["source"]
-                }
-      @searched_articles << article
-    end
-    return get_popularity(@searched_articles)
+    # @searched_articles = sorted.reverse
+    return @searched_articles
   end
 end
 

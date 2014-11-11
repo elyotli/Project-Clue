@@ -11,7 +11,7 @@ class CbsNewsArticleSearch < RSSGrabber
 		search = TwitterWordSearch.new
 		@articles = get_response("http://www.cbsnews.com/latest/rss/main")
 		@followers = search.get_follower_count("CBSNews")/1000000
-		convert(self.articles)
+		@articles = convert(self.articles)
 	end
 
 end
