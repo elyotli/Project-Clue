@@ -22,6 +22,7 @@ module RSS_topic_search
        		article[:description] = "a"
         end
 		if article[:title].downcase.include?(topic.downcase) || article[:description].downcase.include?(topic.downcase)
+		 	binding.pry
 		 	matches << article
 		 	puts "found #{matches.length} matches for #{topic}"
 		end

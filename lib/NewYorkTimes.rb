@@ -27,6 +27,16 @@ class NewYorkTimes
   def get_initial_articles
     @all_articles = []
     @initial_articles = get_keywords
+
+    #gets rid of blog pieces
+    @initial_articles.delete_if do |article| 
+       article[:url].include? "blogs.nytimes"
+     end 
+
+     #gets rid of interactive videos that sometimes get returned
+     @initial_articles.delete_if do |article| 
+       article[:keywords].length < 1
+     end 
     return get_popularity(@initial_articles)
   end
 

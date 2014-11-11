@@ -14,13 +14,8 @@ require_relative "../article_search/ReutersArticleSearch"
 require_relative "../article_search/NbcNewsArticleSearch"
 require_relative "../article_search/NprArticleSearch"
 require_relative "../article_search/BbcNewsArticleSearch"
+require_relative "../NewYorkTimes"
 
-
-
-#get articles
-#twitter word search to rank those keywords
-#rss search on top keyword, try not to get 5 articles
-#run again if we don't 
 
 
 namespace :articles do
@@ -31,43 +26,13 @@ namespace :articles do
 
     # client = NYTMostPopularAPI.new
     # search = TwitterWordSearch.new
+    nyt = NewYorkTimes.new
+    nyt.get_initial_articles
+    binding.pry
 
-    # client.set_params("view", "serious", "1")
-    # nyt1 = client.get_response
-    # client.set_params("view", "serious", "1", "20")
-    # nyt2 = client.get_response
-    # client.set_params("view", "serious", "1", "40")
-    # nyt3 = client.get_response
-    # client.set_params("view", "serious", "1", "60")
-    # nyt4 = client.get_response
-    # client.set_params("view", "serious", "1", "80")
-    # nyt5 = client.get_response
-
-    # nyt_top_articles = nyt1 += nyt2 += nyt3 += nyt4 += nyt5
-
-
-    # nyt_top_articles.each do |contender|      
-    #   popularity_client = PopularitySearch.new
-    #   popularity_client.set_params(contender[:url]) 
-    #   # contender[:tweets] = popularity_client.get_twitter_popularity
-    #   contender[:shares] = popularity_client.get_facebook_popularity
-    #   # contender[:socialpop] = contender[:tweets] + contender[:shares]
-    # end
-
-
-    # #     #&:tweets
-    # #   #tried to combine these two conditions with an || but got errors
-    #  nyt_top_articles.delete_if do |article| 
-    #    article[:url].include? "blogs.nytimes"
-    #  end 
-
-    #  nyt_top_articles.delete_if do |article| 
-    #    article[:key_words].length < 1
-    #  end 
-
-    #  nyt_top_articles.sort! {|a,b| b[:shares] <=> a[:shares]}
-    #  champions = nyt_top_articles.take(20)
-    #  puts "got champions"
+    
+    champions = nyt.all_articles.take(20)
+    puts "got champions"
    # ###############################################
 
    # #champions is an array that has five objects in it
@@ -142,9 +107,9 @@ namespace :articles do
     # # api_articles += wapo_articles
     # api_articles += guardian_articles
 
-    champions = [{:key_words => ["ebola"]}, {:key_words => ["obama"]}, {:key_words => ["us"]}, {:key_words => ["world"]},{:key_words => ["barack"]},
-    {:key_words => ["party"]}, {:key_words => ["police"]}, {:key_words => ["us"]}, {:key_words => ["shouldn't get here"]}, {:key_words => ["obama"]},
-    {:key_words => ["us"]}, {:key_words => ["really shouldn't be here"]}]
+    # champions = [{:key_words => ["ebola"]}, {:key_words => ["obama"]}, {:key_words => ["us"]}, {:key_words => ["world"]},{:key_words => ["barack"]},
+    # {:key_words => ["party"]}, {:key_words => ["police"]}, {:key_words => ["us"]}, {:key_words => ["shouldn't get here"]}, {:key_words => ["obama"]},
+    # {:key_words => ["us"]}, {:key_words => ["really shouldn't be here"]}]
 
     cnn = CNNArticleSearch.new
     nbc = NbcNewsArticleSearch.new
@@ -162,22 +127,29 @@ namespace :articles do
     shown_articles = {}
     champions.each do |article|
      matches = []  
-      cnn.find_articles_by_topic(article[:key_words][0]).each do |match|
+     binding.pry
+      cnn.find_articles_by_topic(article[:keywords][0]).each do |match|
         matches << match
       end
-      abc.find_articles_by_topic(article[:key_words][0]).each do |match|
+      abc.find_articles_by_topic(article[:keywords][0]).each do |match|
         matches << match
       end
-      fox.find_articles_by_topic(article[:key_words][0]).each do |match|
+      fox.find_articles_by_topic(article[:keywords][0]).each do |match|
         matches << match
       end
-       reu.find_articles_by_topic(article[:key_words][0]).each do |match|
+       reu.find_articles_by_topic(article[:keywords][0]).each do |match|
         matches << match
       end
-       npr.find_articles_by_topic(article[:key_words][0]).each do |match|
+       npr.find_articles_by_topic(article[:keywords][0]).each do |match|
         matches << match
       end
-      cbs.find_articles_by_topic(article[:key_words][0]).each do |match|
+      cbs.find_articles_by_topic(article[:keywords][0]).each do |match|
+        matches << match
+      end
+      bbc.find_articles_by_topic(article[:keywords][0]).each do |match|
+        matches << match
+      end
+      cbs.find_articles_by_topic(article[:keywords][0]).each do |match|
         matches << match
       end
       matches.reject &:empty?
@@ -185,10 +157,10 @@ namespace :articles do
       if matches.length > 5
         # binding.pry
         # matches.sort! {|a, b| b.twitter_popularity <=> a.twitter_popularity}
-        shown_articles[article[:key_words][0]] = matches.take(5) 
+        shown_articles[article[:keywords][0]] = matches.take(5) 
       else
-        puts "didn't find enough articles for #{article[:key_words][0]}"
-        puts "only found #{matches.length} articles on #{article[:key_words][0]}"
+        puts "didn't find enough articles for #{article[:keywords][0]}"
+        puts "only found #{matches.length} articles on #{article[:keywords][0]}"
               
       end
        break if shown_articles.length == 4
