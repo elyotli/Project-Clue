@@ -8,7 +8,7 @@ require "./Requests_and_Responses"
 
 
 require 'awesome_print'
-require 'Date'
+# require 'Date'
 class NewYorkTimesSearch
   attr_accessor :searched_articles
 
