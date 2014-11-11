@@ -1,22 +1,20 @@
-require_relative "APIControl"
+require 'json'
 require 'rubygems'
 require 'open-uri'
 require 'nokogiri'
+require 'mechanize'
+require 'awesome_print'
 # require 'curb'
 
-class GoogleTrendsClient < APIControl
-  @@base_url = "http://www.google.com/trends/fetchComponent?hl=en-US&cmpt=q&content=1&export=3&cid=TIMESERIES_GRAPH_0"
+class GoogleTrendsClient
+  BASE_URL = "http://www.google.com/trends/fetchComponent?hl=en-US&cmpt=q&content=1&export=3&cid=TIMESERIES_GRAPH_0"
 
-  @@query_option = {
+  QUERY_OPTION = {
   time_series: "&TIMESERIES_GRAPH_0",
   related_search: "&RISING_QUERIES_0_0"
   }
 
-  def initialize
-    @processed_url = ""
-  end
-
-  def set_params(keywords, month_span)
+  def initialize(keywords, month_span)
     @processed_url = @@base_url
     @processed_url += "&q=" + keywords.split(" ").join("+")
     @processed_url += "&date=today+" + month_span + "-m"
@@ -31,7 +29,6 @@ class GoogleTrendsClient < APIControl
       http.request request
     end
     return response.body
-
   end
 
   def get_response
@@ -41,12 +38,8 @@ class GoogleTrendsClient < APIControl
 
 end
 
-# client = GoogleTrendsClient.new
-# #available month_span: 1, 3
-# client.set_params("minimum wage", "3")
-# ap client.get_response
+mech_client1 = Mechanize.new
+mech_client1.get("http://www.google.com/")
+cookiejar = mech_client1.cookie_jar
 
-
-# c = Curl::Easy.perform("http://www.google.com/trends/fetchComponent?hl=en-US&cmpt=q&content=1&export=5&cid=TIMESERIES_GRAPH_0&q=minimum+wage&date=today+3-m")
-# puts c.body_str
-
+ap cookiejar.cookies
