@@ -22,7 +22,8 @@ class NYTMostPopularAPI < APIControl
     @processed_url = ""
   end
 
-  def set_params(resource_type, section, time_period, offset="0")
+### don't use this file!!!
+  def set_params(resource_type, section, time_period, offset="0")    
     @processed_url = @@base_url + @@resource_type[resource_type]
     @processed_url += @@section[section]
     @processed_url += @@time_period[time_period]
@@ -34,23 +35,37 @@ class NYTMostPopularAPI < APIControl
   def parse_response(response_hash)
     results = response_hash["results"]
     key_words = []
-    ap results
+    # urls = []
+    # ap results
     results.each do |result|
       # p result["des_facet"]
       key_words += result["des_facet"] unless result["des_facet"] == ""
       key_words += result["per_facet"] unless result["per_facet"] == ""
       key_words += result["org_facet"] unless result["org_facet"] == ""
       key_words += result["geo_facet"] unless result["geo_facet"] == ""
+      # urls << result["url"]
     end
-    key_words
+    results
   end
+  #### Don't use this file
 
   def get_response
     parse_response(parse_JSON(get_request))
   end
 end
 
-client = NYTMostPopularAPI.new
-client.set_params("share", "all", "1")
-ap client.get_response
+
+#Don't user this file!!!!
+ap client.get100("share", "all", "1")
+nyt1 = client.get_response
+client.set_params("share", "all", "1", "20")
+nyt2 = client.get_response
+client.set_params("share", "all", "1", 40)
+nyt3 = client.get_response
+client.set_params("share", "all", "1", 60)
+nyt4 = client.get_response
+client.set_params("share", "all", "1", 80)
+nyt5 = client.get_response
+
+nyt1 += nyt2 += nyt3 += nyt4 += nyt5
 

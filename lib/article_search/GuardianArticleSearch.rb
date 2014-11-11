@@ -18,6 +18,7 @@ class GuardianArticleSearch < APIControl
     @processed_url += "&q=" + keywords.split(" ").join("%20")
     @processed_url += "&order-by" + sort_method
     @processed_url += "&page-size=" + count
+    @processed_url += "&from-date=" + Date.today.strftime("%Y-%m-%d")
   end
 
   def get_response
