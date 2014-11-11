@@ -31,6 +31,7 @@ task :update_articles => :environment do
   client.set_params("view", "all", "1")
   keywords_NYT = client.get_response
 
+  # number of keywords should be 15 in production:
   num_keywords = 5
   top_keywords = keywords_NYT[0..(num_keywords - 1)]
 
@@ -47,8 +48,8 @@ task :update_articles => :environment do
   # use .keys on the resulting hash, like my_hash.keys[0..4]
 
   Hash[keywords_retweets.sort_by{|k, v| v}.reverse]
-  top_five_keywords = keywords_retweets.keys[0..4]
-  top_five_keywords = top_keywords.slice(0,4)
+  top_five_keywords = keywords_retweets.keys[0..4].each {|topic| Topic.create(title: topic) }
+  # top_five_keywords = top_keywords.slice(0,4)
   #To hardcode keywords:
   # top_five_keywords = ["ebola", "obama", "ferguson"]
 
@@ -65,6 +66,7 @@ task :update_articles => :environment do
     wapo = WaPoArticleSearch.new
     wapo.set_params(keyphrase)
     all_articles[keyphrase] += wapo.get_response
+
     guardian = GuardianArticleSearch.new
     guardian.set_params(keyphrase, "newest", "10")
     all_articles[keyphrase] += guardian.get_response
