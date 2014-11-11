@@ -15,3 +15,4 @@ class CNNArticleSearch < RSSGrabber
 	end
 
 end
+

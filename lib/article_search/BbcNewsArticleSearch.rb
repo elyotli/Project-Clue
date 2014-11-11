@@ -15,3 +15,4 @@ class BbcNewsArticleSearch < RSSGrabber
 	end
 
 end
+
