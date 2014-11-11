@@ -26,6 +26,8 @@ task :get_topics => :environment do
   # assuming these are the topics
   topics = ["Ebola", "genetic engineering", "mormon", "search and seizure", "net neutrality"]
 
+# topics.each {|topic| current_topic = Topic.create!(title: topic) }
+
   # save topics
   # save day-topics
   # topics.each do |topic|
@@ -38,39 +40,20 @@ task :get_topics => :environment do
   # SELECT * FROM Topics JOIN DayTopics WHERE topic.id = topic_id
   # Or just:
 
- #Food for thought
-    # top_five_keywords = ["ebola", "obama", "ferguson"]
-    # all_articles = {}
-    # news_sources = [
-    #   NewYorkTimes.new()
-    #   WaPo.new(),
-    #   Guardian.new(),
-    #   Cnn.new(),
-    #   Abc.new()
-    # ]
+  news_APIs = [NewYorkTimesSearch.new]
 
-    # top_five_keywords.each do |keyword|
-    #   all_articles[keyword] = news_sources
-    #     .map {|source| source.search(keyword) }
-    #     .flatten
-    #     .sort_by(&:twitter_popularity)
-    #     .take(5)
-    # end
+                  # Guardian.new,
+                  # WashPost.new]
 
-    # all_articles
-
-  news_APIs = [NewYorkTimesSearch.new,
-                  Guardian.new,
-                  WashPost.new]
-
-  news_RSS = [AbcNewsArticleSearch.new,
-              BbcNewsArticleSearch.new,
-              CbsNewsArticleSearch.new,
-              CNNArticleSearch.new,
-              FoxNewsArticleSearch.new,
-              NbcNewsArticleSearch.new,
-              NprArticleSearch.new,
-              ReutersArticleSearch.new]
+  news_RSS = [AbcNewsArticleSearch.new]
+  # ,
+  #             BbcNewsArticleSearch.new,
+  #             CbsNewsArticleSearch.new,
+  #             CNNArticleSearch.new,
+  #             FoxNewsArticleSearch.new,
+  #             NbcNewsArticleSearch.new,
+  #             NprArticleSearch.new,
+  #             ReutersArticleSearch.new]
 
   todays_articles = {}
   articles_to_save = {}
@@ -97,18 +80,23 @@ task :get_topics => :environment do
 
   ap articles_to_save
 
+  articles_to_save.each do |topic, articles|
+    #key is the topic, v is the array of articles
+    articles.each do |article|
+      a = Article.new
+      a.title = article[:title]
+      a.url = article[:url]
+      # a.source = article[:source]
+      a.abstract = article[:abstract]
+      # a.image_url = article[:image_url]
+      a.published_at = Date.today
+      a.twitter_popularity = article[:twitter_pop]
+      a.save!
+      top = Topic.find_by(title: topic)
+      at = ArticleTopic.create!(article_id: a.id, topic_id: top.id)
+    end
+  end
   # topics_today = today.topics
-
-  # todays_articles.each do |topic, articles|
-  #   articles.each {|article| Article.create!(title: article.title,
-  #                                           abstract: article.abstract,
-  #                                           url: article.url,
-  #                                           source: article.source,
-  #                                           twitter_popularity: article.twitter_popularity,
-  #                                           facebook_popularity: article.facebook_popularity
-  #                                           )}
-  # end
-
 end
 
 
