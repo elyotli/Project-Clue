@@ -28,7 +28,7 @@
 			<div class='btn' id='google_trend_index'>Google</div>
 			<hr>
 		</div>
-		<div id='chart'></div>
+		<div id='chart' class='noselect'></div>
 	</div>
 	<div id='articles'>
 		<div class='btn btn_l'>
@@ -192,6 +192,42 @@
 					articlePageTotal = $('.article').first().data('total-articles');
 				}
 			});
+		});
+
+		d3.select('svg').on('mousedown', function(){
+			svg.append("line")
+				.attr('class','left-bracket')
+				.attr('opacity',0.5)
+				.attr('stroke','black')
+				.attr('stroke-width','2px')
+				.attr("x1", d3.mouse(this)[0]-margin.left)
+				.attr("y1", 0)
+				.attr("x2", d3.mouse(this)[0]-margin.left)
+				.attr("y2", height);
+		});
+
+		d3.select('svg').on('mouseup', function(){
+			svg.select("line.left-bracket").remove();
+		});
+
+		d3.select('svg').on('mousemove', function () {
+		  x = d3.mouse(this)[0];
+		  d3.selectAll('line.left-bracket')
+		   	.attr('x1', (x-margin.left)+'px')
+		   	.attr('x2', (x-margin.left)+'px');    
+		});
+
+		$('#chart').on('mousedown',function(e){
+			$(this).addClass('active');
+			$(this).css('cursor','default');
+		});
+		$('#chart').on('mouseup',function(e){
+			$(this).removeClass('active');
+			$(this).css('cursor', 'default')
+		});
+		$('#chart.active').on('hover',function(e){
+			e.stopPropagation();
+			$(this).css('cursor', 'default')
 		});
 	}
 </script>
