@@ -1,8 +1,12 @@
+# Use these within this file:
+# require "./../GetKeywords"
+# require "./../Requests_and_Responses"
 
-require "./../Requests_and_Responses"
+# Use these when calling this from an external file:
+require "./GetKeywords"
+require "./Requests_and_Responses"
+
 require 'awesome_print'
-
-
 class WashPost
   WAPO_BASE_URL = "http://api.washingtonpost.com/trove/v1/search?q="
   WAPO_APP_KEY = "27D7BE94-8E90-48AA-8BF0-4AF5D19C4F25"
@@ -10,8 +14,8 @@ class WashPost
   include Requests_and_Responses
 
   def initialize
-    @initial_articles = {}
-    @all_articles = []
+    # @initial_articles = {}
+    # @all_articles = []
     @searched_articles = []
   end
 
@@ -22,17 +26,17 @@ class WashPost
       end
       article[:twitter_pop] = get_twitter_popularity(article[:url])
       article[:facebook_pop] = get_facebook_popularity(article[:url])
-      unless article[:twitter_pop] == nil || article[:facebook_pop] == nil
-        article[:total_popularity] = article[:twitter_pop] + article[:facebook_pop]
-        @all_articles << article
+      unless article[:twitter_pop] == nil && article[:facebook_pop] == nil
+        article[:total_popularity] = article[:twitter_pop].to_i + article[:facebook_pop].to_i
+        # @all_articles << article
       end
     end
     return sort_by_pop
   end
 
   def sort_by_pop
-    sorted = @all_articles.sort_by!{ |article| article[:total_popularity] }
-    @all_articles = sorted.reverse
+    sorted = @searched_articles.sort_by!{ |article| article[:total_popularity] }
+    @searched_articles = sorted.reverse
   end
 
   def search(keywords)

@@ -1,9 +1,15 @@
-# require 'ArticleSearchModule'
-require "./../GetKeywords"
-require "./../Requests_and_Responses"
+# Use these within this file:
+# require "./../GetKeywords"
+# require "./../Requests_and_Responses"
+
+# Use these when calling this from an external file:
+require "./GetKeywords"
+require "./Requests_and_Responses"
+
+
+
 require 'awesome_print'
 require 'Date'
-
 
 class NewYorkTimes
   NYT_BASE_URL ="http://api.nytimes.com/svc/mostpopular/v2"
@@ -16,10 +22,10 @@ class NewYorkTimes
   def initialize
     @initial_articles = {}
     @all_articles = []
-    @searched_articles = []
   end
 
   def get_initial_articles
+    @all_articles = []
     @initial_articles = get_keywords
     return get_popularity(@initial_articles)
   end
@@ -28,8 +34,9 @@ class NewYorkTimes
     articles.each do |article|
       article[:twitter_pop] = get_twitter_popularity(article[:url])
       article[:facebook_pop] = get_facebook_popularity(article[:url])
-      unless article[:twitter_pop] == nil || article[:facebook_pop] == nil
-        article[:total_popularity] = article[:twitter_pop] + article[:facebook_pop]
+
+      unless article[:twitter_pop] == nil && article[:facebook_pop] == nil
+        article[:total_popularity] = article[:twitter_pop].to_i + article[:facebook_pop].to_i
         @all_articles << article
       end
     end
@@ -40,28 +47,9 @@ class NewYorkTimes
     sorted = @all_articles.sort_by!{ |article| article[:total_popularity] }
     @all_articles = sorted.reverse
   end
-
-  def search(keyword)
-    timespan = Date.today.prev_day.strftime.gsub(/-/, "")
-    # p timespan
-    url = NY_BASE_SEARCH_URL + "q=" + keyword.split(" ").join("+") + "&begin_date=" + timespan + "&api-key=" + NYT_APP_KEY
-    # p url
-    response = JSON.parse(get_request(url))["response"]
-    # p response
-    response["docs"].each do |item|
-      article = { title: item["headline"]["main"],
-                  url: item["web_url"],
-                  abstract: item["abstract"],
-                  source: item["source"]
-                }
-      @searched_articles << article
-    end
-    get_popularity(@searched_articles)
-  end
 end
 
+
 # Driver Code:
-# nyt = NewYorkTimes.new
-# # ap nyt.get_initial_articles
-# nyt.search("Chicago Bears")
-# ap nyt.all_articles
+nyt = NewYorkTimes.new
+# nyt.get_initial_articles
