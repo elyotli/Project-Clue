@@ -15,7 +15,7 @@ require 'xmlsimple'
 class BingImageSearch
   BING_APP_KEY = "xj+2m63G35xFDggYpMP3vBzZzlKcHToIEFWV8U0gs6U  "
   # %27 is quotes, %20 is + 
-  BING_IMAGE_BASE_URL = "https://api.datamarket.azure.com/Bing/Search/v1/Image?Market=%27en-US%27&Adult=%27Strict%27&ImageFilters=%27Size%3AMedium%2BAspect%3ASquare%2BStyle%3APhoto%27&Query=%27"
+  BING_IMAGE_BASE_URL = "https://api.datamarket.azure.com/Bing/Search/v1/Image?Market=%27en-US%27&Adult=%27Strict%27&ImageFilters=%27Size%3AMedium%2BAspect%3AWide%2BStyle%3APhoto%27&Query=%27"
   attr_accessor :url, :query
   include GetKeywords
   include Requests_and_Responses
