@@ -18,9 +18,9 @@ display: inline-block;
 	position: relative;
 	bottom: 50px;
 	color: white;
-	/*font-size: 170%;*/
+	font-size: 170%;
 	vertical-align: text-bottom;
-	 font: 400 70px/1.2 'Sansita one', Georgia, serif;
+
 }
 
 
@@ -37,7 +37,7 @@ body{
 	background-opacity: .5;
 }
 
-#header{
+#splash_head{
 	font-family: 'Londrina Solid', cursive;
 	color: red;
 	margin-left: 22%;
