@@ -2,7 +2,6 @@ require 'json'
 require 'rubygems'
 require 'open-uri'
 require 'nokogiri'
-require 'json'
 require 'awesome_print'
 require 'mechanize'
 
