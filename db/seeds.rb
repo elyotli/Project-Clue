@@ -124,14 +124,18 @@ end
 
 Day.all.each do |day|
 	day.topics.each do |topic|
-		topic_hash = topics.select do |t|
-			t['title'] == topic.title
+		topics_hash = topics.select do |t|
+			if(topic.title.match (/#{t[:title]}/))
+				true
+			else
+				false
+			end
 		end[0]
-		(day.date.to_s..'2014-10-01').to_a.each.with_index do |date,index|
+		('2014-10-01'..day.date.to_s).to_a.each.with_index do |date,index|
 			if(index!=0)
 				counter = 0
 				3.times do
-					topic_hash[:articles].each do |article|
+					topics_hash[:articles].each do |article|
 						articleObj = Article.create!(
 							title: "#{day.date.to_s} #{topic.title} #{counter} #{article[:title]}",
 							url: article[:url],

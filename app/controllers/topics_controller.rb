@@ -31,6 +31,7 @@ class TopicsController < ApplicationController
     date = Day.find(params[:date_id]).date.to_s
     page = params[:page].to_i - 1
     @articles = Topic.find(params[:topic_id]).articles.where(published_at: date).offset(page * articles_per_page).limit(4)
+    p @articles
     @total_articles = Topic.find(params[:topic_id]).articles.where(published_at: date).count
     @total_pages = (@total_articles / 4.0).ceil
     @current_page = page + 1
