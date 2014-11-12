@@ -173,7 +173,7 @@ $(document).on('click', '#topics .fa', function(e) {
 				topicId = $('.topic').first().data('id');
 				dayId = $('.topic').first().data('day-id');
 				articlePage = 1;
-				articlePageTotal = $('.article').first().data('total-articles');
+				articlePageTotal = $('.article').first().data('total-pages');
 				$('#date').find('span').text($('.topic').first().data('day-string'));
 				window.clearInterval(responseChecker);
 				updateArticalPagination();
