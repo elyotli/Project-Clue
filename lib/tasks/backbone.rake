@@ -3,12 +3,13 @@ require_relative "../NewYorkTimesSearch"
 require_relative "../WashPost"
 require_relative "../USAToday"
 require_relative "../Guardian"
+require_relative "../GoogleTrendsIndex"
 
 desc "this is the fucking project right here"
 task :get_topics => :environment do
   # save day
 
-  today = Day.create!(date: Date.today)
+  today = Day.last
   # today = Day.create!(date: Date.today.prev_day)
 
   # # NYT most popular tool
@@ -26,12 +27,20 @@ task :get_topics => :environment do
   # Filter the topics - Shomari
   # assuming these are the topics
   # topics = ["Ebola", "genetic engineering", "mormon", "search and seizure", "net neutrality"]
-  topics = ["Veterans Day", "Vladimir Putin", "Loretta Lynch", "Ferguson", "Chinese"]
+  # topics = ["Veterans Day", "Vladimir Putin", "Loretta Lynch", "Ferguson", "Chinese"]
+  topics = today.topics
 
   topics.each do |topic|
-    current_topic = Topic.create!(title: topic)
-    DayTopic.create!(topic_id: current_topic.id, day_id: today.id)
+
+
+
   end
+
+
+  # topics.each do |topic|
+  #   current_topic = Topic.create!(title: topic)
+  #   DayTopic.create!(topic_id: current_topic.id, day_id: today.id)
+  # end
 
   news_APIs = [NewYorkTimesSearch.new, Guardian.new] #, WashPost.new]
 
@@ -59,8 +68,8 @@ task :get_topics => :environment do
 
   articles_to_save.each do |topic, articles|
     articles.each do |article|
-      a = Article.new
-      a.title = article[:title]
+      a = Article.find_or_initialize_by(title: article[:title])
+      # a.title = article[:title]
       a.url = article[:url]
       a.source = article[:source] unless article[:source] == nil
       a.abstract = article[:abstract] unless article[:abstract] == nil
@@ -69,7 +78,7 @@ task :get_topics => :environment do
       a.twitter_popularity = article[:twitter_pop] unless article[:twitter_pop] == nil
       a.save!
       top = Topic.find_by(title: topic)
-      at = ArticleTopic.create!(article_id: a.id, topic_id: top.id)
+      at = ArticleTopic.create_or_find_by(article_id: a.id, topic_id: top.id)
     end
   end
 end
