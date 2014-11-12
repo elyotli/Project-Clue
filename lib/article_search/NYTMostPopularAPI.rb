@@ -1,3 +1,6 @@
+# This file is no longer needed.
+# Use the NewYorkTimes class instead.
+
 require_relative "../APIControl"
 
 class NYTMostPopularAPI < APIControl
@@ -15,7 +18,8 @@ class NYTMostPopularAPI < APIControl
     "30"=> "/30"
   }
   @@section = {
-    "all"=> "/all-sections"
+    "all"=> "/all-sections",
+    "serious" => "/world;us;politics;business;technology;science;health"
   }
 
   def initialize
@@ -33,11 +37,17 @@ class NYTMostPopularAPI < APIControl
 
   def parse_response(response_hash)
     results = response_hash["results"]
-    key_words = []
+    contenders = []
+
     results.each do |result|
-      key_words << result["adx_keywords"].split(";")
+      contender = {
+      :key_words => result["adx_keywords"].split(";"),
+      :url => result["url"]
+    }
+    contenders << contender
     end
-    key_words.flatten
+    # key_words.flatten
+    return contenders
   end
 
   def get_response

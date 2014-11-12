@@ -2,6 +2,8 @@ class DaysController < ApplicationController
   def topics
     @day = Day.where(date: params[:date]).first
     @topics = @day.topics.first(4)
+
+    # @articles and @day are being used in the partial
    	render partial: 'topics/topic', local: @topics, layout: false
   end
 
@@ -16,8 +18,7 @@ class DaysController < ApplicationController
 
     @day = Day.where(date: params[:date]).first
     @topics = @day.topics.first(4)
-    @all_articles = @topics.first().articles.where(published_at: @day.date.to_s)
-    @articles = @all_articles.first(4)
+    @articles = @topics.first().articles.order('published_at DESC').first(4)
     @articles_per_page = 4
     @total_articles = @all_articles.count
     @current_page = 1
