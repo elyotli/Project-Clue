@@ -4,7 +4,7 @@ class TopicsController < ApplicationController
     @day_str = day.date.to_s
     @day = day
     @topics = day.topics.first(4)
-    @articles = @topics.first.articles.first(4)
+    @articles = @topics.first.articles.order('published_at DESC').first(4)
     @dataset = Popularity.popularitiesAsJSON(@topics.first.popularities.first(30))
     @articles_per_page = 4
     @total_articles = @topics.first().articles.count
@@ -12,20 +12,23 @@ class TopicsController < ApplicationController
     @minDay = Day.first().date.to_s
 	end
 
-    def splash
-        today = Day.get_today      
-        @topics = today.topics
-        render "splash", layout: false
-    end
+  def splash
+      today = Day.get_today      
+      @topics = today.topics
+      render "splash", layout: false
+  end
 
+  # when a user click on the topic image
   def articles_page
     articles_per_page = 4
     date = Day.find(params[:date_id]).date.to_s
     page = params[:page].to_i - 1
-    @articles = Topic.find(params[:topic_id]).articles.where(published_at: date).offset(page * articles_per_page).limit(4)
+    @articles = Topic.find(params[:topic_id]).articles.order('published_at DESC').offset(page * articles_per_page).limit(4)
     @total_articles = Topic.find(params[:topic_id]).articles.where(published_at: date).count
     @total_pages = (@total_articles / 4.0).ceil
     @current_page = page + 1
+
+    # @articles, @total_articles, @current_page, @total_page
     render partial: 'topics/article', layout: false
   end
 
@@ -37,13 +40,15 @@ class TopicsController < ApplicationController
   def articles
     @day = Day.where(date: params[:date]).first
     @topics = @day.topics.first(4)
-    @articles = @topics.first().articles.first(4)
+    @articles = @topics.first().articles.order('published_at DESC').first(4)
     @articles_per_page = 4
     @total_articles = @topics.first().articles.count
     render partial: 'topics/article', layout: false
   end
 
+  # handle d3 range selection
   def articles_range
+    # after range is selected, and user clicked the bottom carousel
     if(params[:page])
       @page = params[:page].to_i
       @articles_set = JSON.parse(params[:articles_set])
@@ -53,7 +58,7 @@ class TopicsController < ApplicationController
       end
       @total_pages = (@total_articles / 4.to_f).ceil
       @current_page = @page
-    else
+    else #first time running it
       @page = 0
       @topic = Topic.find(params[:topic_id])
       dayMin = Day.find(params[:min]).date.to_s
@@ -61,7 +66,7 @@ class TopicsController < ApplicationController
       @articles = @topic.articles.where(published_at: dayMin..dayMax)
       @total_articles = @articles.count
       @total_pages = (@total_articles / 4.to_f).ceil
-      @articles = @articles.shuffle
+      @articles = @articles.order('published_at DESC')
       @articles_set = @articles.map do |article|
         article.id
       end
