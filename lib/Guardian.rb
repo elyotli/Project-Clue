@@ -52,9 +52,9 @@ class Guardian
 
       article = {
                 :title => a["webTitle"],
-                :pub_date => a["webPublicationDate"],
+                :published_at => Date.parse(a["webPublicationDate"]),
                 :url => a["webUrl"],
-                :source => "TheGuardian"
+                :source => "www.theguardian.com"
                 }
       searched_articles << article
     end

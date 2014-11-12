@@ -40,6 +40,7 @@ module RSS_topic_search
 			# popularity_client = PopularitySearch.new
 		 #  popularity_client.set_params(article.url)
 		  article[:twitter_pop] = get_twitter_popularity(article[:url]).to_i
+		  article[:facebook_popularity] = get_facebook_popularity(article[:url]).to_i
 		  #popularity_client.get_twitter_popularity
 		 #  article.facebook_popularity = popularity_client.get_facebook_popularity
 		 	output << article
