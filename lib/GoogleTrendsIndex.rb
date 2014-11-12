@@ -103,10 +103,10 @@ class GoogleTrendsClient
 
 end
 
-# client = GoogleTrendsClient.new("midterm election", "3")
-# #available month_span: 1, 3
-# ap client.process_data
-# ap client.detect_trend(15)
+client = GoogleTrendsClient.new("midterm election", "3")
+#available month_span: 1, 3
+ap client.process_data
+ap client.detect_trend(15)
 
 # mech_client1 = Mechanize.new
 # mech_client1.get("http://www.google.com/")

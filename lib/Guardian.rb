@@ -8,7 +8,7 @@ require "./Requests_and_Responses"
 
 require 'awesome_print'
 require 'json'
-require 'date'
+# require 'date'
 
 class Guardian
   GUARDIAN_BASE_URL = "http://content.guardianapis.com/search?"
@@ -16,7 +16,7 @@ class Guardian
   GUARDIAN_SEARCH_URL = "http://content.guardianapis.com/search?"
   GUARDIAN_FROM_DATE = Date.today.prev_day.strftime('%Y-%m-%d')
 
- 
+
   attr_accessor :all_articles, :initial_articles, :searched_articles
   include Requests_and_Responses
 
@@ -52,9 +52,9 @@ class Guardian
 
       article = {
                 :title => a["webTitle"],
-                :pub_date => a["webPublicationDate"],
+                :published_at => Date.parse(a["webPublicationDate"]),
                 :url => a["webUrl"],
-                :source => "TheGuardian"
+                :source => "www.theguardian.com"
                 }
       searched_articles << article
     end

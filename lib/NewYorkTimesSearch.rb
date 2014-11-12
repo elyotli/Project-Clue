@@ -11,7 +11,6 @@ require 'awesome_print'
 # require 'Date'
 class NewYorkTimesSearch
   attr_accessor :searched_articles
-
   NYT_APP_KEY = "295f07d2db55fce19a6bdd330412d2ff:0:70154133"
   NY_BASE_SEARCH_URL = "http://api.nytimes.com/svc/search/v2/articlesearch.json?"
   include GetKeywords
@@ -24,13 +23,15 @@ class NewYorkTimesSearch
   def search(keyword)
     searched_articles = []
     timespan = Date.today.prev_day.strftime.gsub(/-/, "")
+    # http://api.nytimes.com/svc/search/v2/articlesearch.json?q=Ebola&begin_date=20141110&api-key=295f07d2db55fce19a6bdd330412d2ff:0:70154133
     url = NY_BASE_SEARCH_URL + "q=" + keyword.split(" ").join("+") + "&begin_date=" + timespan + "&api-key=" + NYT_APP_KEY
     response = JSON.parse(get_request(url))["response"]
     response["docs"].each do |item|
       article = { title: item["headline"]["main"],
                   url: item["web_url"],
-                  abstract: item["abstract"],
-                  source: item["source"]
+                  abstract: item["snippet"],
+                  published_at: item["pub_date"]
+                  source: "New York Times"
                 }
       searched_articles << article
     end
@@ -49,12 +50,10 @@ class NewYorkTimesSearch
   def get_popularity(articles)
     articles.each do |article|
       article[:twitter_pop] = get_twitter_popularity(article[:url])
-      # article[:facebook_pop] = get_facebook_popularity(article[:url])
+      article[:facebook_pop] = get_facebook_popularity(article[:url])
 
       unless article[:twitter_pop] == nil && article[:facebook_pop] == nil
         article[:total_popularity] = article[:twitter_pop].to_i + article[:facebook_pop].to_i
-        # @searched_articles << article
-        # ap @searched_articles
       end
     end
     return sort_by_pop
