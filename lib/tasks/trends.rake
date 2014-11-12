@@ -14,10 +14,9 @@ namespace :topics do
   	#pull today's topics
   	#save the data to popularity table
 
-  	# today = Day.find_or_create_by(date: Date.today)
-  	# topics = today.topics.map{|topic| topic.title}
+  	today = Day.find_or_create_by(date: Date.today)
+  	topics = today.topics.map{|topic| topic.title}
 
-  	topics = ["barack obama"]
   	# topics = ["potatoes"]
   	#pull the gtrends data for each topic
   	topics.each do |topic|
@@ -34,7 +33,7 @@ namespace :topics do
   			dbpop.save!
   			# data points before 30 days will be fucked up, but worry about that later
   		end
-  		ap data_hash
+  		# ap data_hash
   		p delta = 1.5 * data_hash.values.stdev
   		#find articles
   		breakout_dates = client.detect_trend(delta)
