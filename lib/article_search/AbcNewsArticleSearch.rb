@@ -11,10 +11,9 @@ class AbcNewsArticleSearch < RSSGrabber
 	def initialize
 		search = TwitterWordSearch.new
 		@articles = get_response("http://feeds.abcnews.com/abcnews/topstories")
-		@image = :media_thumbnail_urs
+		@image = :media_thumbnail_url
 		@followers = search.get_follower_count("ABC")/1000000
 		@articles = convert(self.articles)
-
 		@articles.each do |article|
    			article[:source] = "ABC"
  		end 
