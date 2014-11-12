@@ -5,7 +5,8 @@
 # Use these when calling this from an external file:
 require "./GetKeywords"
 require "./Requests_and_Responses"
-
+require 'pry'
+require 'date'
 
 require 'awesome_print'
 # require 'Date'
@@ -29,9 +30,10 @@ class NewYorkTimesSearch
       article = { title: item["headline"]["main"],
                   url: item["web_url"],
                   abstract: item["abstract"],
-                  image_url: item["mulitimedia"][2]["url"]  #need to finish working this
-                  source: "New York Times"
+                  image_url: "http://static01.nyt.com/" + item["multimedia"][1]["url"],  
+                  source: "New York Times"                
                 }
+                binding.pry
       searched_articles << article
     end
     # return get_popularity(searched_articles)

@@ -15,7 +15,7 @@ class ReutersArticleSearch < RSSGrabber
 		@articles.map! do |article|
    			article[:source] = "Reuters"
    		end
- 		end 
+ 	 
 	end
 
 end

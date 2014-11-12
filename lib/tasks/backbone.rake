@@ -72,6 +72,7 @@ task :get_topics => :environment do
       at = ArticleTopic.create!(article_id: a.id, topic_id: top.id)
     end
   end
+end
   # topics_today = today.topics
 
   # SEED STUFF FOR VIEW TESTING:

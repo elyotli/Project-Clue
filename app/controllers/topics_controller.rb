@@ -21,6 +21,11 @@ class TopicsController < ApplicationController
     p @minDay
 	end
 
+    def splash
+        #need to pass in 4 topics here
+        render "splash", layout: false
+    end
+
   def articles_page
     articles_per_page = 4
     date = Day.find(params[:date_id]).date.to_s
