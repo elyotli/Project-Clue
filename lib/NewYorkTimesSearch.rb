@@ -23,12 +23,14 @@ class NewYorkTimesSearch
   def search(keyword)
     searched_articles = []
     timespan = Date.today.prev_day.strftime.gsub(/-/, "")
+    # http://api.nytimes.com/svc/search/v2/articlesearch.json?q=Ebola&begin_date=20141110&api-key=295f07d2db55fce19a6bdd330412d2ff:0:70154133
     url = NY_BASE_SEARCH_URL + "q=" + keyword.split(" ").join("+") + "&begin_date=" + timespan + "&api-key=" + NYT_APP_KEY
     response = JSON.parse(get_request(url))["response"]
     response["docs"].each do |item|
       article = { title: item["headline"]["main"],
                   url: item["web_url"],
-                  abstract: item["abstract"],
+                  abstract: item["snippet"],
+                  published_at: item["pub_date"]
                   source: "New York Times"
                 }
       searched_articles << article
