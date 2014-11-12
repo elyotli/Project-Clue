@@ -30,7 +30,7 @@ class NewYorkTimesSearch
       article = { title: item["headline"]["main"],
                   url: item["web_url"],
                   abstract: item["snippet"],
-                  published_at: item["pub_date"]
+                  published_at: item["pub_date"],
                   source: "New York Times"
                 }
       searched_articles << article
