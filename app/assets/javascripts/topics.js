@@ -83,7 +83,7 @@ $(document).on('click', '.topic *', function(e){
 		success: function(response) {
 			//update graph
 			fullDataset=response;
-			currentStatistic = 'twitter_popularity';
+			currentStatistic = 'google_trend_index';
 			dataset = partialDataset();
 			populateGraph();
 
