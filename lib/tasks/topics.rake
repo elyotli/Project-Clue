@@ -54,7 +54,8 @@ namespace :topic do
     end
 
     puts "got champions:"
-    ap champion_topics
+    # ap champion_topics
+
     ranked_keywords_with_count = []
     champion_topics.each do |topic_set|
       ranked_keywords_with_count << rank_keywords(clean_up_text_array(topic_set), news_APIs, news_RSS)
@@ -72,6 +73,7 @@ namespace :topic do
     end
 
     final_keywords = final_keywords.sort_by{|hash| hash.values[0]}.reverse
+    final_keywords = final_keywords.uniq
     final_keywords[0..3].each do |keyword_hash|
       keyword = keyword_hash.keys[0]
       today = Day.find_or_create_by(date: Date.today)
@@ -120,7 +122,7 @@ def select_phrase(selection, single_word_penalty)
   #this is an array of hashes of keyword:count
   refined_index = selection.map do |k,v|
     if k == "BARACK OBAMA" #the presidential penalty
-      (v * 0.8).floor
+      (v * 0.6).floor
     elsif k.split(" ").length > 1
       #if this is a multi word phrase
       v

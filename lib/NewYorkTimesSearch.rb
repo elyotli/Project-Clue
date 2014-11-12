@@ -71,9 +71,12 @@ class NewYorkTimesSearch
     searched_articles.each do |article|
       article[:twitter_pop] = get_twitter_popularity(article[:url])
     end
-    #don't sort, because the default search gives pretty related matches
-    sorted_article = searched_articles[0..9].sort_by!{ |article| article[:twitter_pop] }
-    sorted_article.reverse![0..3]
+    sorted_articles = searched_articles[0..9].sort_by!{ |article| article[:twitter_pop] }
+    sorted_articles.reverse!
+
+    #get rid of articles with < 100 tweets
+    sorted_articles.select!{|article| article[:twitter_pop] > 100}
+    sorted_articles[0..3]
   end
 
   def get_popularity(articles)

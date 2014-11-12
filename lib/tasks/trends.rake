@@ -34,14 +34,15 @@ namespace :topics do
   			# data points before 30 days will be fucked up, but worry about that later
   		end
   		# ap data_hash
-  		p delta = 1.5 * data_hash.values.stdev
-  		#find articles
-  		breakout_dates = client.detect_trend(delta)
-  		ap [topic, breakout_dates]
-  		breakout_dates.each do |date_string|
-  			seed_historical_articles(topic, date_string)
-  		end
-
+      unless data_hash == {}
+  		  p delta = 1.5 * data_hash.values.stdev
+    		#find articles
+    		breakout_dates = client.detect_trend(delta)
+    		ap [topic, breakout_dates]
+    		breakout_dates.each do |date_string|
+    			seed_historical_articles(topic, date_string)
+    		end
+      end
   	end
   end
  end
@@ -53,14 +54,16 @@ namespace :topics do
  	article_results = NewYorkTimesSearch.new.search_with_date(topic, breakout_date)
  	ap article_results
  	article_results.each do |article|
- 		a = Article.find_or_create_by(title: article[:title])
- 		a.url = article[:url]
-      	a.source = article[:source] unless article[:source] == nil
-      	a.abstract = article[:abstract] unless article[:abstract] == nil
-      	a.image_url = article[:image_url] unless article[:image_url] == nil
-      	a.published_at = Date.parse(article[:published_at])
-      	a.twitter_popularity = article[:twitter_pop] unless article[:twitter_pop] == nil
-      	a.save!
-      	DayTopic.find_or_create_by(topic_id: dbtopic.id, day_id: dbday.id)
+    unless article.nil?
+   		a = Article.find_or_create_by(title: article[:title])
+   		a.url = article[:url]
+    	a.source = article[:source] unless article[:source] == nil
+    	a.abstract = article[:abstract] unless article[:abstract] == nil
+    	a.image_url = article[:image_url] unless article[:image_url] == nil
+    	a.published_at = Date.parse(article[:published_at]) unless article[:image_url] == nil
+    	a.twitter_popularity = article[:twitter_pop] unless article[:twitter_pop] == nil
+    	a.save! unless article[:title] == nil
+    	DayTopic.find_or_create_by(topic_id: dbtopic.id, day_id: dbday.id)
+    end
  	end
  end

@@ -58,18 +58,23 @@ class GoogleTrendsClient
 
   def build_data_hash(response_JSON)
     data_hash = {}
-    response_JSON["table"]["rows"].each do |row|
-      cell = row["c"]
-      datedata = parse_date(cell[0]["v"])
-      indexdata = cell[1]["f"]
-      if indexdata.nil?
-        indexdata = 0
-      else
-        indexdata = indexdata.to_i
+    # if no response
+    if response_JSON["status"] == "error"
+      return data_hash
+    else
+      response_JSON["table"]["rows"].each do |row|
+        cell = row["c"]
+        datedata = parse_date(cell[0]["v"])
+        indexdata = cell[1]["f"]
+        if indexdata.nil?
+          indexdata = 0
+        else
+          indexdata = indexdata.to_i
+        end
+        data_hash["#{datedata}"]= indexdata
       end
-      data_hash["#{datedata}"]= indexdata
+      return data_hash
     end
-    return data_hash
   end
 
   def parse_date(raw_string)
