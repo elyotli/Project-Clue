@@ -5,7 +5,8 @@
 # Use these when calling this from an external file:
 require "./GetKeywords"
 require "./Requests_and_Responses"
-
+require 'pry'
+require 'date'
 
 require 'awesome_print'
 # require 'Date'
@@ -29,10 +30,13 @@ class NewYorkTimesSearch
     response["docs"].each do |item|
       article = { title: item["headline"]["main"],
                   url: item["web_url"],
+
+                  image_url: "http://static01.nyt.com/" + item["multimedia"][1]["url"],  
                   abstract: item["snippet"],
                   published_at: item["pub_date"],
                   source: "New York Times"
                 }
+
       searched_articles << article
     end
     # return get_popularity(searched_articles)

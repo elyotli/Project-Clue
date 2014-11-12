@@ -5,6 +5,9 @@ require_relative '../PopularitySearch'
 require_relative '../../app/models/article'
 require './Requests_and_Responses'
 
+# require '../../Requests_and_Responses'
+
+
 
 ActiveRecord::Base.establish_connection(
 	:adapter => 'postgresql',
@@ -34,10 +37,13 @@ module RSS_topic_search
 		output = []
 		raw_articles.each do |story|
 			article = {}
+			# p story
+			# binding.pry
 			article[:title] = story[:title]
 			article[:url] = story[:guid]
 			article[:abstract] = story[:description]
 			article[:published_at] = story[:pubDate]
+			article[:image_url] = story[:media_content_url]
 			# popularity_client = PopularitySearch.new
 		 #  popularity_client.set_params(article.url)
 		  article[:twitter_pop] = get_twitter_popularity(article[:url]).to_i

@@ -14,6 +14,8 @@ class ReutersArticleSearch < RSSGrabber
 		@articles = convert(self.articles)
 		@articles.each do |article|
    			article[:source] = "Reuters"
+
  		end
+
 	end
 end
