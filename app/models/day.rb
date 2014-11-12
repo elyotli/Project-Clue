@@ -9,4 +9,8 @@ class Day < ActiveRecord::Base
     Day.create!(date: Date.today)
   end
 
+  def self.get_today
+  	Day.all.order('date DESC').first
+  end
+
 end

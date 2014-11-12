@@ -13,14 +13,8 @@ class TopicsController < ApplicationController
 	end
 
     def splash
-      day = Date.today ||= Date.yesterday
-        
-        Day.where(date: Date.today)
-        current_day = Day.all.sort_by{|day| day.date}.last
+        today = Day.get_today      
         @topics = today.topics
-
-
-
         render "splash", layout: false
     end
 
