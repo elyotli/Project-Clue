@@ -3,7 +3,9 @@ require 'uri'
 require 'net/http'
 require 'json'
 require 'awesome_print'
+require 'pry'
 require_relative '../APIControl'
+
 
 class RSSGrabber
   attr_accessor :titles, :links, :descriptions

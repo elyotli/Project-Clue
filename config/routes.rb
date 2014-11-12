@@ -2,7 +2,9 @@ Rails.application.routes.draw do
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
-  root 'topics#index'
+  root 'topics#splash'
+
+  get "topics" => 'topics#index', as: 'topics'
 
   get "topics/:topic_id/date/:date_id/articles/:page" => 'topics#articles_page'
   get 'topics/:topic_id/statistics/popularity' => 'topics#popularity'

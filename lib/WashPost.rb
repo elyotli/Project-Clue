@@ -5,6 +5,7 @@
 # Use these when calling this from an external file:
 require "./GetKeywords"
 require "./Requests_and_Responses"
+require 'pry'
 
 require 'awesome_print'
 class WashPost
@@ -26,10 +27,16 @@ class WashPost
       article = {
                 :abstract => a["snippet"],
                 :title => a["displayName"],
-                :published => a["published"],
+
+                :pub_date => a["published"],
+                :image_url => a["relatedStreams"][0]["image"]["url"],
+
+                :published_at => a["published"],
+
                 :url => a["url"],
                 :source => "WaPo"
                 }
+                
       searched_articles << article
     end
     # return get_popularity(@searched_articles)

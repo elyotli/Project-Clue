@@ -8,7 +8,8 @@ require "./Requests_and_Responses"
 
 require 'awesome_print'
 require 'json'
-# require 'date'
+require 'date'
+require 'pry'
 
 class Guardian
   GUARDIAN_BASE_URL = "http://content.guardianapis.com/search?"
@@ -46,7 +47,7 @@ class Guardian
 
   def search(keywords)
     searched_articles = []
-    url = GUARDIAN_SEARCH_URL + "api-key=" + GUARDIAN_APP_KEY + "&q=" + keywords.split(" ").join("%20") + "&from-date=" + GUARDIAN_FROM_DATE
+    url = GUARDIAN_SEARCH_URL + "api-key=" + GUARDIAN_APP_KEY + "&show-fields=main" + "&q=" + keywords.split(" ").join("%20") + "&from-date=" + GUARDIAN_FROM_DATE
     response = JSON.parse(get_request(url))["response"]["results"]
     response.each do |a|
 
@@ -54,7 +55,9 @@ class Guardian
                 :title => a["webTitle"],
                 :published_at => Date.parse(a["webPublicationDate"]),
                 :url => a["webUrl"],
-                :source => "www.theguardian.com"
+                :image_url => /http.*jpg/.match(a["fields"]["main"]).to_s, 
+                :source => "TheGuardian"            
+
                 }
       searched_articles << article
     end
@@ -72,7 +75,7 @@ class Guardian
 end
 
 
-# keywords = ["potatoe"]
+# keywords = ["obama"]
 # guard = Guardian.new
 # keywords.each { |word| guard.search(word) }
-# # ap guard.all_articles
+# ap guard.all_articles
