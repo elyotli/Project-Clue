@@ -52,7 +52,7 @@ namespace :topics do
  	dbday = Day.find_or_create_by(date: breakout_date)
  	dbtopic = Topic.find_or_create_by(title: topic)
  	article_results = NewYorkTimesSearch.new.search_with_date(topic, breakout_date)
- 	ap article_results
+ 	# ap article_results
  	article_results.each do |article|
     unless article.nil?
    		a = Article.find_or_create_by(title: article[:title])
