@@ -3,7 +3,7 @@ require 'rubygems'
 require 'open-uri'
 require 'nokogiri'
 require 'awesome_print'
-require 'mechanize'
+# require 'mechanize'
 
 class GoogleTrendsClient
   attr_accessor :data_hash
@@ -37,7 +37,7 @@ class GoogleTrendsClient
 
   def get_request
     uri = URI.parse(@processed_url)
-    p @processed_url
+    # p @processed_url
     request = Net::HTTP::Get.new(uri)
     # feeding the cookie monster
     request['Cookie'] = "PREF=ID=15a0c35777e5d761:U=0406a7d45c556908:FF=0:LD=en:NR=100:TM=1414641345:LM=1415489465:GM=1:SG=2:S=8c1dQPRl7PMzJbmb"
@@ -53,10 +53,10 @@ class GoogleTrendsClient
     filtered = filtered.gsub(/(new Date)\D\d{4}\D\d{1,2}\D\d{1,2}\D/)  { |s| s = '"' + s + '"' }
     filtered = filtered[1..-3]
     response_JSON = JSON.parse(filtered)
-    @data_hash = build_objects(response_JSON)
+    @data_hash = build_data_hash(response_JSON)
   end
 
-  def build_objects(response_JSON)
+  def build_data_hash(response_JSON)
     data_hash = {}
     response_JSON["table"]["rows"].each do |row|
       cell = row["c"]
@@ -81,7 +81,6 @@ class GoogleTrendsClient
     # Date.new(year,month,day)
 
     date_array = raw_string[9..-1].split(",")
-    p date_array
     year = date_array[0].to_i
     month = date_array[1].to_i + 1
     day = date_array[2].to_i
@@ -103,10 +102,10 @@ class GoogleTrendsClient
 
 end
 
-client = GoogleTrendsClient.new("midterm election", "3")
+#client = GoogleTrendsClient.new("midterm election", "3")
 #available month_span: 1, 3
-ap client.process_data
-ap client.detect_trend(15)
+#ap client.process_data
+#ap client.detect_trend(15)
 
 # mech_client1 = Mechanize.new
 # mech_client1.get("http://www.google.com/")

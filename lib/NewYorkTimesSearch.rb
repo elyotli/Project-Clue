@@ -30,7 +30,7 @@ class NewYorkTimesSearch
       article = { title: item["headline"]["main"],
                   url: item["web_url"],
                   abstract: item["snippet"],
-                  published_at: item["pub_date"]
+                  published_at: item["pub_date"],
                   source: "New York Times"
                 }
       searched_articles << article
@@ -45,6 +45,35 @@ class NewYorkTimesSearch
     sorted = searched_articles.sort_by!{ |article| article[:total_popularity] }
     sorted.reverse!
     return sorted
+  end
+
+  def search_with_date(keyword, breakout_date)
+    searched_articles = []
+    begin_date = breakout_date.prev_day.strftime.gsub(/-/, "")
+    end_date = breakout_date.next_day.strftime.gsub(/-/, "")
+    # http://api.nytimes.com/svc/search/v2/articlesearch.json?q=Ebola&begin_date=20141110&api-key=295f07d2db55fce19a6bdd330412d2ff:0:70154133
+    url = NY_BASE_SEARCH_URL + "q=" + keyword.split(" ").join("+") + "&begin_date=" + begin_date + "&end_date=" + end_date + "&api-key=" + NYT_APP_KEY
+
+    response = JSON.parse(get_request(url))["response"]
+
+    #build the hash
+    response["docs"].each do |item|
+      article = { title: item["headline"]["main"],
+                  url: item["web_url"],
+                  abstract: item["snippet"],
+                  published_at: item["pub_date"],
+                  source: "New York Times"
+                }
+      searched_articles << article
+    end
+
+    #get twitter popularity
+    searched_articles.each do |article|
+      article[:twitter_pop] = get_twitter_popularity(article[:url])
+    end
+    #don't sort, because the default search gives pretty related matches
+    sorted_article = searched_articles[0..9].sort_by!{ |article| article[:twitter_pop] }
+    sorted_article.reverse![0..3]
   end
 
   def get_popularity(articles)

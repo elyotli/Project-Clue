@@ -4,7 +4,7 @@ require 'pg'
 require_relative '../PopularitySearch'
 require_relative '../../app/models/article'
 # require './Requests_and_Responses'
-require '../../Requests_and_Responses'
+require './Requests_and_Responses'
 
 ActiveRecord::Base.establish_connection(
 	:adapter => 'postgresql',

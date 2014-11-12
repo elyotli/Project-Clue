@@ -73,7 +73,9 @@ namespace :topic do
     final_keywords = final_keywords.sort_by{|hash| hash.values[0]}.reverse
     final_keywords[0..3].each do |keyword_hash|
       keyword = keyword_hash.keys[0]
+      today = Day.find_or_create_by(date: Date.today)
       topic = Topic.create!(title: keyword)
+      daytopic = DayTopic.create!(topic_id: topic.id, day_id: today.id)
       p topic
     end
 
@@ -113,7 +115,7 @@ end
 def select_phrase(selection, single_word_penalty)
   #this is an array of hashes of keyword:count
   refined_index = selection.map do |k,v|
-    if k = "BARACK OBAMA" #the presidential penalty
+    if k == "BARACK OBAMA" #the presidential penalty
       (v * 0.8).floor
     elsif k.split(" ").length > 1
       #if this is a multi word phrase
@@ -171,7 +173,3 @@ end
 #         "Education Department ",
 #         "Common Core",
 #         "Palm Beach "]
-
- {"POTATOES" => 23,
-  "GENETIC ENGINEERING" => 20,
-  "SIMPLOT, J R, CO" => 10}
