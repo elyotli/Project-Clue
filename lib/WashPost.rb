@@ -28,7 +28,7 @@ class WashPost
                 :title => a["displayName"],
                 :pub_date => a["published"],
                 :url => a["url"],
-                :source => a["source"]["displayName"]
+                :source => "WaPo"
                 }
       searched_articles << article
     end

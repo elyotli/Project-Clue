@@ -1,6 +1,7 @@
 require_relative '../TwitterWordSearch'
 require_relative 'RSSGrabber'
 require_relative 'RSSsearch'
+require 'pry'
 
 class AbcNewsArticleSearch < RSSGrabber
 	include RSS_topic_search
@@ -12,6 +13,12 @@ class AbcNewsArticleSearch < RSSGrabber
 		@articles = get_response("http://feeds.abcnews.com/abcnews/topstories")
 		@followers = search.get_follower_count("ABC")/1000000
 		@articles = convert(self.articles)
+		@articles.map! do |article|
+   			article[:source] = "ABC"
+ 		end 
 	end
 
 end
+
+
+

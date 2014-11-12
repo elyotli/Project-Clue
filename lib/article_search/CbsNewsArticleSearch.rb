@@ -12,6 +12,9 @@ class CbsNewsArticleSearch < RSSGrabber
 		@articles = get_response("http://www.cbsnews.com/latest/rss/main")
 		@followers = search.get_follower_count("CBSNews")/1000000
 		@articles = convert(self.articles)
+		@articles.map! do |article|
+   			article[:source] = "CBS"
+ 		end 
 	end
 
 end
