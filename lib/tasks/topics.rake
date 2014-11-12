@@ -112,7 +112,7 @@ end
 def select_phrase(selection, single_word_penalty)
   #this is an array of hashes of keyword:count
   refined_index = selection.map do |k,v|
-    if k = "BARACK OBAMA" #the presidential penalty
+    if k == "BARACK OBAMA" #the presidential penalty
       (v * 0.8).floor
     elsif k.split(" ").length > 1
       #if this is a multi word phrase
