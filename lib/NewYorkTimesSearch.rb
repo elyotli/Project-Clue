@@ -1,10 +1,10 @@
 # Use these within this file:
-require "./../GetKeywords"
-require "./../Requests_and_Responses"
+# require "./../GetKeywords"
+# require "./../Requests_and_Responses"
 
 # Use these when calling this from an external file:
-# require "./GetKeywords"
-# require "./Requests_and_Responses"
+require "./GetKeywords"
+require "./Requests_and_Responses"
 require 'pry'
 require 'date'
 
@@ -120,6 +120,6 @@ class NewYorkTimesSearch
   end
 end
 
-nyt_search = NewYorkTimesSearch.new
-nyt_search.search("Ebola")
-ap nyt_search.searched_articles
+# nyt_search = NewYorkTimesSearch.new
+# nyt_search.search("Ebola")
+# ap nyt_search.searched_articles
