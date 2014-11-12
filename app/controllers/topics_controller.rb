@@ -1,15 +1,29 @@
 class TopicsController < ApplicationController
 	def index
+    # params[:date_id] ? day = Day.find(params[:date_id]) : day = Day.last
+    # @day_str = day.date.to_s
+    # @day = day
+    # @topics = day.topics.first(4)
+    # @articles = @topics.first().articles.first(4)
+    # @dataset = Popularity.popularitiesAsJSON(@topics.first.popularities.first(30))
+    # @articles_per_page = 4
+    # @total_articles = @topics.first().articles.count
+    # @maxDay = Day.last().date.to_s
+    # @minDay = Day.first().date.to_s
+
     params[:date_id] ? day = Day.find(params[:date_id]) : day = Day.last
     @day_str = day.date.to_s
     @day = day
-    @topics = day.topics.first(4)
-    @articles = @topics.first().articles.first(4)
-    @dataset = Popularity.popularitiesAsJSON(@topics.first.popularities.first(30))
+    @topics = @day.topics.first(4)
+    @all_articles = @topics.first().articles.where(published_at: @day.date.to_s)
+    @articles = @all_articles.first(4)
     @articles_per_page = 4
-    @total_articles = @topics.first().articles.count
+    @total_articles = @all_articles.count
+    @current_page = 1
+    @total_pages = (@total_articles / 4.0).ceil
     @maxDay = Day.last().date.to_s
     @minDay = Day.first().date.to_s
+    @dataset = Popularity.popularitiesAsJSON(@topics.first.popularities.first(30))
 	end
 
   def articles_page
