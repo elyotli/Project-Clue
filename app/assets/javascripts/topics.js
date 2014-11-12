@@ -10,6 +10,12 @@ $(document).on('click', '.buttons', function(e) {
 	}
 });
 
+function updateArticalPagination() {
+	// var page = '';
+	// var total = '';
+	// $('#artical-page-current').text(page);
+	// $('#artical-page-total').text(total);
+}
 
 // click on article carousel buttons
 $(document).on('click', '#articles .fa', function(e) {
@@ -59,6 +65,7 @@ $(document).on('click', '#articles .fa', function(e) {
 			success: function(response) {
 				articlePage = articlePageTarget;
 				$('#article_list').html(response);
+				updateArticalPagination();
 			}
 		});
 	}
@@ -90,6 +97,7 @@ $(document).on('click', '.topic *', function(e){
 				success: function(response) {
 					articlePage = articlePageTarget;
 					$('#article_list').html(response);
+					updateArticalPagination();
 				}
 			});
 		}
@@ -161,6 +169,7 @@ $(document).on('click', '#topics .fa', function(e) {
 				articlePageTotal = $('.article').first().data('total-articles');
 				$('#date').find('span').text($('.topic').first().data('day-string'));
 				window.clearInterval(responseChecker);
+				updateArticalPagination();
 			}
 		}, 100);
 	}

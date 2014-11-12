@@ -1,14 +1,15 @@
 <div id='header'>
-	<h1 class='xxlarge title'>Project Clue</h1>
-
-	<div class='datebox'>
-		<h3 id='date'>
-			Headline - <span><%= @day.date.to_s %></span>
-		</h3>
+	<div class='container'>
+		<h1 class='xxlarge title'>Project Clue</h1>
+		<div class='datebox'>
+			<h3 id='date'>
+				Headline - <span><%= @day.date.to_s %></span>
+			</h3>
+		</div>
 	</div>
 </div>
 
-<div id='container'>
+<div class='container'>
 	<div id='topics'>
 		<div class='btn btn_l'>
 			<i class="fa fa-chevron-left"></i>
@@ -22,12 +23,12 @@
 		<hr>
 	</div>
 	<div id='statistics'>
-		<div class='buttons'>
+		<!-- <div class='buttons'>
 			<div class='btn' id='twitter_popularity'>Twitter</div>
 			<div class='btn' id='facebook_popularity'>Facebook</div>
 			<div class='btn' id='google_trend_index'>Google</div>
 			<hr>
-		</div>
+		</div> -->
 		<div id='chart' class='noselect'></div>
 	</div>
 	<div id='articles'>
@@ -46,7 +47,7 @@
 	<% if @articles.count == 1 %>
 		Article 1 of 1
 	<% else %>
-		<p>Articles <span id='article-page-indicator'>1-<%= @articles.count %></span> of <%= @total_articles %> Total</p>
+		<p>Articles <span id='article-page-current'>1-<%= @articles.count %></span> of <span id='article-page-total'><%= @total_articles %></span> Total</p>
 	<% end %>
 	</div>
 </div>
@@ -62,7 +63,7 @@
 	var minDate = '<%= @minDay %>';
 
 	var parseDate = d3.time.format("%Y-%m-%d").parse;
-	var currentStatistic = 'twitter_popularity';
+	var currentStatistic = 'google_trend_index';
 
 	function partialDataset() {
 		var newSet = [];
@@ -84,7 +85,7 @@
 	var dataset = partialDataset();
 	
 	var margin = {top: 20, right: 30, bottom: 30, left: 50},
-	    width = 865 - margin.left - margin.right,
+	    width = $('.container').width() - margin.left - margin.right,
 	    height = 288 - margin.top - margin.bottom;
 
 	var xScale = d3.time.scale()
