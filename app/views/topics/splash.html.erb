@@ -3,31 +3,37 @@
 		<head>
 	   <%= stylesheet_link_tag "splash" %>
 	   <link href='http://fonts.googleapis.com/css?family=Londrina+Solid' rel='stylesheet' type='text/css'>
+	   <link href='http://fonts.googleapis.com/css?family=Old+Standard+TT:400,700,400italic' rel='stylesheet' type='text/css'>
+
 		</head>
 
 		<body>
 
 <div class ="splash_container">
-	<h1 id="header">News Ketchup</h1>
+	<h1 id="splash_head">News <span id="vince">Ketchup</span></h1>
 		<table class="table">
 			<tr>
-				<td>
-					<%= link_to image_tag("http://cp91279.biography.com/1000509261001/1000509261001_2008586720001_BIO-Barack-Obama-SF-FIX-Retry.jpg"), topics_path %>
+				<td class="td">
+					<%= link_to image_tag(@topics[0].image_url, class: "images"), topics_path %>
+					<span class="topic_heading"><%= @topics[0].title %></span>
 				</td>
-				<td>
-				<%= link_to image_tag("http://i3.mirror.co.uk/incoming/article3974876.ece/alternates/s615/The-Ebola-virus.jpg"), topics_path %>
+				<td class="td">
+				<%= link_to image_tag(@topics[1].image_url, class: "images"), topics_path %>
+				<span class="topic_heading"><%= @topics[1].title %></span>
 				</td>
 			</tr>
 			<tr>
-				<td>
-					<%= link_to image_tag("http://l.rgbimg.com/cache1n8lHa/users/j/ja/jazza/600/2djsZxD.jpg"), topics_path %>
+				<td class="td">
+					<%= link_to image_tag(@topics[2].image_url, class: "images" ), topics_path %>
+					<span class="topic_heading"><%= @topics[2].title %></span>
 				</td>
-				<td>
-					<%= link_to image_tag("http://upload.wikimedia.org/wikipedia/commons/6/6e/Dust_disk_around_massive_star.jpg"), topics_path %>
+				<td class="td">
+					<%= link_to image_tag(@topics[3].image_url, class: "images"), topics_path %>
+					<span class="topic_heading"><%= @topics[3].title %></span>
 				</td>
 			</tr>
 		</table>
-			</div>
+		</div>
 	</body>
 
 </html>

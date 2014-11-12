@@ -51,7 +51,7 @@ class Guardian
     response = JSON.parse(get_request(url))["response"]["results"]
     response.each do |a|
 
-       a["fields"] ||= "hi"
+       a["fields"] ||= "http://www.thehaasbrothers.com/hsite/wp-content/uploads/2014/04/guardian-logo.jpg"
       article = {
                 :title => a["webTitle"],
                 :published_at => Date.parse(a["webPublicationDate"]),

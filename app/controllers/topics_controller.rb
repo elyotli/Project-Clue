@@ -13,7 +13,8 @@ class TopicsController < ApplicationController
 	end
 
   def splash
-      #need to pass in 4 topics here
+      today = Day.get_today      
+      @topics = today.topics
       render "splash", layout: false
   end
 
