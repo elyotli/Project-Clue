@@ -4,7 +4,7 @@ require 'pg'
 require_relative '../PopularitySearch'
 require_relative '../../app/models/article'
 require './Requests_and_Responses'
-# require '../../Requests_and_Responses'
+
 
 ActiveRecord::Base.establish_connection(
 	:adapter => 'postgresql',
@@ -18,8 +18,8 @@ module RSS_topic_search
 		matches = []
 		self.articles.each do |article|
 			if article[:abstract] == nil
-	      article[:abstract] = "a"
-	    end
+	      		article[:abstract] = "a"
+	    	end
 
 			if article[:title].downcase.include?(topic.downcase) || article[:abstract].downcase.include?(topic.downcase)
 			 	matches << article

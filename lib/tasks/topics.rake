@@ -14,6 +14,7 @@ require_relative "../article_search/ReutersArticleSearch"
 require_relative "../article_search/NbcNewsArticleSearch"
 require_relative "../article_search/NprArticleSearch"
 require_relative "../article_search/BbcNewsArticleSearch"
+require_relative "../BingImageSearch"
 require_relative "../NewYorkTimes"
 require "./Requests_and_Responses"
 require "awesome_print"
@@ -73,7 +74,13 @@ namespace :topic do
     final_keywords = final_keywords.sort_by{|hash| hash.values[0]}.reverse
     final_keywords[0..3].each do |keyword_hash|
       keyword = keyword_hash.keys[0]
-      topic = Topic.create!(title: keyword)
+      today = Day.find_or_create_by(date: Date.today)
+
+      #find the images and save them
+      bing_client = BingImageSearch.new(keyword)
+      image_url = bing_client.get_image_url
+      topic = Topic.create!(title: keyword, image_url: image_url)
+      daytopic = DayTopic.create!(topic_id: topic.id, day_id: today.id)
       p topic
     end
   end

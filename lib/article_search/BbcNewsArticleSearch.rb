@@ -12,7 +12,7 @@ class BbcNewsArticleSearch < RSSGrabber
 		@articles = get_response("http://feeds.bbci.co.uk/news/world/us_and_canada/rss.xml")
 		@followers = search.get_follower_count("Bbc")/1000000
 		@articles = convert(self.articles)
-		@articles.map! do |article|
+		@articles.each do |article|
    			article[:source] = "BBC"
  		end 
 	end

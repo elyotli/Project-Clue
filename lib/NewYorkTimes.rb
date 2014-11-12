@@ -5,7 +5,7 @@
 # Use these when calling this from an external file:
 require "./GetKeywords"
 require "./Requests_and_Responses"
-
+require 'net/http'
 
 
 require 'awesome_print'
