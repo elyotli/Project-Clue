@@ -23,7 +23,9 @@ class TopicsController < ApplicationController
     page = params[:page].to_i - 1
     @articles = Topic.find(params[:topic_id]).articles.where(published_at: date).offset(page * articles_per_page).limit(4)
     @total_articles = Topic.find(params[:topic_id]).articles.where(published_at: date).count
-    render partial: 'topics/article', local: @articles, layout: false
+    @total_pages = (@total_articles / 4.0).ceil
+    @current_page = page + 1
+    render partial: 'topics/article', layout: false
   end
 
   def popularity
@@ -37,12 +39,38 @@ class TopicsController < ApplicationController
     @articles = @topics.first().articles.first(4)
     @articles_per_page = 4
     @total_articles = @topics.first().articles.count
-    render partial: 'topics/article', local: @articles, layout: false
+    render partial: 'topics/article', layout: false
   end
 
-  def show
-    @topic = Topic.find(params[:id])
-    @articles = @topic.articles
+  def articles_range
+    if(params[:page])
+      @page = params[:page].to_i
+      @articles_set = JSON.parse(params[:articles_set])
+      @total_articles = @articles_set.count
+      @articles = @articles_set.slice(@page,4).map do |id|
+        Article.find(id)
+      end
+      @total_pages = (@total_articles / 4.to_f).ceil
+      @current_page = @page
+    else
+      @page = 0
+      @topic = Topic.find(params[:topic_id])
+      dayMin = Day.find(params[:min]).date.to_s
+      dayMax = Day.find(params[:max]).date.to_s
+      @articles = @topic.articles.where(published_at: dayMin..dayMax)
+      @total_articles = @articles.count
+      @total_pages = (@total_articles / 4.to_f).ceil
+      @articles = @articles.shuffle
+      @articles_set = @articles.map do |article|
+        article.id
+      end
+      @articles = @articles.slice(@page,4)
+      @total_pages = (@total_articles / 4.to_f).ceil
+      @current_page = @page
+    end
+
+    render partial: 'topics/articles_range', layout: false
   end
+
 end
 

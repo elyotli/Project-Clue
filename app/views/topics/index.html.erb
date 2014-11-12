@@ -1,14 +1,15 @@
 <div id='header'>
-	<h1 class='xxlarge title'>Project Clue</h1>
-
-	<div class='datebox'>
-		<h3 id='date'>
-			Headline - <span><%= @day.date.to_s %></span>
-		</h3>
+	<div class='container'>
+		<h1 class='xxlarge title'>Project Clue</h1>
+		<div class='datebox'>
+			<h3 id='date'>
+				Headline - <span><%= @day.date.to_s %></span>
+			</h3>
+		</div>
 	</div>
 </div>
 
-<div id='container'>
+<div class='container'>
 	<div id='topics'>
 		<div class='btn btn_l'>
 			<i class="fa fa-chevron-left"></i>
@@ -22,13 +23,13 @@
 		<hr>
 	</div>
 	<div id='statistics'>
-		<div class='buttons'>
+		<!-- <div class='buttons'>
 			<div class='btn' id='twitter_popularity'>Twitter</div>
 			<div class='btn' id='facebook_popularity'>Facebook</div>
 			<div class='btn' id='google_trend_index'>Google</div>
 			<hr>
-		</div>
-		<div id='chart'></div>
+		</div> -->
+		<div id='chart' class='noselect'></div>
 	</div>
 	<div id='articles'>
 		<div class='btn btn_l'>
@@ -46,7 +47,7 @@
 	<% if @articles.count == 1 %>
 		Article 1 of 1
 	<% else %>
-		<p>Articles <span id='article-page-indicator'>1-<%= @articles.count %></span> of <%= @total_articles %> Total</p>
+		<p>Articles <span id='article-page-current'>1-<%= @articles.count %></span> of <span id='article-page-total'><%= @total_articles %></span> Total</p>
 	<% end %>
 	</div>
 </div>
@@ -62,7 +63,7 @@
 	var minDate = '<%= @minDay %>';
 
 	var parseDate = d3.time.format("%Y-%m-%d").parse;
-	var currentStatistic = 'twitter_popularity';
+	var currentStatistic = 'google_trend_index';
 
 	function partialDataset() {
 		var newSet = [];
@@ -77,11 +78,14 @@
 		return newSet;
 	}
 
+	var circleActive = false;
+	var svgActive = false;
+
 	var fullDataset=JSON.parse('<%= raw @dataset %>');
 	var dataset = partialDataset();
 	
 	var margin = {top: 20, right: 30, bottom: 30, left: 50},
-	    width = 865 - margin.left - margin.right,
+	    width = $('.container').width() - margin.left - margin.right,
 	    height = 288 - margin.top - margin.bottom;
 
 	var xScale = d3.time.scale()
@@ -115,6 +119,14 @@
 	populateGraph();
 
 	function populateGraph() {
+		function getMaxOfArray(numArray) {
+		  return Math.max.apply(null, numArray);
+		}
+
+		function getMinOfArray(numArray) {
+		  return Math.min.apply(null, numArray);
+		}
+
 		d3.selectAll('.axis').remove();
 		d3.selectAll('.area').remove();
 		d3.selectAll('text').remove();
@@ -144,16 +156,6 @@
 			.style("text-anchor", "end")
 			.text(currentStatistic.replace(/_/g, ' '));
 
-		var circles = svg.selectAll('circle').data(dataset).enter()
-			.append('circle')
-			.attr('class', 'standard')
-			.attr('fill','steelblue')
-			.attr('stroke', 'white')
-			.attr('stroke-width', '2px')
-			.attr('r', '5px')
-			.attr('cx', function(d) { return xScale(d.date); })
-			.attr('cy', function(d) { return yScale(d[currentStatistic]); });
-
 		var circles = svg.selectAll('circle.overlay').data(dataset).enter()
 			.append('circle')
 			.attr('class', 'overlay')
@@ -163,21 +165,34 @@
 			.attr('cx', function(d) { return xScale(d.date); })
 			.attr('cy', function(d) { return yScale(d[currentStatistic]); });
 
-		d3.selectAll('circle.overlay').on('mouseover',function(){
+		var circles = svg.selectAll('circle.standard').data(dataset).enter()
+			.append('circle')
+			.attr('class', 'standard')
+			.attr('fill','steelblue')
+			.attr('stroke', 'white')
+			.attr('stroke-width', '2px')
+			.attr('r', '5px')
+			.attr('cx', function(d) { return xScale(d.date); })
+			.attr('cy', function(d) { return yScale(d[currentStatistic]); });
+
+		d3.selectAll('circle').on('mouseover',function(){
 			var data = this.__data__.date;
 			d3.selectAll('circle.standard').attr('fill', function(d){
 				return this.__data__.date == data ? 'black' : 'steelblue';
 			});
 		});
 
-		d3.selectAll('circle.overlay').on('mouseout',function(){
+		d3.selectAll('circle').on('mouseout',function(event){
 			var data = this.__data__.date;
 			d3.selectAll('circle.standard').attr('fill', function(d){
 				return 'steelblue';
 			});
 		});
 
-		d3.selectAll('circle').on('click',function(){
+		d3.selectAll('circle.standard').on('mousedown',function(){
+			circleActive = true;
+			d3.selectAll('circle.standard').attr('stroke','white');
+			d3.select(this).attr('stroke','red');
 			var date = this.__data__.date.toISOString().replace(/T.*/i,'');
 			var day = this.__data__.day;
 			var url = 'topics/'+topicId+'/date/'+day+'/articles/1';
@@ -190,8 +205,110 @@
 					articlePage = 1;
 					$('#article_list').html(response);
 					articlePageTotal = $('.article').first().data('total-articles');
+					updateArticalPagination();
 				}
 			});
+		});
+
+		d3.selectAll('circle').on('mouseup',function(){
+			circleActive = false;
+		});
+
+		d3.select('svg').on('mousedown', function(){
+			if(!circleActive) {
+				svgActive = true;
+				d3.selectAll('circle.standard').attr('stroke','white');
+				svg.append("rect")
+					.attr('class','left-bracket')
+					.attr('opacity',0.5)
+					.attr("x", d3.mouse(this)[0]-margin.left)
+					.attr("y", 0)
+					.attr('width',2)
+					.attr('height', height);
+			}
+		});
+
+		d3.select('svg').on('mousemove', function () {
+			if(svgActive && !circleActive) {
+			  var mouseX = d3.mouse(this)[0];
+			  var rectX = parseFloat(d3.select('rect.left-bracket').attr('x'));
+
+			  var width = mouseX - rectX - margin.left;
+			  
+			  if(width < 0) {
+			  	svgActive = false;
+			  	svg.select("rect.left-bracket").remove();
+			  // 	if(d3.select('rect.left-bracket').attr('data-start')) {
+			  // 		width = d3.select('rect.left-bracket').attr('data-start') - mouseX;
+			  // 		d3.select('rect.left-bracket')
+			  // 			.attr('x', mouseX - margin.left)
+			  // 			.attr('width', width);
+			  // 	}
+			  // 	else {
+				 //  	d3.select('rect.left-bracket')
+				 //  		.attr('data-start', mouseX)
+				 //  		.attr('x', mouseX - margin.left);
+				 //  }
+			  }
+			  else {
+			  	d3.selectAll('rect.left-bracket')
+			  		.attr('data-start',false)
+			  	 	.attr('width', width);
+			  }
+			}
+		});
+
+		d3.select('svg').on('mouseup', function(){
+			if(svgActive && !circleActive) {
+				svgActive = false;
+				var selection = svg.select("rect.left-bracket");
+				
+				var selectionWidth = parseFloat(selection.attr('width'));
+				var selectionXLeftBound = parseFloat(selection.attr('x'));
+				var selectionXRightBound = selectionWidth + selectionXLeftBound;
+				
+				var selected = [];
+
+				d3.selectAll('circle.standard').each(function(){
+					xPos = parseFloat($(this).attr('cx'));
+					if(xPos >= selectionXLeftBound && xPos <= selectionXRightBound) {
+						$(this).attr('stroke','red');
+						selected.push(this.__data__.day);
+					}
+				});
+				
+				if(selected.length > 0) {
+					var selectedRange = [getMinOfArray(selected), getMaxOfArray(selected)];
+					//console.log(selectedRange);
+					var data = 'min='+selectedRange[0]+'&max='+selectedRange[1];
+
+					$.ajax({
+						url: 'topics/'+topicId+'/date_range',
+						type: 'post',
+						data: data,
+						dataType: 'html',
+						success: function(response) {
+							$('#article_list').html(response);
+							updateArticalPagination();
+						}
+					});
+				}
+
+				selection.remove();
+			}
+		});
+
+		$('#chart').on('mousedown',function(e){
+			$(this).addClass('active');
+			$(this).css('cursor','default');
+		});
+		$('#chart').on('mouseup',function(e){
+			$(this).removeClass('active');
+			$(this).css('cursor', 'default')
+		});
+		$('#chart.active').on('hover',function(e){
+			e.stopPropagation();
+			$(this).css('cursor', 'default')
 		});
 	}
 </script>

@@ -10,24 +10,62 @@ $(document).on('click', '.buttons', function(e) {
 	}
 });
 
+function updateArticalPagination() {
+	var page = parseInt($('.article').first().data('current-page'));
+	var total = parseInt($('.article').first().data('total-pages'));
+	$('#artical-page-current').text(page);
+	$('#artical-page-total').text(total);
+}
 
 // click on article carousel buttons
 $(document).on('click', '#articles .fa', function(e) {
 	var articlePageTarget = 0;
-	if($(e.target).hasClass('fa-chevron-left')) {
-		articlePageTarget = articlePage - 1;
+	
+	var articlesSet = $('#articles-set');
+	if(articlesSet.length != 0) {
+		var articlesData = articlesSet.data();
+		articlePageTotal = articlesData.totalPages;
+		if($(e.target).hasClass('fa-chevron-left')) {
+			articlePageTarget = articlesData.page - 1;
+		}
+		else {
+			articlePageTarget = articlesData.page + 1;
+		}
 	}
 	else {
-		articlePageTarget = articlePage + 1;
+		if($(e.target).hasClass('fa-chevron-left')) {
+			articlePageTarget = articlePage - 1;
+		}
+		else {
+			articlePageTarget = articlePage + 1;
+		}
 	}
-	if(articlePageTarget > 0 && articlePageTarget <= articlePageTotal) {
+	if(articlePageTarget >= 0 && articlePageTarget <= articlePageTotal) {
+		var url = '';
+		var data = '';
+		var type = '';
+
+		if(articlesSet.length != 0) {
+			data = 'articles_set=' + JSON.stringify(articlesData.articlesSet) + 
+							'&page=' + articlePageTarget;
+			type = 'post';
+			url = "topics/1/date_range";
+		}
+		else {
+			data = '';
+			type = 'get';
+			url = 'topics/' + topicId + '/date/' + dayId + '/articles/' + articlePageTarget;
+		}
+
 		$.ajax({
-			url: 'topics/' + topicId + '/date/' + dayId + '/articles/' + articlePageTarget,
-			type: 'get',
+			url: url,
+			type: type,
 			dataType: 'html',
+			data: data,
 			success: function(response) {
 				articlePage = articlePageTarget;
 				$('#article_list').html(response);
+				updateArticalPagination();
 			}
 		});
 	}
@@ -45,7 +83,7 @@ $(document).on('click', '.topic *', function(e){
 		success: function(response) {
 			//update graph
 			fullDataset=response;
-			currentStatistic = 'twitter_popularity';
+			currentStatistic = 'google_trend_index';
 			dataset = partialDataset();
 			populateGraph();
 
@@ -59,6 +97,7 @@ $(document).on('click', '.topic *', function(e){
 				success: function(response) {
 					articlePage = articlePageTarget;
 					$('#article_list').html(response);
+					updateArticalPagination();
 				}
 			});
 		}
@@ -114,7 +153,7 @@ $(document).on('click', '#topics .fa', function(e) {
 			type: 'get',
 			dataType: 'json',
 			success: function(response) {
-				currentStatistic = 'twitter_popularity';
+				currentStatistic = 'google_trend_index';
 				fullDataset = response;
 				dataset = partialDataset();
 				populateGraph();
@@ -130,6 +169,7 @@ $(document).on('click', '#topics .fa', function(e) {
 				articlePageTotal = $('.article').first().data('total-articles');
 				$('#date').find('span').text($('.topic').first().data('day-string'));
 				window.clearInterval(responseChecker);
+				updateArticalPagination();
 			}
 		}, 100);
 	}
