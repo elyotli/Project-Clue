@@ -51,6 +51,7 @@ class Guardian
     response = JSON.parse(get_request(url))["response"]["results"]
     response.each do |a|
 
+       a["fields"] ||= "hi"
       article = {
                 :title => a["webTitle"],
                 :published_at => Date.parse(a["webPublicationDate"]),
@@ -70,7 +71,7 @@ class Guardian
     end
     sorted = searched_articles.sort_by!{ |article| article[:total_popularity] }
     sorted.reverse!
-    return sorted
+    return p sorted
   end
 end
 
