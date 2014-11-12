@@ -5,8 +5,17 @@
 	margin-top: 10px;
 }
 
+#splash_head{
+	font-family: 'Londrina Solid', cursive;
+	color: white;
+	margin-left: 22%;
+	font-size: 850%;
+	margin-bottom: 2px;
+	margin-top: 15px;
+}
+
 .td{
-width: 380px;
+width: 420px;
 height: 240px;
 margin-bottom: 0px;
 display: inline-block;
@@ -19,15 +28,21 @@ display: inline-block;
 	bottom: 50px;
 	color: white;
 	font-size: 170%;
-	vertical-align: text-bottom;
+	font-family: 'Old Standard TT', serif;
+	font-weight: 700;
 
+
+}
+
+#vince{
+	color: red;
 }
 
 
 .images{
     position: relative;
     float: left;
-    width: 380px;
+    width: 420px;
     height: 100%;
 }
 
@@ -37,11 +52,4 @@ body{
 	background-opacity: .5;
 }
 
-#splash_head{
-	font-family: 'Londrina Solid', cursive;
-	color: red;
-	margin-left: 22%;
-	font-size: 850%;
-	margin-bottom: 2px;
-	margin-top: 15px;
-}
+
