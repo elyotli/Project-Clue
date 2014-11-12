@@ -12,18 +12,22 @@
 		<table class="table">
 			<tr>
 				<td class="td">
-					<%= link_to image_tag("http://cp91279.biography.com/1000509261001/1000509261001_2008586720001_BIO-Barack-Obama-SF-FIX-Retry.jpg", class: "images"), topics_path %>
+					<%= link_to image_tag(@topics[0].image_url, class: "images"), topics_path %>
+					<span class="topic_heading"><%= @topics[0].title %></span>
 				</td>
 				<td class="td">
-				<%= link_to image_tag("http://i3.mirror.co.uk/incoming/article3974876.ece/alternates/s615/The-Ebola-virus.jpg", class: "images"), topics_path %>
+				<%= link_to image_tag(@topics[1].image_url, class: "images"), topics_path %>
+				<span class="topic_heading"><%= @topics[1].title %></span>
 				</td>
 			</tr>
 			<tr>
 				<td class="td">
-					<%= link_to image_tag("http://l.rgbimg.com/cache1n8lHa/users/j/ja/jazza/600/2djsZxD.jpg", class: "images" ), topics_path %>
+					<%= link_to image_tag(@topics[2].image_url, class: "images" ), topics_path %>
+					<span class="topic_heading"><%= @topics[2].title %></span>
 				</td>
 				<td class="td">
-					<%= link_to image_tag("http://upload.wikimedia.org/wikipedia/commons/6/6e/Dust_disk_around_massive_star.jpg", class: "images"), topics_path %>
+					<%= link_to image_tag(@topics[3].image_url, class: "images"), topics_path %>
+					<span class="topic_heading"><%= @topics[3].title %></span>
 				</td>
 			</tr>
 		</table>

@@ -7,11 +7,21 @@
 
 .td{
 width: 380px;
-height: 250px;
-padding: none;
-background-color: black;
+height: 240px;
+margin-bottom: 0px;
+display: inline-block;
+
+
 }
 
+.topic_heading{
+	position: relative;
+	bottom: 50px;
+	color: white;
+	/*font-size: 170%;*/
+	vertical-align: text-bottom;
+	 font: 400 70px/1.2 'Sansita one', Georgia, serif;
+}
 
 
 .images{
