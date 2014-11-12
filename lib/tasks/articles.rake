@@ -52,7 +52,7 @@ namespace :articles do
   
   final_topics = []
 
- 
+    
     topics = []
     champions.slice!(0..4).each do |champion|
       topics << champion[:keywords][0]
