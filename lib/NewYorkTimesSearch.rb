@@ -29,7 +29,7 @@ class NewYorkTimesSearch
       article = { title: item["headline"]["main"],
                   url: item["web_url"],
                   abstract: item["abstract"],
-                  source: item["source"]
+                  source: "New York Times"
                 }
       searched_articles << article
     end
