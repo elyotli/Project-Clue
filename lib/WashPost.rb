@@ -29,7 +29,7 @@ class WashPost
                 :title => a["displayName"],
 
                 :pub_date => a["published"],
-                :image_url => a["relatedStreams"][0]["image"]["url"],
+                # :image_url => a["relatedStreams"][0]["image"]["url"],
 
                 :published_at => a["published"],
 
