@@ -29,6 +29,7 @@ class NewYorkTimesSearch
       article = { title: item["headline"]["main"],
                   url: item["web_url"],
                   abstract: item["abstract"],
+                  image_url: item["mulitimedia"][2]["url"]  #need to finish working this
                   source: "New York Times"
                 }
       searched_articles << article
