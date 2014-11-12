@@ -132,14 +132,14 @@ Day.all.each do |day|
 			end
 		end[0]
 		('2014-10-01'..day.date.to_s).to_a.each.with_index do |date,index|
-			if(index!=0)
+			if(date != day.date.to_s)
 				counter = 0
 				3.times do
 					topics_hash[:articles].each do |article|
 						articleObj = Article.create!(
-							title: "#{day.date.to_s} #{topic.title} #{counter} #{article[:title]}",
+							title: "#{date} #{topic.title} #{counter} #{article[:title]}",
 							url: article[:url],
-							published_at: day.date.to_s,
+							published_at: date,
 							image_url: article[:image_url],
 							abstract: article[:abstract],
 							source: article[:source],
