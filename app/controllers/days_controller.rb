@@ -6,13 +6,23 @@ class DaysController < ApplicationController
   end
 
   def articles
-  	@day = Day.where(date: params[:date]).first
+    # @day = Day.where(date: params[:date]).first
+    # @topics = @day.topics.first(4)
+    # @articles = @topics.first().articles.first(4)
+    # @articles_per_page = 4
+    # @total_articles = @topics.first().articles.count
+    # @current_page = 1
+    # @total_pages = (@topics.first().articles.count / 4.0).ceil
+
+    @day = Day.where(date: params[:date]).first
     @topics = @day.topics.first(4)
-    @articles = @topics.first().articles.first(4)
+    @all_articles = @topics.first().articles.where(published_at: @day.date.to_s)
+    @articles = @all_articles.first(4)
     @articles_per_page = 4
-    @total_articles = @topics.first().articles.count
+    @total_articles = @all_articles.count
     @current_page = 1
-    @total_pages = (@topics.first().articles.count / 4.0).ceil
+    @total_pages = (@total_articles / 4.0).ceil
+
     render partial: 'topics/article', layout: false
   end
 
