@@ -43,7 +43,7 @@ class USAToday
     response.each do |a|
       article = {
                 :title => a["title"],
-                :pub_date => a["pubDate"],
+                :published_at => a["pubDate"],
                 :url => a["link"],
                 :source => "www.usatoday.com"
                 }

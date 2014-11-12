@@ -65,7 +65,7 @@ task :get_topics => :environment do
       a.source = article[:source] unless article[:source] == nil
       a.abstract = article[:abstract] unless article[:abstract] == nil
       a.image_url = article[:image_url] unless article[:image_url] == nil
-      a.published_at = today.date
+      a.published_at = article[:published_at]
       a.twitter_popularity = article[:twitter_pop] unless article[:twitter_pop] == nil
       a.save!
       top = Topic.find_by(title: topic)
