@@ -14,7 +14,7 @@ class CNNArticleSearch < RSSGrabber
 		@followers = search.get_follower_count("CNN")/1000000
 		@image = :media_content_url
 		@articles = convert(self.articles)
-		@articles.map! do |article|
+		@articles.each do |article|
    			article[:source] = "CNN"
  		end 
 	end

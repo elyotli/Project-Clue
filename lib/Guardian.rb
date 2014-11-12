@@ -53,10 +53,11 @@ class Guardian
 
       article = {
                 :title => a["webTitle"],
-                :pub_date => a["webPublicationDate"],
+                :published_at => Date.parse(a["webPublicationDate"]),
                 :url => a["webUrl"],
-                :image_url => /http.*jpg/.match(a["fields"]["main"]).to_s, #fuck you guardian, I win!
+                :image_url => /http.*jpg/.match(a["fields"]["main"]).to_s, 
                 :source => "TheGuardian"            
+
                 }
       searched_articles << article
     end

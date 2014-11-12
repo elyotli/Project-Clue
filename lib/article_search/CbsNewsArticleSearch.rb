@@ -14,7 +14,7 @@ class CbsNewsArticleSearch < RSSGrabber
 		@followers = search.get_follower_count("CBSNews")/1000000
 		@image = "cbs doesn't give image urls"
 		@articles = convert(self.articles)
-		@articles.map! do |article|
+		@articles.each do |article|
    			article[:source] = "CBS"
  		end 
 	end

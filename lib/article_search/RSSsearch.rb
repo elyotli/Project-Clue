@@ -4,7 +4,10 @@ require 'pg'
 require_relative '../PopularitySearch'
 require_relative '../../app/models/article'
 require './Requests_and_Responses'
+
 # require '../../Requests_and_Responses'
+
+
 
 ActiveRecord::Base.establish_connection(
 	:adapter => 'postgresql',
@@ -18,8 +21,8 @@ module RSS_topic_search
 		matches = []
 		self.articles.each do |article|
 			if article[:abstract] == nil
-	      article[:abstract] = "a"
-	    end
+	      		article[:abstract] = "a"
+	    	end
 
 			if article[:title].downcase.include?(topic.downcase) || article[:abstract].downcase.include?(topic.downcase)
 			 	matches << article
@@ -44,6 +47,7 @@ module RSS_topic_search
 			# popularity_client = PopularitySearch.new
 		 #  popularity_client.set_params(article.url)
 		  article[:twitter_pop] = get_twitter_popularity(article[:url]).to_i
+		  article[:facebook_popularity] = get_facebook_popularity(article[:url]).to_i
 		  #popularity_client.get_twitter_popularity
 		 #  article.facebook_popularity = popularity_client.get_facebook_popularity
 		 	output << article

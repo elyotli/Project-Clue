@@ -12,7 +12,7 @@ class NbcNewsArticleSearch < RSSGrabber
 		@articles = get_response("http://rss.cnn.com/rss/cnn_topstories.rss")
 		@followers = search.get_follower_count("NBCNews")/1000000
 		@articles = convert(self.articles)
-		@articles.map! do |article|
+		@articles.each do |article|
    			article[:source] = "NBC"
  		end 
 	end

@@ -14,7 +14,7 @@ class BbcNewsArticleSearch < RSSGrabber
 		@followers = search.get_follower_count("Bbc")/1000000
 		@image = :media_thumbnail_ur	
 		@articles = convert(self.articles)
-		@articles.map! do |article|
+		@articles.each do |article|
    			article[:source] = "BBC"
  		end 
 	end
