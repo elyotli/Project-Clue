@@ -9,6 +9,7 @@ task :get_topics => :environment do
   # save day
 
   today = Day.create!(date: Date.today)
+  # today = Day.create!(date: Date.today.prev_day)
 
   # # NYT most popular tool
   # nyt = NewYorkTimes.new
@@ -24,33 +25,36 @@ task :get_topics => :environment do
 
   # Filter the topics - Shomari
   # assuming these are the topics
-  topics = ["Ebola", "genetic engineering", "mormon", "search and seizure", "net neutrality"]
+  # topics = ["Ebola", "genetic engineering", "mormon", "search and seizure", "net neutrality"]
+  topics = ["Veterans Day", "Vladimir Putin", "Loretta Lynch", "Ferguson", "Chinese"]
 
   topics.each do |topic|
     current_topic = Topic.create!(title: topic)
     DayTopic.create!(topic_id: current_topic.id, day_id: today.id)
   end
 
-  news_APIs = [NewYorkTimesSearch.new]#, Guardian.new, WashPost.new]
+  news_APIs = [NewYorkTimesSearch.new, Guardian.new] #, WashPost.new]
 
-  news_RSS = [AbcNewsArticleSearch.new]#, BbcNewsArticleSearch.new,
-              # CbsNewsArticleSearch.new, CNNArticleSearch.new,
-              # FoxNewsArticleSearch.new, NbcNewsArticleSearch.new,
-              # NprArticleSearch.new, ReutersArticleSearch.new]
+  news_RSS = [AbcNewsArticleSearch.new, BbcNewsArticleSearch.new,
+              CbsNewsArticleSearch.new, CNNArticleSearch.new,
+              FoxNewsArticleSearch.new, NbcNewsArticleSearch.new,
+              NprArticleSearch.new, ReutersArticleSearch.new]
 
   todays_articles = {}
   articles_to_save = {}
   topics.each do |topic|
     todays_articles[topic] = []
     todays_articles[topic] = news_APIs.map do |source|
+      puts "Searching #{source}"
       source.search(topic)
     end.flatten
     todays_articles[topic] += news_RSS.map do |source|
+      puts "Searching #{source}"
       source.search(topic)
     end
     todays_articles[topic].flatten!
     todays_articles[topic] = todays_articles[topic].sort_by{ |article| article[:twitter_pop] }.reverse
-    articles_to_save[topic] = todays_articles[topic][0..3]
+    articles_to_save[topic] = todays_articles[topic][0..8]
   end
 
   articles_to_save.each do |topic, articles|
@@ -61,7 +65,7 @@ task :get_topics => :environment do
       a.source = article[:source] unless article[:source] == nil
       a.abstract = article[:abstract] unless article[:abstract] == nil
       a.image_url = article[:image_url] unless article[:image_url] == nil
-      a.published_at = Date.today
+      a.published_at = today.date
       a.twitter_popularity = article[:twitter_pop] unless article[:twitter_pop] == nil
       a.save!
       top = Topic.find_by(title: topic)
@@ -69,7 +73,14 @@ task :get_topics => :environment do
     end
   end
   # topics_today = today.topics
-end
+
+  # SEED STUFF FOR VIEW TESTING:
+#   i = 6
+#   while i <= 10 do
+#     Popularity.create!(topic_id: i, day_id: Day.last.id, twitter_popularity: 300 + Random.rand(2700), facebook_popularity: 600 + Random.rand(5400), google_trend_index: 1 + Random.rand(99))
+#     i += 1
+#   end
+# end
 
 
   # save the articles

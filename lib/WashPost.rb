@@ -8,37 +8,14 @@ require "./Requests_and_Responses"
 
 require 'awesome_print'
 class WashPost
+  attr_accessor :searched_articles
   WAPO_BASE_URL = "http://api.washingtonpost.com/trove/v1/search?q="
   WAPO_APP_KEY = "27D7BE94-8E90-48AA-8BF0-4AF5D19C4F25"
-  attr_accessor :all_articles, :initial_articles, :searched_articles
+  include GetKeywords
   include Requests_and_Responses
 
   def initialize
-    # @initial_articles = {}
-    # @all_articles = []
     @searched_articles = []
-  end
-
-  def get_popularity(articles)
-    articles.each do |article|
-      if article[:url].include?("wprss=rss")
-        article[:url].gsub!(/\?wprss.*/,"")
-      end
-      article[:twitter_pop] = get_twitter_popularity(article[:url])
-      # article[:facebook_pop] = get_facebook_popularity(article[:url])
-      unless article[:twitter_pop] == nil && article[:facebook_pop] == nil
-        article[:total_popularity] = article[:twitter_pop].to_i + article[:facebook_pop].to_i
-        # @all_articles << article
-      end
-    end
-    return sort_by_pop
-
-  end
-
-  def sort_by_pop
-    sorted = @searched_articles.sort_by!{ |article| article[:total_popularity] }
-    @searched_articles = sorted.reverse
-    return @searched_articles
   end
 
   def search(keywords)
@@ -47,6 +24,7 @@ class WashPost
     response = JSON.parse(get_request(url))["itemCollection"]["items"]
     response.each do |a|
       article = {
+                :abstract => a["snippet"],
                 :title => a["displayName"],
                 :pub_date => a["published"],
                 :url => a["url"],
@@ -64,6 +42,27 @@ class WashPost
     sorted = searched_articles.sort_by!{ |article| article[:total_popularity] }
     sorted.reverse!
     return sorted
+  end
+
+  def get_popularity(articles)
+    articles.each do |article|
+      if article[:url].include?("wprss=rss")
+        article[:url].gsub!(/\?wprss.*/,"")
+      end
+      article[:twitter_pop] = get_twitter_popularity(article[:url])
+      article[:facebook_pop] = get_facebook_popularity(article[:url])
+
+      unless article[:twitter_pop] == nil && article[:facebook_pop] == nil
+        article[:total_popularity] = article[:twitter_pop].to_i + article[:facebook_pop].to_i
+      end
+    end
+    return sort_by_pop
+  end
+
+  def sort_by_pop
+    sorted = @searched_articles.sort_by!{ |article| article[:total_popularity] }
+    # @searched_articles = sorted.reverse
+    return @searched_articles
   end
 end
 

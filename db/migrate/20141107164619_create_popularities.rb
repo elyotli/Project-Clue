@@ -11,3 +11,7 @@ class CreatePopularities < ActiveRecord::Migration
     end
   end
 end
+
+# To seed popularities in IRB:
+
+
