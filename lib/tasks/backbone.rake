@@ -39,7 +39,6 @@ task :get_topics => :environment do
               # NprArticleSearch.new, ReutersArticleSearch.new]
 
   todays_articles = {}
-  articles_to_save = {}
   topics.each do |topic|
     todays_articles[topic] = []
     todays_articles[topic] = news_APIs.map do |source|
@@ -48,9 +47,7 @@ task :get_topics => :environment do
     todays_articles[topic] += news_RSS.map do |source|
       source.search(topic)
     end
-
     todays_articles[topic].flatten!
-
     todays_articles[topic] = todays_articles[topic].sort_by{ |article| article[:twitter_pop] }.reverse
     articles_to_save[topic] = todays_articles[topic][0..3]
   end
