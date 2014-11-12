@@ -32,6 +32,7 @@ gem 'pry'
 gem 'twitter-bootstrap-rails'
 
 gem 'ruby-standard-deviation'
+gem 'xml-simple'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

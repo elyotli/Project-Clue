@@ -12,7 +12,7 @@ class FoxNewsArticleSearch < RSSGrabber
 		@articles = get_response("http://feeds.foxnews.com/foxnews/most-popular")
 		@followers = search.get_follower_count("FoxNews")/1000000
 		@articles = convert(self.articles)
-		@articles.map! do |article|
+		@articles.each do |article|
    			article[:source] = "Fox"
  		end 
 	end

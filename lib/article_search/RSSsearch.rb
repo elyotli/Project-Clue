@@ -18,8 +18,8 @@ module RSS_topic_search
 		matches = []
 		self.articles.each do |article|
 			if article[:abstract] == nil
-	      article[:abstract] = "a"
-	    end
+	      		article[:abstract] = "a"
+	    	end
 
 			if article[:title].downcase.include?(topic.downcase) || article[:abstract].downcase.include?(topic.downcase)
 			 	matches << article
