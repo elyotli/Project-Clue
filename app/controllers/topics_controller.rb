@@ -4,12 +4,17 @@ class TopicsController < ApplicationController
     @day_str = day.date.to_s
     @day = day
     @topics = day.topics.first(4)
-    @articles = @topics.first.articles.order('published_at DESC').first(4)
-    @dataset = Popularity.popularitiesAsJSON(@topics.first.popularities.first(30))
+
+    @all_articles = @topics.first.articles.order('published_at DESC')
+    @articles = @all_articles.first(4)
+
     @articles_per_page = 4
-    @total_articles = @topics.first().articles.count
+    @total_articles = @all_articles.count
+    @current_page = 1
+    @total_pages = (@total_articles / 4.0).ceil
     @maxDay = Day.last().date.to_s
     @minDay = Day.first().date.to_s
+    @dataset = Popularity.popularitiesAsJSON(@topics.first.popularities.first(30))
 	end
 
   def splash
