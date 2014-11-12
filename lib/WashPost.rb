@@ -26,7 +26,7 @@ class WashPost
       article = {
                 :abstract => a["snippet"],
                 :title => a["displayName"],
-                :pub_date => a["published"],
+                :published => a["published"],
                 :url => a["url"],
                 :source => "WaPo"
                 }
