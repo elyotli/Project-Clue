@@ -13,7 +13,14 @@ class TopicsController < ApplicationController
 	end
 
     def splash
-        #need to pass in 4 topics here
+      day = Date.today ||= Date.yesterday
+        
+        Day.where(date: Date.today)
+        current_day = Day.all.sort_by{|day| day.date}.last
+        @topics = today.topics
+
+
+
         render "splash", layout: false
     end
 

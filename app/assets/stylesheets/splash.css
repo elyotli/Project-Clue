@@ -1,22 +1,20 @@
-/*table{
+.table{
 	margin-left: 20%;
 	margin-top: 7%;
 	padding: none;
 	margin-top: 10px;
 }
 
-td{
+.td{
 width: 380px;
 height: 250px;
 padding: none;
 background-color: black;
 }
 
-tr{
-	padding: none;
-}
 
-img{
+
+.images{
     position: relative;
     float: left;
     width: 380px;
@@ -36,4 +34,4 @@ body{
 	font-size: 850%;
 	margin-bottom: 2px;
 	margin-top: 15px;
-}*/
+}

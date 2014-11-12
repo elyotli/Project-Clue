@@ -12,7 +12,7 @@ class CbsNewsArticleSearch < RSSGrabber
 		search = TwitterWordSearch.new
 		@articles = get_response("http://www.cbsnews.com/latest/rss/main")
 		@followers = search.get_follower_count("CBSNews")/1000000
-		@image = "cbs doesn't give image urls"
+		@image = nil
 		@articles = convert(self.articles)
 		@articles.each do |article|
    			article[:source] = "CBS"

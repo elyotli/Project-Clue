@@ -43,7 +43,10 @@ module RSS_topic_search
 			article[:url] = story[:guid]
 			article[:abstract] = story[:description]
 			article[:published_at] = story[:pubDate]
-			article[:image_url] = story[:media_content_url]
+			article[:image_url] = story[@image]
+			if article[:image_url] == nil
+				article[:image_url] = "http://shackmanlab.org/wp-content/uploads/2013/07/person-placeholder.jpg"
+			end
 			# popularity_client = PopularitySearch.new
 		 #  popularity_client.set_params(article.url)
 		  article[:twitter_pop] = get_twitter_popularity(article[:url]).to_i

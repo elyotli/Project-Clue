@@ -10,10 +10,10 @@ class FoxNewsArticleSearch < RSSGrabber
 
 	def initialize
 		search = TwitterWordSearch.new
-		@articles = get_response("http://feeds.foxnews.com/foxnews/most-popular")
+		@articles = get_response("http://feeds.foxnews.com/foxnews/most-popular")	
 		@followers = search.get_follower_count("FoxNews")/1000000		
+		@image = :media_content_url
 		@articles = convert(self.articles)
-
 		@articles.each do |article|
    			article[:source] = "Fox"
 
@@ -22,4 +22,3 @@ class FoxNewsArticleSearch < RSSGrabber
 
 end
 
-fox = FoxNewsArticleSearch.new
