@@ -28,10 +28,18 @@ class NewYorkTimesSearch
     url = NY_BASE_SEARCH_URL + "q=" + keyword.split(" ").join("+") + "&begin_date=" + timespan + "&api-key=" + NYT_APP_KEY
     response = JSON.parse(get_request(url))["response"]
     response["docs"].each do |item|
+
+      if item["multimedia"].length < 2
+        2.times do #most hacky thing ever
+          yolo = "http://blog.mpp.org/wp-content/uploads/2014/01/New-York-Times-Logo.png"
+        end
+      else
+        yolo = "http://static01.nyt.com/" + item["multimedia"][1]["url"]
+      end    
+    
       article = { title: item["headline"]["main"],
                   url: item["web_url"],
-
-                  image_url: "http://static01.nyt.com/" + item["multimedia"][1]["url"],  
+                  image_url: yolo,  
                   abstract: item["snippet"],
                   published_at: item["pub_date"],
                   source: "New York Times"
@@ -62,9 +70,19 @@ class NewYorkTimesSearch
 
     #build the hash
     response["docs"].each do |item|
+
+      if item["multimedia"].length < 2
+        2.times do #most hacky thing ever
+          yolo = "http://blog.mpp.org/wp-content/uploads/2014/01/New-York-Times-Logo.png"
+        end
+      else
+        yolo = "http://static01.nyt.com/" + item["multimedia"][1]["url"]
+      end     
+
       article = { title: item["headline"]["main"],
                   url: item["web_url"],
                   abstract: item["snippet"],
+                  image_url: yolo, 
                   published_at: item["pub_date"],
                   source: "New York Times"
                 }
