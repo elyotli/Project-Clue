@@ -11,10 +11,10 @@ $(document).on('click', '.buttons', function(e) {
 });
 
 function updateArticalPagination() {
-	// var page = '';
-	// var total = '';
-	// $('#artical-page-current').text(page);
-	// $('#artical-page-total').text(total);
+	var page = parseInt($('.article').first().data('current-page'));
+	var total = parseInt($('.article').first().data('total-pages'));
+	$('#artical-page-current').text(page);
+	$('#artical-page-total').text(total);
 }
 
 // click on article carousel buttons
@@ -153,7 +153,7 @@ $(document).on('click', '#topics .fa', function(e) {
 			type: 'get',
 			dataType: 'json',
 			success: function(response) {
-				currentStatistic = 'twitter_popularity';
+				currentStatistic = 'google_trend_index';
 				fullDataset = response;
 				dataset = partialDataset();
 				populateGraph();

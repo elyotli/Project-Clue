@@ -1,6 +1,6 @@
 <% @articles.each.with_index do |article,index| %>
 <a href='<%= article.url %>' target='_blank'>
-	<div class='article<% if index == 3 %><%= ' right' %><% end %>' data-article-id='<%= article.id %>' data-total-articles='<%= @total_articles %>'>
+	<div class='article<% if index == 3 %><%= ' right' %><% end %>' data-article-id='<%= article.id %>' data-total-articles='<%= @total_articles %>' data-current-page='<%= @current_page %>' data-total-pages='<%= @total_pages %>'>
 		<div class='image'><%= image_tag article.image_url %></div>
 		<div class='text'>
 			<h3><%= article.title %></h3>

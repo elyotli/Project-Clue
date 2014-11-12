@@ -205,6 +205,7 @@
 					articlePage = 1;
 					$('#article_list').html(response);
 					articlePageTotal = $('.article').first().data('total-articles');
+					updateArticalPagination();
 				}
 			});
 		});
@@ -288,6 +289,7 @@
 						dataType: 'html',
 						success: function(response) {
 							$('#article_list').html(response);
+							updateArticalPagination();
 						}
 					});
 				}

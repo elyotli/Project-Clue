@@ -18,6 +18,8 @@ class TopicsController < ApplicationController
     page = params[:page].to_i - 1
     @articles = Topic.find(params[:topic_id]).articles.where(published_at: date).offset(page * articles_per_page).limit(4)
     @total_articles = Topic.find(params[:topic_id]).articles.where(published_at: date).count
+    @total_pages = (@total_articles / 4.0).ceil
+    @current_page = page + 1
     render partial: 'topics/article', layout: false
   end
 
@@ -40,10 +42,11 @@ class TopicsController < ApplicationController
       @page = params[:page].to_i
       @articles_set = JSON.parse(params[:articles_set])
       @total_articles = @articles_set.count
-      @total_pages = (@total_articles / 4.to_f).ceil
       @articles = @articles_set.slice(@page,4).map do |id|
         Article.find(id)
       end
+      @total_pages = (@total_articles / 4.to_f).ceil
+      @current_page = @page
     else
       @page = 0
       @topic = Topic.find(params[:topic_id])
@@ -57,6 +60,8 @@ class TopicsController < ApplicationController
         article.id
       end
       @articles = @articles.slice(@page,4)
+      @total_pages = (@total_articles / 4.to_f).ceil
+      @current_page = @page
     end
 
     render partial: 'topics/articles_range', layout: false
