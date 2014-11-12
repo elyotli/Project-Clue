@@ -11,11 +11,15 @@ class GuardianArticleSearch < APIControl
     @processed_url = ""
   end
 
+  # Example: http://content.guardianapis.com/search?api-key=sfrv3wukd7uaw7amha8cd2e6&q=Obama&order-bynewest&page-size=10
+
   def set_params(keywords, sort_method, count)
     @processed_url = @@base_url + "api-key=" + @@app_key
+    @processed_url += "show-fields=main"
     @processed_url += "&q=" + keywords.split(" ").join("%20")
     @processed_url += "&order-by" + sort_method
     @processed_url += "&page-size=" + count
+    @processed_url += "&from-date=" + Date.today.strftime("%Y-%m-%d")
   end
 
   def get_response

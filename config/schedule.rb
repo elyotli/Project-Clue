@@ -23,6 +23,12 @@ every 1.day, at: '12:01 am' do
   rake "day:make_new_day"
 end
 
+
+every 1.day, at: '10:25 pm' do
+  rake "db:create_a_day"
+end
+
+
 # every 1.day, :at => '5:10 pm' do
 #   command "touch ~/Desktop/Project-Clue/Clue/whenever_test.txt"
 # end

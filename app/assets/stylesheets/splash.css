@@ -1,0 +1,58 @@
+table{
+	margin-left: 20%;
+	margin-top: 7%;
+	padding: none;
+	margin-top: 10px;
+}
+
+td{
+/*outline: thin solid black;*/
+width: 380px;
+height: 250px;
+padding: none;
+background-color: black;
+}
+
+tr{
+	padding: none;
+}
+
+img{
+    position: relative;
+    float: left;
+    width: 380px;
+    height: 100%;
+    /*background-position: 50% 50%;*/
+    /*background-repeat: no-repeat;*/
+    /*background-size: cover;*/
+}
+
+
+body{
+	background-image: url('/images/world-wallpaper.jpg');
+	background-opacity: .5;
+}
+
+#header{
+	font-family: 'Londrina Solid', cursive;
+	color: red;
+	margin-left: 22%;
+	font-size: 850%;
+	margin-bottom: 2px;
+	margin-top: 15px;
+
+}
+
+/*.image_box{
+    display:flex;
+    width: 300px;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden
+}
+
+.image_box img {
+    flex-shrink:0;
+    min-width:100%;
+    min-height:100%
+}*/

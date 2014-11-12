@@ -6,8 +6,8 @@ require 'awesome_print'
 
 
 class PopularitySearch
-  @@twitter_base_url = "http://urls.api.twitter.com/1/urls/count.json?url="
-  @@facebook_base_url = "http://graph.facebook.com/?id="
+  TWITTER_BASE_URL = "http://urls.api.twitter.com/1/urls/count.json?url="
+  FACEBOOK_BASE_URL = "http://graph.facebook.com/?id="
 
   def initialize
     @twitter_processed_url = ""
@@ -15,8 +15,8 @@ class PopularitySearch
   end
 
   def set_params(url)
-    @twitter_processed_url = @@twitter_base_url + url
-    @facebook_processed_url = @@facebook_base_url + url
+    @twitter_processed_url = TWITTER_BASE_URL + url
+    @facebook_processed_url = FACEBOOK_BASE_URL + url
   end
 
   def get_request(url)

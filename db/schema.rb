@@ -25,14 +25,14 @@ ActiveRecord::Schema.define(version: 20141107164640) do
 
   create_table "articles", force: true do |t|
     t.string   "title"
-    t.string   "abstract"
+    t.text     "abstract",            default: "No abstract provided."
     t.string   "url"
-    t.string   "source"
-    t.string   "image_url"
-    t.date     "published_at"
-    t.integer  "twitter_popularity"
-    t.integer  "facebook_popularity"
-    t.integer  "google_trend_index"
+    t.string   "source",              default: "No source provided."
+    t.string   "image_url",           default: "http://dribbble.s3.amazonaws.com/users/107262/screenshots/462548/ketchup_logo_1.jpg"
+    t.date     "published_at",        default: '2014-11-12'
+    t.integer  "twitter_popularity",  default: 1
+    t.integer  "facebook_popularity", default: 1
+    t.integer  "google_trend_index",  default: 1
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -53,16 +53,16 @@ ActiveRecord::Schema.define(version: 20141107164640) do
   create_table "popularities", force: true do |t|
     t.integer  "topic_id"
     t.integer  "day_id"
-    t.integer  "twitter_popularity"
-    t.integer  "facebook_popularity"
-    t.integer  "google_trend_index"
+    t.integer  "twitter_popularity",  default: 1
+    t.integer  "facebook_popularity", default: 1
+    t.integer  "google_trend_index",  default: 1
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "topics", force: true do |t|
     t.string   "title"
-    t.string   "image_url"
+    t.string   "image_url",  default: "http://dribbble.s3.amazonaws.com/users/107262/screenshots/462548/ketchup_logo_1.jpg"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

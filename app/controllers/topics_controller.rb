@@ -1,16 +1,21 @@
 class TopicsController < ApplicationController
 	def index
-    params[:date_id] ? day = Day.find(params[:date_id]) : day = Day.last
+    params[:date_id] ? day = Day.find(params[:date_id]) : day = Day.first
     @day_str = day.date.to_s
     @day = day
     @topics = day.topics.first(4)
-    @articles = @topics.first().articles.first(4)
+    @articles = @topics.first.articles.first(4)
     @dataset = Popularity.popularitiesAsJSON(@topics.first.popularities.first(30))
     @articles_per_page = 4
     @total_articles = @topics.first().articles.count
     @maxDay = Day.last().date.to_s
     @minDay = Day.first().date.to_s
 	end
+
+    def splash
+        #need to pass in 4 topics here
+        render "splash", layout: false
+    end
 
   def articles_page
     articles_per_page = 4
