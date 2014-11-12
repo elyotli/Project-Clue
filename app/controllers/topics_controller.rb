@@ -4,7 +4,7 @@ class TopicsController < ApplicationController
     @day_str = day.date.to_s
     @day = day
     @topics = day.topics.first(4)
-    @articles = @topics.first().articles.first(4)
+    @articles = @topics.first.articles.first(4)
     @dataset = Popularity.popularitiesAsJSON(@topics.first.popularities.first(30))
     @articles_per_page = 4
     @total_articles = @topics.first().articles.count
