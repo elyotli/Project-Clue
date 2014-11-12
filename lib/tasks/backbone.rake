@@ -39,6 +39,7 @@ task :get_topics => :environment do
               # NprArticleSearch.new, ReutersArticleSearch.new]
 
   todays_articles = {}
+  articles_to_save = {}
   topics.each do |topic|
     todays_articles[topic] = []
     todays_articles[topic] = news_APIs.map do |source|
