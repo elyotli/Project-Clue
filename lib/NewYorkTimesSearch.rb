@@ -37,12 +37,12 @@ class NewYorkTimesSearch
     end
     # return get_popularity(searched_articles)
     searched_articles.each do |article|
-      article[:twitter_pop] = get_twitter_popularity(article[:url])
+      article[:twitter_pop] = get_twitter_popularity(article[:url]).to_i
       unless article[:twitter_pop] == nil && article[:facebook_pop] == nil
         article[:total_popularity] = article[:twitter_pop].to_i + article[:facebook_pop].to_i
       end
     end
-    sorted = searched_articles.sort_by!{ |article| article[:total_popularity] }
+    sorted = searched_articles.sort_by!{ |article| article[:twitter_pop] }
     sorted.reverse!
     return sorted
   end
