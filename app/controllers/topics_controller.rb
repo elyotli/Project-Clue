@@ -4,7 +4,7 @@ class TopicsController < ApplicationController
     @day_str = day.date.to_s
     @day = day
     @topics = day.topics.first(4)
-    @articles = @topics.first.articles.first(4)
+    @articles = @topics.first.articles.order('published_at DESC').first(4)
     @dataset = Popularity.popularitiesAsJSON(@topics.first.popularities.first(30))
     @articles_per_page = 4
     @total_articles = @topics.first().articles.count
@@ -12,17 +12,17 @@ class TopicsController < ApplicationController
     @minDay = Day.first().date.to_s
 	end
 
-    def splash
-        #need to pass in 4 topics here
-        render "splash", layout: false
-    end
+  def splash
+      #need to pass in 4 topics here
+      render "splash", layout: false
+  end
 
   # when a user click on the topic image
   def articles_page
     articles_per_page = 4
     date = Day.find(params[:date_id]).date.to_s
     page = params[:page].to_i - 1
-    @articles = Topic.find(params[:topic_id]).articles.where(published_at: date).offset(page * articles_per_page).limit(4)
+    @articles = Topic.find(params[:topic_id]).articles.order('published_at DESC').offset(page * articles_per_page).limit(4)
     @total_articles = Topic.find(params[:topic_id]).articles.where(published_at: date).count
     @total_pages = (@total_articles / 4.0).ceil
     @current_page = page + 1
@@ -39,7 +39,7 @@ class TopicsController < ApplicationController
   def articles
     @day = Day.where(date: params[:date]).first
     @topics = @day.topics.first(4)
-    @articles = @topics.first().articles.first(4)
+    @articles = @topics.first().articles.order('published_at DESC').first(4)
     @articles_per_page = 4
     @total_articles = @topics.first().articles.count
     render partial: 'topics/article', layout: false
@@ -65,7 +65,7 @@ class TopicsController < ApplicationController
       @articles = @topic.articles.where(published_at: dayMin..dayMax)
       @total_articles = @articles.count
       @total_pages = (@total_articles / 4.to_f).ceil
-      @articles = @articles.shuffle
+      @articles = @articles.order('published_at DESC')
       @articles_set = @articles.map do |article|
         article.id
       end
