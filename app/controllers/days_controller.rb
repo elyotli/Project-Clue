@@ -2,6 +2,8 @@ class DaysController < ApplicationController
   def topics
     @day = Day.where(date: params[:date]).first
     @topics = @day.topics.first(4)
+
+    # @articles and @day are being used in the partial
    	render partial: 'topics/topic', local: @topics, layout: false
   end
 

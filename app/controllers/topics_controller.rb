@@ -17,6 +17,7 @@ class TopicsController < ApplicationController
         render "splash", layout: false
     end
 
+  # when a user click on the topic image
   def articles_page
     articles_per_page = 4
     date = Day.find(params[:date_id]).date.to_s
@@ -25,6 +26,8 @@ class TopicsController < ApplicationController
     @total_articles = Topic.find(params[:topic_id]).articles.where(published_at: date).count
     @total_pages = (@total_articles / 4.0).ceil
     @current_page = page + 1
+
+    # @articles, @total_articles, @current_page, @total_page
     render partial: 'topics/article', layout: false
   end
 
@@ -42,7 +45,9 @@ class TopicsController < ApplicationController
     render partial: 'topics/article', layout: false
   end
 
+  # handle d3 range selection
   def articles_range
+    # after range is selected, and user clicked the bottom carousel
     if(params[:page])
       @page = params[:page].to_i
       @articles_set = JSON.parse(params[:articles_set])
@@ -52,7 +57,7 @@ class TopicsController < ApplicationController
       end
       @total_pages = (@total_articles / 4.to_f).ceil
       @current_page = @page
-    else
+    else #first time running it
       @page = 0
       @topic = Topic.find(params[:topic_id])
       dayMin = Day.find(params[:min]).date.to_s
