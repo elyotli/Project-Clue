@@ -46,7 +46,7 @@ namespace :topic do
                 ReutersArticleSearch.new]
 
     # idea here is to check other news sources if they are cover the same topics as NYT
-    
+
     champions = nyt.all_articles.take(10)
     champion_topics = champions.map do |article|
       article[:keywords]
@@ -60,12 +60,12 @@ namespace :topic do
     end
 
     ap ranked_keywords_with_count
-    
+
     # if we have more time, i would like to do a test on how common the keyword is to filter on some garbarge
     # for now, i'm giving single word a penalty on the article count
     single_word_penalty = 0.7
 
-    # this is an array (n=10) of list of topic:article_count 
+    # this is an array (n=10) of list of topic:article_count
     final_keywords = ranked_keywords_with_count.map do |keywords_sets|
       select_phrase(keywords_sets, single_word_penalty)
     end
@@ -76,13 +76,12 @@ namespace :topic do
       topic = Topic.create!(title: keyword)
       p topic
     end
-
   end
 end
 
 def rank_keywords(word_array, news_APIs=[], news_RSS=[])
   todays_articles={}
-  
+
   word_array.each do |topic|
     todays_articles[topic] = []
     todays_articles[topic] += news_APIs.map do |source|
@@ -129,49 +128,49 @@ def select_phrase(selection, single_word_penalty)
   return return_hash
 end
 
-# test data:
-# initial_topics = []
-# initial_topics[0] = ["Net Neutrality",
-#         "Obama, Barack",
-#         "Federal Communications Commission",
-#         "Wheeler, Thomas E"]
-# initial_topics[1] = ["Potatoes",
-#         "Genetic Engineering",
-#         "Agriculture and Farming",
-#         "Simplot, J R, Co",
-#         "Biotechnology and Bioengineering",
-#         "French Fries"]
-# initial_topics[2] = ["Search and Seizure",
-#         "Crime and Criminals",
-#         "Police",
-#         "civil asset forfeiture",
-#         "Justice Department"]
-# initial_topics[3] = ["Alternative and Renewable Energy",
-#         "Denmark",
-#         "Electric Light and Power",
-#         "Greenhouse Gas Emissions"]
-# initial_topics[4] = ["Mormons ",
-#         "Smith, Joseph ",
-#         "Polygamy"]
-# initial_topics[5] = ["Ebola Virus",
-#         "Series",
-#         "Emerging Infectious Diseases ",
-#         "Liberia",
-#         "Epidemics",
-#         "Children and Childhood",
-#         "Research",
-#         "International Medical Corps",
-#         "The Ebola Ward",
-#         "Ebola Ward, The"]
-# initial_topics[6] = ["Education ",
-#         "Tests and Examinations",
-#         "Florida",
-#         "Teachers and School Employees",
-#         "Duncan, Arne",
-#         "Education Department ",
-#         "Common Core",
-#         "Palm Beach "]
+  # test data:
+  # initial_topics = []
+  # initial_topics[0] = ["Net Neutrality",
+  #         "Obama, Barack",
+  #         "Federal Communications Commission",
+  #         "Wheeler, Thomas E"]
+  # initial_topics[1] = ["Potatoes",
+  #         "Genetic Engineering",
+  #         "Agriculture and Farming",
+  #         "Simplot, J R, Co",
+  #         "Biotechnology and Bioengineering",
+  #         "French Fries"]
+  # initial_topics[2] = ["Search and Seizure",
+  #         "Crime and Criminals",
+  #         "Police",
+  #         "civil asset forfeiture",
+  #         "Justice Department"]
+  # initial_topics[3] = ["Alternative and Renewable Energy",
+  #         "Denmark",
+  #         "Electric Light and Power",
+  #         "Greenhouse Gas Emissions"]
+  # initial_topics[4] = ["Mormons ",
+  #         "Smith, Joseph ",
+  #         "Polygamy"]
+  # initial_topics[5] = ["Ebola Virus",
+  #         "Series",
+  #         "Emerging Infectious Diseases ",
+  #         "Liberia",
+  #         "Epidemics",
+  #         "Children and Childhood",
+  #         "Research",
+  #         "International Medical Corps",
+  #         "The Ebola Ward",
+  #         "Ebola Ward, The"]
+  # initial_topics[6] = ["Education ",
+  #         "Tests and Examinations",
+  #         "Florida",
+  #         "Teachers and School Employees",
+  #         "Duncan, Arne",
+  #         "Education Department ",
+  #         "Common Core",
+  #         "Palm Beach "]
 
- {"POTATOES" => 23,
-  "GENETIC ENGINEERING" => 20,
-  "SIMPLOT, J R, CO" => 10}
+ # {"POTATOES" => 23,
+ #  "GENETIC ENGINEERING" => 20,
+ #  "SIMPLOT, J R, CO" => 10}
