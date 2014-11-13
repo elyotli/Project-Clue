@@ -16,13 +16,15 @@ class TopicsController < ApplicationController
     @total_pages = (@total_articles / 4.0).ceil
     @maxDay = Day.last().date.to_s
     @minDay = Day.first().date.to_s
-    @dataset = Popularity.popularitiesAsJSON(@topics.first.popularities.first(30))
+    @dataset = Popularity.popularitiesAsJSON(@topics.first.popularities)
 	end
 
   def splash
+
     today = Day.get_today      
     @topics = today.topics
     render "splash"
+
   end
 
   # when a user click on the topic image
