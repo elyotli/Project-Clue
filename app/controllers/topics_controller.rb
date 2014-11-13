@@ -19,9 +19,11 @@ class TopicsController < ApplicationController
 	end
 
   def splash
+
     today = Day.get_today
     @topics = today.topics
-    render "splash", layout: false
+    render "splash"
+
   end
 
   # when a user click on the topic image
