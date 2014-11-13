@@ -118,7 +118,7 @@ $(document).on('click', '.topic', function(e){
 
 			var articlePageTarget = 1;
 			$.ajax({
-				url: 'topics/' + topicId + '/date/' + dayId + '/articles/' + articlePageTarget,
+				url: 'topics/' + topicId + '/date/' + maxDayId + '/articles/' + articlePageTarget,
 				type: 'get',
 				dataType: 'html',
 				success: function(response) {
