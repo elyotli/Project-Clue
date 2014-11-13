@@ -1,5 +1,28 @@
-Project-Clue
+News Ketchup
 ============
+
+<b>News Ketchup</b>'s purpose is to help users of the app rid themselves of moments of being left out of a conversation due to ignorance of today's trending news topics.
+
+=== Screenshots
+
+
+=== System Requirements
+- Ruby 2.0.0
+- Rails 4.1.6
+- Postgres 9.3.5
+- Internet access
+
+=== External APIs & Libraries
+APIs from:
+	New York Times
+	USA Today
+	Washington Post
+	Guardian New
+
+RSS Feeds from:
+
+
+
 # User Stories
 
 * I want to be able to see the top 5 trending topics for today
