@@ -1,6 +1,6 @@
 <% @topics.each.with_index do |topic,index| %>
 <div class='topic<% if index == 3 %><%= ' right' %><% end %>' data-id='<%= topic.id %>' data-day-id='<%= @day.id %>' data-day-string='<%= @day.date.to_s %>'>
 	<%= image_tag topic.image_url %>
-	<h2><%= topic.title %></h2>
+	<!-- <h2><%= topic.title %></h2> -->
 </div>
 <% end %>

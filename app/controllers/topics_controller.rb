@@ -1,11 +1,13 @@
 class TopicsController < ApplicationController
 	def index
-    params[:date_id] ? day = Day.find(params[:date_id]) : day = Day.first
+
+    params[:date_id] ? day = Day.find(params[:date_id]) : day = Day.get_today
+
     @day_str = day.date.to_s
     @day = day
     @topics = day.topics.first(4)
 
-    @all_articles = @topics.first.articles.order('published_at DESC')
+    @all_articles = @topics.first.articles.where(published_at: @day_str).order('published_at DESC')
     @articles = @all_articles.first(4)
 
     @articles_per_page = 4
@@ -14,7 +16,7 @@ class TopicsController < ApplicationController
     @total_pages = (@total_articles / 4.0).ceil
     @maxDay = Day.last().date.to_s
     @minDay = Day.first().date.to_s
-    @dataset = Popularity.popularitiesAsJSON(@topics.first.popularities.first(30))
+    @dataset = Popularity.popularitiesAsJSON(@topics.first.popularities)
 	end
 
   def splash
@@ -28,7 +30,7 @@ class TopicsController < ApplicationController
     articles_per_page = 4
     date = Day.find(params[:date_id]).date.to_s
     page = params[:page].to_i - 1
-    @articles = Topic.find(params[:topic_id]).articles.order('published_at DESC').offset(page * articles_per_page).limit(4)
+    @articles = Topic.find(params[:topic_id]).articles.where(published_at: date).order('published_at DESC').offset(page * articles_per_page).limit(4)
     @total_articles = Topic.find(params[:topic_id]).articles.where(published_at: date).count
     @total_pages = (@total_articles / 4.0).ceil
     @current_page = page + 1
