@@ -1,7 +1,7 @@
 /*------------- general -----------*/
 
 body {
-	padding: 0;
+	padding: 70px 0 20px 0;
 	margin: 0;
 }
 
@@ -19,7 +19,10 @@ hr {
 	padding-bottom: 1em;
 	padding-top: 0.3em;
 	margin-bottom: 2em;
-	position: relative;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 2;
 }
 
 #header h1{
@@ -259,6 +262,9 @@ svg {
 /*------------- header -----------*/
 
 #footer {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
 	padding: 5px 0;
 	height: 20px;
 	background-color: #222;
