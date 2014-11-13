@@ -72,7 +72,7 @@ hr {
 #topics .topic {
 	float: left;
 	width: 207px;
-	margin-right: 0.6%;	
+	margin-right: 0.6%;
 	background: linear-gradient(#f9f9f9,#e3e3e3);
 	box-shadow: 0 0 4px #999;
 	border-radius: 5px;
@@ -94,8 +94,8 @@ hr {
 	color: white;
 	font-weight: normal;
 
-	font-family:  Helvetica, Sans-Serif; 
-   
+	font-family:  Helvetica, Sans-Serif;
+
 }
 
 .highlighted{
@@ -244,6 +244,16 @@ svg {
 	box-shadow: 0 0 4px #999;
 	border-radius: 5px;
 	font-size: 1em;
+}
+
+.warning {
+	position: relative;
+	background-color: #fff;
+	top: 55px;
+	padding: 25px 0;
+	background: linear-gradient(#f9f9f9,#e3e3e3);
+	box-shadow: 0 0 4px #999;
+	border-radius: 5px;
 }
 
 /*------------- header -----------*/
