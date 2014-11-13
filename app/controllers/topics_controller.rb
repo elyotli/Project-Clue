@@ -1,6 +1,12 @@
 class TopicsController < ApplicationController
 	def index
-    params[:date_id] ? day = Day.find(params[:date_id]) : day = Day.get_today
+    if(params[:date_id] == -1 || !params[:date_id])
+      day = Day.get_today
+    else
+      day = Day.find(params[:date_id])
+    end
+
+    # params[:date_id] ? day = Day.find(params[:date_id]) : day = Day.get_today
 
     @day_str = day.date.to_s
     @day = day
@@ -15,6 +21,7 @@ class TopicsController < ApplicationController
     @total_pages = (@total_articles / 4.0).ceil
     @maxDay = Date.today
     @minDay = Day.first().date.to_s
+    @maxDayId = Day.get_today.id
     @dataset = Popularity.popularitiesAsJSON(@topics.first.popularities)
 	end
 

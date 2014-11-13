@@ -52,7 +52,8 @@ namespace :topics do
  	dbday = Day.find_or_create_by(date: breakout_date)
  	dbtopic = Topic.find_or_create_by(title: topic)
  	article_results = NewYorkTimesSearch.new.search_with_date(topic, breakout_date)
- 	# ap article_results
+  ap "historical articles for #{topic} : "
+ 	ap article_results
  	article_results.each do |article|
     unless article.nil?
    		a = Article.find_or_create_by(title: article[:title])
@@ -62,8 +63,9 @@ namespace :topics do
     	a.image_url = article[:image_url] unless article[:image_url] == nil
     	a.published_at = Date.parse(article[:published_at]) unless article[:image_url] == nil
     	a.twitter_popularity = article[:twitter_pop] unless article[:twitter_pop] == nil
-    	a.save! unless article[:title] == nil
+    	a.save!# unless article[:title] == nil
     	DayTopic.find_or_create_by(topic_id: dbtopic.id, day_id: dbday.id)
+      ArticleTopic.find_or_create_by(topic_id: dbtopic.id, article_id: a.id)
     end
  	end
  end

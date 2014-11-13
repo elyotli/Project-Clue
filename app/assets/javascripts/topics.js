@@ -31,6 +31,7 @@ $(document).on('click', '.buttons', function(e) {
 function updateArticalPagination() {
 	var page = parseInt($('.article').first().data('current-page'));
 	var totalArticles = parseInt($('.article').first().data('total-articles'));
+	articlePageTotal = parseInt($('.article').first().data('total-pages'));
 
 	var minRange = page * 4 - 3;
 	var maxRange = page * 4;
@@ -117,7 +118,7 @@ $(document).on('click', '.topic', function(e){
 
 			var articlePageTarget = 1;
 			$.ajax({
-				url: 'topics/' + topicId + '/date/' + dayId + '/articles/' + articlePageTarget,
+				url: 'topics/' + topicId + '/date/' + maxDayId + '/articles/' + articlePageTarget,
 				type: 'get',
 				dataType: 'html',
 				success: function(response) {

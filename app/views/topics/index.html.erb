@@ -1,6 +1,6 @@
 <div id='header'>
 	<div class='container'>
-		<h1 class='xxlarge title'>Project Clue</h1>
+		<h1 class='xxlarge title'>News Ketchup</h1>
 		<div class='datebox'>
 			<h3 id='date'>
 				Headline - <span><%= @day.date.to_s %></span>
@@ -30,7 +30,9 @@
 			<div class='btn' id='google_trend_index'>Google</div>
 			<hr>
 		</div> -->
-		<div id='chart' class='noselect'></div>
+		<div id='chart' class='noselect'>
+			<h2>Historical Popularity by Google Trends</h2>
+		</div>
 	</div>
 	<div id='articles'>
 		<div class='btn btn_l'>
@@ -64,6 +66,7 @@
 	var articlePageTotal = <%= (@total_articles / @articles_per_page.to_f).ceil %>;
 	var maxDate = '<%= @maxDay %>';
 	var minDate = '<%= @minDay %>';
+	var maxDayId = '<%= @maxDayId %>';
 
 	var parseDate = d3.time.format("%Y-%m-%d").parse;
 	var currentStatistic = 'google_trend_index';
