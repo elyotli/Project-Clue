@@ -1,6 +1,8 @@
 class TopicsController < ApplicationController
 	def index
-    params[:date_id] ? day = Day.find(params[:date_id]) : day = Day.last
+
+    params[:date_id] ? day = Day.find(params[:date_id]) : day = Day.get_today
+
     @day_str = day.date.to_s
     @day = day
     @topics = day.topics.first(4)
@@ -18,9 +20,9 @@ class TopicsController < ApplicationController
 	end
 
   def splash
-      today = Day.get_today      
-      @topics = today.topics
-      render "splash", layout: false
+    today = Day.get_today      
+    @topics = today.topics
+    render "splash", layout: false
   end
 
   # when a user click on the topic image

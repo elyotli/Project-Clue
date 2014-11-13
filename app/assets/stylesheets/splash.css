@@ -1,8 +1,8 @@
 .table{
-	margin-left: 20%;
-	margin-top: 7%;
+	width: 61%;
+	margin: 0 auto;
 	padding: none;
-	margin-top: 10px;
+	background-color: black;
 }
 
 #splash_head{
@@ -19,20 +19,26 @@ width: 420px;
 height: 240px;
 margin-bottom: 0px;
 display: inline-block;
+margin: 3px;
+
 
 
 }
 
+.tr{
+	text-align: center;
+}
 .topic_heading{
 	position: relative;
-	bottom: 50px;
+	bottom: 80px;
 	color: white;
 	font-size: 170%;
 	font-family: 'Old Standard TT', serif;
-	font-weight: 700;
-
-
+	font-weight: 700;	
+	background-color: rgba(0, 0, 0, 0.6);
 }
+
+
 
 #vince{
 	color: red;
@@ -40,16 +46,15 @@ display: inline-block;
 
 
 .images{
-    position: relative;
-    float: left;
     width: 420px;
     height: 100%;
+    opacity: 0.6
 }
 
 
 body{
 	background-image: url('/images/world-wallpaper.jpg');
-	background-opacity: .5;
+	background-opacity: 
 }
 
 
