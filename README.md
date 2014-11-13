@@ -4,7 +4,7 @@ News Ketchup
 <b>News Ketchup</b>'s purpose is to help users of the app rid themselves of moments of being left out of a conversation due to ignorance of today's trending news topics.
 
 === Screenshots
-![NewsKetchup_Landing_Page](https://drive.google.com/file/d/0B2UkOI3T699gaGlkaVh0WUQzQUU)
+![NewsKetchup_Landing_Page](https://raw.githubusercontent.com/drennen42/drennen42.github.io/master/images/NewsKetchup_Landing.png)
 
 === System Requirements
 - Ruby 2.0.0
