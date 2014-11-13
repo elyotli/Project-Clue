@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141107164640) do
+ActiveRecord::Schema.define(version: 20141113154308) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,7 +29,9 @@ ActiveRecord::Schema.define(version: 20141107164640) do
     t.text     "url"
     t.text     "source",              default: "No source provided."
     t.text     "image_url",           default: "http://dribbble.s3.amazonaws.com/users/107262/screenshots/462548/ketchup_logo_1.jpg"
+
     t.date     "published_at",        default: '2014-11-13'
+
     t.integer  "twitter_popularity",  default: 1
     t.integer  "facebook_popularity", default: 1
     t.integer  "google_trend_index",  default: 1
