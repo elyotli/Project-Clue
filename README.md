@@ -8,6 +8,8 @@ News Ketchup
 ### Screenshots:
 ![NewsKetchup_Landing_Page](https://raw.githubusercontent.com/drennen42/drennen42.github.io/master/images/NewsKetchup_Landing.png)
 
+![NewsKetchup_main_old](https://raw.githubusercontent.com/drennen42/drennen42.github.io/master/images/NewsKetchup_Main_Old.png)
+
 ### System Requirements
 - Ruby 2.0.0
 - Rails 4.1.6
