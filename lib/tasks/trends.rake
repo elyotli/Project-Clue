@@ -65,7 +65,7 @@ namespace :topics do
     	a.twitter_popularity = article[:twitter_pop] unless article[:twitter_pop] == nil
     	a.save!# unless article[:title] == nil
     	DayTopic.find_or_create_by(topic_id: dbtopic.id, day_id: dbday.id)
-      # DayTopic.find_or_create_by(topic_id: dbtopic.id, day_id: dbday.id)
+      ArticleTopic.find_or_create_by(topic_id: dbtopic.id, article_id: a.id)
     end
  	end
  end
