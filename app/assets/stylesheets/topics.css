@@ -204,10 +204,23 @@ svg {
 	margin-right: 0;
 }
 
-.article .image img {
-	width: 100%;
-	/*z-index: 4;*/
+.article .image {
+	height: 200px;
+	background-position: center;
+	background-size: auto 200px;
+	background-repeat: no-repeat;
 }
+
+/*.article .image {
+	overflow: hidden;
+	text-align: center;
+}
+
+.article .image img {
+	height: 250px;
+	/*width: 100%;*/
+	/*z-index: 4;*/
+}*/
 
 .article .text p {
 	padding: 0 0.5em;
