@@ -198,7 +198,6 @@
 			var date = this.__data__.date.toISOString().replace(/T.*/i,'');
 			var day = this.__data__.day;
 			var url = 'topics/'+topicId+'/date/'+day+'/articles/1';
-			console.log(url);
 			$.ajax({
 				url: url,
 				type: 'get',

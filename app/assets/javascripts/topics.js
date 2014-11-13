@@ -79,7 +79,7 @@ $(document).on('click', '#articles .fa', function(e) {
 });
 
 // click on topic
-$(document).on('click', '.topic *', function(e){
+$(document).on('click', '.topic', function(e){
 	var id = $(e.target).closest('.topic').data('id');
 	topicId = id;
 	var url = 'topics/'+id+'/statistics/popularity';
