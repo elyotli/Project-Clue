@@ -212,6 +212,7 @@
 					$('#article_list').html(response);
 					articlePageTotal = $('.article').first().data('total-pages');
 					updateArticalPagination();
+					updateHeights();
 				}
 			});
 		});
@@ -301,6 +302,7 @@
 						success: function(response) {
 							$('#article_list').html(response);
 							updateArticalPagination();
+							updateHeights();
 						}
 					});
 				}
