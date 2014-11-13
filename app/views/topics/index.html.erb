@@ -74,6 +74,7 @@
 			newObj['date'] = parseDate(fullDataset[i].date);
 			newObj[currentStatistic] = fullDataset[i][currentStatistic];
 			newObj['day'] = fullDataset[i].day;
+			newObj['date_orig'] = fullDataset[i].date
 			newSet.push(newObj);
 		}
 		return newSet;
@@ -279,12 +280,14 @@
 					xPos = parseFloat($(this).attr('cx'));
 					if(xPos >= selectionXLeftBound && xPos <= selectionXRightBound) {
 						$(this).attr('stroke','red');
-						selected.push(this.__data__.day);
+						selected.push(this.__data__.date_orig);
 					}
 				});
 
+				selected = selected.sort();
+
 				if(selected.length > 0) {
-					var selectedRange = [getMinOfArray(selected), getMaxOfArray(selected)];
+					var selectedRange = [selected[0], selected[selected.length-1]];
 					//console.log(selectedRange);
 					var data = 'min='+selectedRange[0]+'&max='+selectedRange[1];
 					console.log(data);

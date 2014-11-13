@@ -69,8 +69,8 @@ class TopicsController < ApplicationController
     else #first time running it
       @page = 0
       @topic = Topic.find(params[:topic_id])
-      dayMin = Day.find(params[:min]).date.to_s
-      dayMax = Day.find(params[:max]).date.to_s
+      dayMin = params[:min]
+      dayMax = params[:max]
       @articles = @topic.articles.where(published_at: dayMin..dayMax)
       @total_articles = @articles.count
       @total_pages = (@total_articles / 4.to_f).ceil
