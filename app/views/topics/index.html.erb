@@ -22,6 +22,7 @@
 		</div>
 		<hr>
 	</div>
+
 	<div id='statistics'>
 		<!-- <div class='buttons'>
 			<div class='btn' id='twitter_popularity'>Twitter</div>
@@ -83,7 +84,7 @@
 
 	var fullDataset=JSON.parse('<%= raw @dataset %>');
 	var dataset = partialDataset();
-	
+
 	var margin = {top: 20, right: 30, bottom: 30, left: 50},
 	    width = $('.container').width() - margin.left - margin.right,
 	    height = 288 - margin.top - margin.bottom;
@@ -236,7 +237,7 @@
 			  var rectX = parseFloat(d3.select('rect.left-bracket').attr('x'));
 
 			  var width = mouseX - rectX - margin.left;
-			  
+
 			  if(width < 0) {
 			  	svgActive = false;
 			  	svg.select("rect.left-bracket").remove();
@@ -267,11 +268,11 @@
 			if(svgActive && !circleActive) {
 				svgActive = false;
 				var selection = svg.select("rect.left-bracket");
-				
+
 				var selectionWidth = parseFloat(selection.attr('width'));
 				var selectionXLeftBound = parseFloat(selection.attr('x'));
 				var selectionXRightBound = selectionWidth + selectionXLeftBound;
-				
+
 				var selected = [];
 
 				d3.selectAll('circle.standard').each(function(){
@@ -281,12 +282,12 @@
 						selected.push(this.__data__.day);
 					}
 				});
-				
+
 				if(selected.length > 0) {
 					var selectedRange = [getMinOfArray(selected), getMaxOfArray(selected)];
 					//console.log(selectedRange);
 					var data = 'min='+selectedRange[0]+'&max='+selectedRange[1];
-
+					console.log(data);
 					$.ajax({
 						url: 'topics/'+topicId+'/date_range',
 						type: 'post',

@@ -24,11 +24,11 @@ ActiveRecord::Schema.define(version: 20141107164640) do
   end
 
   create_table "articles", force: true do |t|
-    t.string   "title"
+    t.text     "title"
     t.text     "abstract",            default: "No abstract provided."
-    t.string   "url"
-    t.string   "source",              default: "No source provided."
-    t.string   "image_url",           default: "http://dribbble.s3.amazonaws.com/users/107262/screenshots/462548/ketchup_logo_1.jpg"
+    t.text     "url"
+    t.text     "source",              default: "No source provided."
+    t.text     "image_url",           default: "http://dribbble.s3.amazonaws.com/users/107262/screenshots/462548/ketchup_logo_1.jpg"
     t.date     "published_at",        default: '2014-11-12'
     t.integer  "twitter_popularity",  default: 1
     t.integer  "facebook_popularity", default: 1

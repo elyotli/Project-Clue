@@ -1,6 +1,5 @@
 class TopicsController < ApplicationController
 	def index
-
     params[:date_id] ? day = Day.find(params[:date_id]) : day = Day.get_today
 
     @day_str = day.date.to_s
@@ -14,13 +13,13 @@ class TopicsController < ApplicationController
     @total_articles = @all_articles.count
     @current_page = 1
     @total_pages = (@total_articles / 4.0).ceil
-    @maxDay = Day.last().date.to_s
+    @maxDay = Date.today
     @minDay = Day.first().date.to_s
     @dataset = Popularity.popularitiesAsJSON(@topics.first.popularities)
 	end
 
   def splash
-    today = Day.get_today      
+    today = Day.get_today
     @topics = today.topics
     render "splash", layout: false
   end
