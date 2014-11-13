@@ -286,7 +286,7 @@
 					var selectedRange = [getMinOfArray(selected), getMaxOfArray(selected)];
 					//console.log(selectedRange);
 					var data = 'min='+selectedRange[0]+'&max='+selectedRange[1];
-
+					console.log(data)
 					$.ajax({
 						url: 'topics/'+topicId+'/date_range',
 						type: 'post',

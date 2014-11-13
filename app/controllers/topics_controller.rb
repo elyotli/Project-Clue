@@ -68,15 +68,13 @@ class TopicsController < ApplicationController
       @topic = Topic.find(params[:topic_id])
       dayMin = Day.find(params[:min]).date.to_s
       dayMax = Day.find(params[:max]).date.to_s
-      @articles = @topic.articles.where(published_at: dayMin..dayMax)
+      @articles = @topic.articles.where(published_at: dayMin..dayMax).order(published_at: :desc)
       @total_articles = @articles.count
       @total_pages = (@total_articles / 4.to_f).ceil
-      @articles = @articles.order('published_at DESC')
       @articles_set = @articles.map do |article|
         article.id
       end
       @articles = @articles.slice(@page,4)
-      @total_pages = (@total_articles / 4.to_f).ceil
       @current_page = @page
     end
 
