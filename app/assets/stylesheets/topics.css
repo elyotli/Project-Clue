@@ -230,6 +230,7 @@ svg {
 }
 
 #article-page {
+	display: none;
 	background: linear-gradient(#f9f9f9,#e3e3e3);
 	box-shadow: 0 0 4px #999;
 	border-radius: 5px;
