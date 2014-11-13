@@ -67,6 +67,7 @@ News Ketchup
 		(*) forward tracking of topics
 		(*) default articles when a topic is first chosen should be over the entire timeline -->
 
+### Extra Images:
 ![whiteboard_backlog](project management/whiteboard_backlog.jpg)
 
 ![whiteboard_algorithm](project management/whiteboard_algorithm.jpg)
