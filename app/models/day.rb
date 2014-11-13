@@ -10,7 +10,7 @@ class Day < ActiveRecord::Base
   end
 
   def self.get_today
-  	Day.all.order('date DESC').first
+    Day.all.order(date: :desc)[0]
   end
 
 end

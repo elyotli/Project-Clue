@@ -1,4 +1,22 @@
 // Onload
+function updateHeights() {
+	var maxHeight = 0;
+	var testHeight = 0;
+
+	$('.article').each(function(i,a) {
+		testHeight = $(a).height() + $(a).find('.source').height();
+
+		if(testHeight > maxHeight) {
+			maxHeight = testHeight;
+		}
+
+		$('.article').height(maxHeight);
+	});
+}
+
+$(document).ready(function(){
+	updateHeights();
+});
 
 // click on stats toggle (twitter, etc.)
 $(document).on('click', '.buttons', function(e) {
@@ -27,7 +45,7 @@ function updateArticalPagination() {
 // click on article carousel buttons
 $(document).on('click', '#articles .fa', function(e) {
 	var articlePageTarget = 0;
-	
+
 	var articlesSet = $('#articles-set');
 	if(articlesSet.length != 0) {
 		var articlesData = articlesSet.data();
@@ -53,7 +71,7 @@ $(document).on('click', '#articles .fa', function(e) {
 		var type = '';
 
 		if(articlesSet.length != 0) {
-			data = 'articles_set=' + JSON.stringify(articlesData.articlesSet) + 
+			data = 'articles_set=' + JSON.stringify(articlesData.articlesSet) +
 							'&page=' + articlePageTarget;
 			type = 'post';
 			url = "topics/1/date_range";
@@ -73,6 +91,7 @@ $(document).on('click', '#articles .fa', function(e) {
 				articlePage = articlePageTarget;
 				$('#article_list').html(response);
 				updateArticalPagination();
+				updateHeights();
 			}
 		});
 	}
@@ -105,6 +124,7 @@ $(document).on('click', '.topic', function(e){
 					articlePage = articlePageTarget;
 					$('#article_list').html(response);
 					updateArticalPagination();
+					updateHeights();
 				}
 			});
 		}
@@ -177,6 +197,7 @@ $(document).on('click', '#topics .fa', function(e) {
 				$('#date').find('span').text($('.topic').first().data('day-string'));
 				window.clearInterval(responseChecker);
 				updateArticalPagination();
+				updateHeights();
 			}
 		}, 100);
 	}

@@ -1,6 +1,7 @@
 require_relative '../TwitterWordSearch'
 require_relative 'RSSGrabber'
 require_relative 'RSSsearch'
+require 'pry'
 
 class NbcNewsArticleSearch < RSSGrabber
 	include RSS_topic_search
@@ -15,8 +16,11 @@ class NbcNewsArticleSearch < RSSGrabber
 		@articles = convert(self.articles)
 		@articles.each do |article|
    			article[:source] = "NBC"
+   			article[:abstract] = article[:abstract].gsub(/&lt.*/, "")
  		end
 	end
 
 end
+
+# nbc = NbcNewsArticleSearch.new
 

@@ -1,6 +1,5 @@
 class TopicsController < ApplicationController
 	def index
-
     params[:date_id] ? day = Day.find(params[:date_id]) : day = Day.get_today
 
     @day_str = day.date.to_s
@@ -14,14 +13,14 @@ class TopicsController < ApplicationController
     @total_articles = @all_articles.count
     @current_page = 1
     @total_pages = (@total_articles / 4.0).ceil
-    @maxDay = Day.last().date.to_s
+    @maxDay = Date.today
     @minDay = Day.first().date.to_s
     @dataset = Popularity.popularitiesAsJSON(@topics.first.popularities)
 	end
 
   def splash
 
-    today = Day.get_today      
+    today = Day.get_today
     @topics = today.topics
     render "splash"
 
@@ -61,8 +60,9 @@ class TopicsController < ApplicationController
     if(params[:page])
       @page = params[:page].to_i
       @articles_set = JSON.parse(params[:articles_set])
+      puts "\n\n#{@articles_set}\n\n"
       @total_articles = @articles_set.count
-      @articles = @articles_set.slice(@page,4).map do |id|
+      @articles = @articles_set.slice(@page*4,4).map do |id|
         Article.find(id)
       end
       @total_pages = (@total_articles / 4.to_f).ceil
@@ -70,15 +70,16 @@ class TopicsController < ApplicationController
     else #first time running it
       @page = 0
       @topic = Topic.find(params[:topic_id])
-      dayMin = Day.find(params[:min]).date.to_s
-      dayMax = Day.find(params[:max]).date.to_s
-      @articles = @topic.articles.where(published_at: dayMin..dayMax)
+      dayMin = params[:min]
+      dayMax = params[:max]
+      @articles = @topic.articles.where(published_at: dayMin..dayMax).order(published_at: :desc)
       @total_articles = @articles.count
       @total_pages = (@total_articles / 4.to_f).ceil
-      @articles = @articles.order('published_at DESC')
+      # @articles = @articles.order('published_at DESC')
       @articles_set = @articles.map do |article|
         article.id
       end
+      puts "\n\n#{@articles_set}\n\n"
       @articles = @articles.slice(@page,4)
       @total_pages = (@total_articles / 4.to_f).ceil
       @current_page = @page
