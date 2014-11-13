@@ -189,6 +189,8 @@
 			});
 		});
 
+		// user click dot
+		//user clicks on graph circle to get that day's articles
 		d3.selectAll('circle.standard').on('mousedown',function(){
 			circleActive = true;
 			d3.selectAll('circle.standard').attr('stroke','white');
@@ -204,7 +206,7 @@
 					dayId = day;
 					articlePage = 1;
 					$('#article_list').html(response);
-					articlePageTotal = $('.article').first().data('total-articles');
+					articlePageTotal = $('.article').first().data('total-pages');
 					updateArticalPagination();
 				}
 			});
@@ -258,6 +260,9 @@
 			}
 		});
 
+
+		// user select range
+		//user selects a range of days on the graph to get their articles
 		d3.select('svg').on('mouseup', function(){
 			if(svgActive && !circleActive) {
 				svgActive = false;

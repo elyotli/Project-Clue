@@ -51,8 +51,8 @@ class TwitterWordSearch < APIControl
   end
 end
 
-test = TwitterWordSearch.new
-test.get_follower_count("washingtonpost")
+# test = TwitterWordSearch.new
+# test.get_follower_count("washingtonpost")
 #ap test.search_tweet("http://www.nytimes.com/2014/11/07/opinion/paul-krugman-triumph-of-the-wrong.html")
 
 # puts "*" * 30
