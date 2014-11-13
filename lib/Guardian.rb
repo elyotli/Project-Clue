@@ -51,15 +51,21 @@ class Guardian
     response = JSON.parse(get_request(url))["response"]["results"]
     response.each do |a|
 
-       a["fields"] ||= "http://www.thehaasbrothers.com/hsite/wp-content/uploads/2014/04/guardian-logo.jpg"
+       a["fields"] ||= "http://www.thehaasbrothers.com/hsite/wp-content/uploads/2014/04/guardian-logo.jpeg"
       article = {
                 :title => a["webTitle"],
                 :published_at => Date.parse(a["webPublicationDate"]),
                 :url => a["webUrl"],
-                :image_url => /http.*jpg/.match(a["fields"]["main"]).to_s, 
-                :source => "TheGuardian"            
+                :image_url => /http.*jpe?g/.match(a["fields"]["main"]).to_s,
+                :source => "TheGuardian"
 
                 }
+
+                if article[:image_url] == ""
+                  article[:image_url] = "http://www.thehaasbrothers.com/hsite/wp-content/uploads/2014/04/guardian-logo.jpg"
+                end
+
+
       searched_articles << article
     end
     # return get_popularity(@searched_articles)

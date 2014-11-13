@@ -18,6 +18,10 @@ class Popularity < ActiveRecord::Base
       }
       pop_array << my_hash
     end
+    pop_array = pop_array.sort do |h1,h2|
+      h1[:date] <=> h2[:date]
+    end
+    p pop_array
     pop_array
   end
 

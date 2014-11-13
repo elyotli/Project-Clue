@@ -1,2 +1,6 @@
-<div class='hidden' id='articles-set' data-articles-set='<%= @articles_set.to_json %>' data-page='<%= @page %>' data-total-pages='<%= @total_pages %>' data-total-articles='<%= @total_articles %>'></div>
-<%= render partial: 'topics/article', layout: false %>
+<% if @articles.count > 0 %>
+  <div class='hidden' id='articles-set' data-articles-set='<%= @articles_set.to_json %>' data-page='<%= @page %>' data-total-pages='<%= @total_pages %>' data-total-articles='<%= @total_articles %>'></div>
+  <%= render partial: 'topics/article', layout: false %>
+<% else %>
+  <h1 class='warning'>No Articles.</h1>
+<% end %>

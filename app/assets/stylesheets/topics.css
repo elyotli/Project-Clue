@@ -1,7 +1,7 @@
 /*------------- general -----------*/
 
 body {
-	padding: 0;
+	padding: 70px 0 20px 0;
 	margin: 0;
 }
 
@@ -19,7 +19,10 @@ hr {
 	padding-bottom: 1em;
 	padding-top: 0.3em;
 	margin-bottom: 2em;
-	position: relative;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 2;
 }
 
 #header h1{
@@ -72,7 +75,7 @@ hr {
 #topics .topic {
 	float: left;
 	width: 207px;
-	margin-right: 0.6%;	
+	margin-right: 0.6%;
 	background: linear-gradient(#f9f9f9,#e3e3e3);
 	box-shadow: 0 0 4px #999;
 	border-radius: 5px;
@@ -94,8 +97,8 @@ hr {
 	color: white;
 	font-weight: normal;
 
-	font-family:  Helvetica, Sans-Serif; 
-   
+	font-family:  Helvetica, Sans-Serif;
+
 }
 
 .highlighted{
@@ -201,10 +204,23 @@ svg {
 	margin-right: 0;
 }
 
-.article .image img {
-	width: 100%;
-	/*z-index: 4;*/
+.article .image {
+	height: 200px;
+	background-position: center;
+	background-size: auto 200px;
+	background-repeat: no-repeat;
 }
+
+/*.article .image {
+	overflow: hidden;
+	text-align: center;
+}
+
+.article .image img {
+	height: 250px;
+	/*width: 100%;*/
+	/*z-index: 4;
+}*/
 
 .article .text p {
 	padding: 0 0.5em;
@@ -246,9 +262,22 @@ svg {
 	font-size: 1em;
 }
 
+.warning {
+	position: relative;
+	background-color: #fff;
+	top: 55px;
+	padding: 25px 0;
+	background: linear-gradient(#f9f9f9,#e3e3e3);
+	box-shadow: 0 0 4px #999;
+	border-radius: 5px;
+}
+
 /*------------- header -----------*/
 
 #footer {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
 	padding: 5px 0;
 	height: 20px;
 	background-color: #222;
