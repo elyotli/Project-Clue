@@ -4,6 +4,9 @@
 	   <%= stylesheet_link_tag "splash" %>
 	   <link href='http://fonts.googleapis.com/css?family=Londrina+Solid' rel='stylesheet' type='text/css'>
 	   <link href='http://fonts.googleapis.com/css?family=Old+Standard+TT:400,700,400italic' rel='stylesheet' type='text/css'>
+	   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	   <%= javascript_include_tag "splash" %>
+
 
 		</head>
 
@@ -12,24 +15,23 @@
 <div class ="splash_container">
 	<h1 id="splash_head">News <span id="vince">Ketchup</span></h1>
 		<table class="table">
-			<tr>
+			<tr class="tr">
 				<td class="td">
 					<%= link_to image_tag(@topics[0].image_url, class: "images"), topics_path %>
-					<span class="topic_heading"><%= @topics[0].title %></span>
+				<div class="splash_box"><span class="topic_heading"><%= @topics[0].title %></span></div>
 				</td>
 				<td class="td">
-				<%= link_to image_tag(@topics[1].image_url, class: "images"), topics_path %>
-				<span class="topic_heading"><%= @topics[1].title %></span>
+				<%= link_to image_tag(@topics[1].image_url, class: "images"), topics_path %><div class="splash_box"><span class="topic_heading"><%= @topics[1].title %></span></div>
 				</td>
 			</tr>
-			<tr>
+			<tr class="tr">
 				<td class="td">
 					<%= link_to image_tag(@topics[2].image_url, class: "images" ), topics_path %>
-					<span class="topic_heading"><%= @topics[2].title %></span>
+				<div class="splash_box"><span class="topic_heading"><%= @topics[2].title %></span></div>
 				</td>
 				<td class="td">
 					<%= link_to image_tag(@topics[3].image_url, class: "images"), topics_path %>
-					<span class="topic_heading"><%= @topics[3].title %></span>
+				<div class="splash_box"><span class="topic_heading"><%= @topics[3].title %></span></div>
 				</td>
 			</tr>
 		</table>
