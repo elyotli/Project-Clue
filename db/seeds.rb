@@ -122,32 +122,44 @@ days.each do |day|
 	end
 end
 
-days = Day.all
-topicObjs = Topic.all
-topicObjs.each do |to|
-	days.each do |day|
-		Popularity.create!(
-			topic_id: to.id,
-			day_id: day.id,
-			google_trend_index: randomPopularity
-		)
-		counter = 0
-		topics.each do |topic|
-			3.times do
-				topic[:articles].each do |article|
-					articleObj = Article.create!(
-						title: "#{day.date.to_s} #{topic[:title]} #{counter} #{article[:title]}",
-						url: article[:url],
-						published_at: day.date.to_s,
-						image_url: article[:image_url],
-						abstract: article[:abstract],
-						source: article[:source],
-						twitter_popularity: randomPopularity
-					)
-					ArticleTopic.create!(topic_id: to.id , article_id: articleObj.id)
-					counter += 1
+Day.all.each do |day|
+	day.topics.each do |topic|
+		topics_hash = topics.select do |t|
+			if(topic.title.match (/#{t[:title]}/))
+				true
+			else
+				false
+			end
+		end[0]
+		('2014-10-01'..day.date.to_s).to_a.each.with_index do |date,index|
+			if(date != day.date.to_s)
+				counter = 0
+				3.times do
+					topics_hash[:articles].each do |article|
+						articleObj = Article.create!(
+							title: "#{date} #{topic.title} #{counter} #{article[:title]}",
+							url: article[:url],
+							published_at: date,
+							image_url: article[:image_url],
+							abstract: article[:abstract],
+							source: article[:source],
+							twitter_popularity: randomPopularity
+						)
+						ArticleTopic.create!(topic_id: topic.id , article_id: articleObj.id)
+						counter += 1
+					end
 				end
 			end
 		end
+	end
+end
+
+Topic.all.each do |topic|
+	Day.all.each do |day|
+		Popularity.create!(
+			topic_id: topic.id,
+			day_id: day.id,
+			google_trend_index: randomPopularity
+		)
 	end
 end

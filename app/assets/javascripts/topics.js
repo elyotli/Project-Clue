@@ -12,9 +12,16 @@ $(document).on('click', '.buttons', function(e) {
 
 function updateArticalPagination() {
 	var page = parseInt($('.article').first().data('current-page'));
-	var total = parseInt($('.article').first().data('total-pages'));
-	$('#artical-page-current').text(page);
-	$('#artical-page-total').text(total);
+	var totalArticles = parseInt($('.article').first().data('total-articles'));
+
+	var minRange = page * 4 - 3;
+	var maxRange = page * 4;
+	maxRange = maxRange > totalArticles ? totalArticles : maxRange;
+
+	var text = minRange + '-' + maxRange;
+
+	$('#article-page-current').text(text);
+	$('#article-page-total').text(totalArticles);
 }
 
 // click on article carousel buttons
@@ -166,7 +173,7 @@ $(document).on('click', '#topics .fa', function(e) {
 				topicId = $('.topic').first().data('id');
 				dayId = $('.topic').first().data('day-id');
 				articlePage = 1;
-				articlePageTotal = $('.article').first().data('total-articles');
+				articlePageTotal = $('.article').first().data('total-pages');
 				$('#date').find('span').text($('.topic').first().data('day-string'));
 				window.clearInterval(responseChecker);
 				updateArticalPagination();
