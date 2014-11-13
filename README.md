@@ -1,4 +1,4 @@
-News Ketchup
+![News Ketchup](https://raw.githubusercontent.com/drennen42/drennen42.github.io/master/images/NewsKetchup_Logo.png)
 ============
 
 
