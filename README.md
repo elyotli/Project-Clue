@@ -3,7 +3,7 @@ News Ketchup
 
 ```html
 **News Ketchup's** purpose is to help users of the app rid themselves of moments of being left out of a conversation due to ignorance of today's trending news topics.
-'''
+
 
 ### Screenshots:
 ![NewsKetchup_Landing_Page](https://raw.githubusercontent.com/drennen42/drennen42.github.io/master/images/NewsKetchup_Landing.png)
