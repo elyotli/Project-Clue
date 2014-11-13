@@ -15,7 +15,7 @@ class TopicsController < ApplicationController
   def splash
     today = Day.get_today      
     @topics = today.topics
-    render "splash", layout: false
+    render "splash"
   end
 
   def articles_page
