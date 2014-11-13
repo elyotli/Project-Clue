@@ -1,13 +1,13 @@
-<% @articles.each do |article| %>
+<% @articles.each.with_index do |article,index| %>
 <a href='<%= article.url %>' target='_blank'>
-	<div class='article' data-article-id='<%= article.id %>' data-total-articles='<%= @total_articles %>'>
-		<%= image_tag article.image_url %>
-		<h3><span><%= article.title %></span></h3>
-		<p class='abstract'><span><%= article.abstract %></span></p>
-		<!-- <p class='stat'>Twitter Popularity: <span><%= article.twitter_popularity %></span></p>
-		<p class='stat'>Facebook Popularity: <span><%= article.facebook_popularity %></span></p>
-		<p class='stat'>Google Trends Index: <span><%= article.google_trend_index %></span></p>
-		<p class='source'><%= article.source %> </p>-->
+	<div class='article<% if index == 3 %><%= ' right' %><% end %>' data-article-id='<%= article.id %>' data-total-articles='<%= @total_articles %>' data-current-page='<%= @current_page %>' data-total-pages='<%= @total_pages %>'>
+		<div class='image'><%= image_tag article.image_url %></div>
+		<div class='text'>
+			<h3><%= article.title %></h3>
+			<p class='abstract'><span><%= article.abstract %></span></p>
+		</div>
+		<p class='popularity'>Twitter Popularity: <span><%= article.twitter_popularity %></span></p>
+		<p class='source'>Source: <%= article.source %> </p>
 	</div>
 </a>
 <% end %>

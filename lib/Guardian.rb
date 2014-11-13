@@ -9,6 +9,7 @@ require "./Requests_and_Responses"
 require 'awesome_print'
 require 'json'
 require 'date'
+require 'pry'
 
 class Guardian
   GUARDIAN_BASE_URL = "http://content.guardianapis.com/search?"
@@ -16,7 +17,7 @@ class Guardian
   GUARDIAN_SEARCH_URL = "http://content.guardianapis.com/search?"
   GUARDIAN_FROM_DATE = Date.today.prev_day.strftime('%Y-%m-%d')
 
- 
+
   attr_accessor :all_articles, :initial_articles, :searched_articles
   include Requests_and_Responses
 
@@ -46,15 +47,18 @@ class Guardian
 
   def search(keywords)
     searched_articles = []
-    url = GUARDIAN_SEARCH_URL + "api-key=" + GUARDIAN_APP_KEY + "&q=" + keywords.split(" ").join("%20") + "&from-date=" + GUARDIAN_FROM_DATE
+    url = GUARDIAN_SEARCH_URL + "api-key=" + GUARDIAN_APP_KEY + "&show-fields=main" + "&q=" + keywords.split(" ").join("%20") + "&from-date=" + GUARDIAN_FROM_DATE
     response = JSON.parse(get_request(url))["response"]["results"]
     response.each do |a|
 
+       a["fields"] ||= "http://www.thehaasbrothers.com/hsite/wp-content/uploads/2014/04/guardian-logo.jpg"
       article = {
                 :title => a["webTitle"],
-                :pub_date => a["webPublicationDate"],
+                :published_at => Date.parse(a["webPublicationDate"]),
                 :url => a["webUrl"],
-                :source => "TheGuardian"
+                :image_url => /http.*jpg/.match(a["fields"]["main"]).to_s, 
+                :source => "TheGuardian"            
+
                 }
       searched_articles << article
     end
@@ -67,12 +71,12 @@ class Guardian
     end
     sorted = searched_articles.sort_by!{ |article| article[:total_popularity] }
     sorted.reverse!
-    return sorted
+    return p sorted
   end
 end
 
 
-# keywords = ["potatoe"]
+# keywords = ["obama"]
 # guard = Guardian.new
 # keywords.each { |word| guard.search(word) }
-# # ap guard.all_articles
+# ap guard.all_articles

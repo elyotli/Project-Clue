@@ -15,6 +15,7 @@ class GuardianArticleSearch < APIControl
 
   def set_params(keywords, sort_method, count)
     @processed_url = @@base_url + "api-key=" + @@app_key
+    @processed_url += "show-fields=main"
     @processed_url += "&q=" + keywords.split(" ").join("%20")
     @processed_url += "&order-by" + sort_method
     @processed_url += "&page-size=" + count
