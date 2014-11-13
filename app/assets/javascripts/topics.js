@@ -57,6 +57,7 @@ $(document).on('click', '#articles .fa', function(e) {
 		else {
 			articlePageTarget = articlesData.page + 1;
 		}
+		articlePageTotal--;
 	}
 	else {
 		if($(e.target).hasClass('fa-chevron-left')) {
@@ -66,7 +67,7 @@ $(document).on('click', '#articles .fa', function(e) {
 			articlePageTarget = articlePage + 1;
 		}
 	}
-	if(articlePageTarget >= 0 && articlePageTarget <= articlePageTotal) {
+	if(articlePageTarget > 0 && articlePageTarget <= articlePageTotal) {
 		var url = '';
 		var data = '';
 		var type = '';
