@@ -62,6 +62,7 @@ $(document).on('click', '#articles .fa', function(e) {
 		}
 	}
 	else {
+		dayId = maxDayId;
 		if($(e.target).hasClass('fa-chevron-left')) {
 			articlePageTarget = articlePage - 1;
 		}
