@@ -35,3 +35,4 @@ client = OAuthClient.new(
 )
 
 ap client.get("http://api.whatthetrend.com/api/v2/trends.json?api-key=25577021592c0c1a5dac2129c65ff1ea26c6bd3c")
+
