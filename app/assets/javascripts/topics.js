@@ -132,6 +132,7 @@ $(document).on('click', '.topic', function(e){
 					updateArticalPagination();
 					updateHeights();
 					articlePageTotal = parseInt($('.article').first().data('total-pages'),10);
+					console.log(articlePageTotal);
 				}
 			});
 		}
