@@ -29,9 +29,9 @@ $(document).on('click', '.buttons', function(e) {
 });
 
 function updateArticalPagination() {
-	var page = parseInt($('.article').first().data('current-page'));
-	var totalArticles = parseInt($('.article').first().data('total-articles'));
-	articlePageTotal = parseInt($('.article').first().data('total-pages'));
+	var page = parseInt($('.article').first().data('current-page'),10);
+	var totalArticles = parseInt($('.article').first().data('total-articles'),10);
+	articlePageTotal = parseInt($('.article').first().data('total-pages'),10);
 
 	var minRange = page * 4 - 3;
 	var maxRange = page * 4;
@@ -131,7 +131,7 @@ $(document).on('click', '.topic', function(e){
 					$('#article_list').html(response);
 					updateArticalPagination();
 					updateHeights();
-					articlePageTotal = parseInt($('.article').first().data('total-pages'));
+					articlePageTotal = parseInt($('.article').first().data('total-pages'),10);
 				}
 			});
 		}
