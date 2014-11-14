@@ -122,7 +122,7 @@ $(document).on('click', '.topic', function(e){
 
 			var articlePageTarget = 1;
 			console.log(maxDayId);
-			dayId=maxDayId
+			dayId = parseInt(maxDayId,10);
 			$.ajax({
 				url: 'topics/' + topicId + '/date/' + maxDayId + '/articles/' + articlePageTarget,
 				type: 'get',
