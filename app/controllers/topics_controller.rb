@@ -19,18 +19,44 @@ class TopicsController < ApplicationController
     @total_articles = @all_articles.count
     @current_page = 1
     @total_pages = (@total_articles / 4.0).ceil
-    @maxDay = Date.today
-    @minDay = Day.first().date.to_s
+    @maxDay = Day.get_today
+    @minDay = Day.get_first
     @maxDayId = Day.get_today.id
-    @dataset = Popularity.popularitiesAsJSON(@topics.first.popularities)
+    @dataset = Popularity.popularitiesAsJSON(@topics.first)
 	end
 
   def splash
-
     today = Day.get_today
     @topics = today.topics
     render "splash"
+  end
 
+  def splash_index
+    if(params[:date_id] == -1 || !params[:date_id])
+      day = Day.get_today
+    else
+      day = Day.find(params[:date_id])
+    end
+
+    # params[:date_id] ? day = Day.find(params[:date_id]) : day = Day.get_today
+
+    @day_str = day.date.to_s
+    @day = day
+    
+    @topics = day.topics.first(4)
+
+    @all_articles = @topics.first.articles.where(published_at: @day_str).order('published_at DESC')
+    @articles = @all_articles.first(4)
+
+    @articles_per_page = 4
+    @total_articles = @all_articles.count
+    @current_page = 1
+    @total_pages = (@total_articles / 4.0).ceil
+    @maxDay = Day.get_today
+    @minDay = Day.get_first
+    @maxDayId = Day.get_today.id
+    @dataset = Popularity.popularitiesAsJSON(@topics.first)
+    render 'index'
   end
 
   # when a user click on the topic image
@@ -44,12 +70,13 @@ class TopicsController < ApplicationController
     @current_page = page + 1
 
     # @articles, @total_articles, @current_page, @total_page
+
     render partial: 'topics/article', layout: false
   end
 
   def popularity
-    @popularities = Popularity.where(topic_id: params[:topic_id])
-    render json: Popularity.popularitiesAsJSON(@popularities)
+    # @popularities = Popularity.where(topic_id: params[:topic_id])
+    render json: Popularity.popularitiesAsJSON(Topic.find(params[:topic_id]))
   end
 
   def articles

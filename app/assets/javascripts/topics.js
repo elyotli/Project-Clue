@@ -46,6 +46,7 @@ function updateArticalPagination() {
 // click on article carousel buttons
 $(document).on('click', '#articles .fa', function(e) {
 	var articlePageTarget = 0;
+	var bottomLimit = 0;
 
 	var articlesSet = $('#articles-set');
 	if(articlesSet.length != 0) {
@@ -53,9 +54,11 @@ $(document).on('click', '#articles .fa', function(e) {
 		articlePageTotal = articlesData.totalPages;
 		if($(e.target).hasClass('fa-chevron-left')) {
 			articlePageTarget = articlesData.page - 1;
+			bottomLimit = -1;
 		}
 		else {
 			articlePageTarget = articlesData.page + 1;
+			articlePageTotal = articlesData.totalPages - 1;
 		}
 	}
 	else {
@@ -66,7 +69,7 @@ $(document).on('click', '#articles .fa', function(e) {
 			articlePageTarget = articlePage + 1;
 		}
 	}
-	if(articlePageTarget >= 0 && articlePageTarget <= articlePageTotal) {
+	if(articlePageTarget > bottomLimit && articlePageTarget <= articlePageTotal) {
 		var url = '';
 		var data = '';
 		var type = '';
@@ -117,6 +120,7 @@ $(document).on('click', '.topic', function(e){
 			//update articles
 
 			var articlePageTarget = 1;
+			console.log(maxDayId);
 			$.ajax({
 				url: 'topics/' + topicId + '/date/' + maxDayId + '/articles/' + articlePageTarget,
 				type: 'get',
@@ -126,6 +130,7 @@ $(document).on('click', '.topic', function(e){
 					$('#article_list').html(response);
 					updateArticalPagination();
 					updateHeights();
+					articlePageTotal = parseInt($('.article').first().data('total-pages'));
 				}
 			});
 		}
@@ -150,6 +155,7 @@ $(document).on('click', '#topics .fa', function(e) {
 		targetDateMilliSeconds = currentDateMilliSeconds + dayInMilliSeconds;
 	}
 	targetDateStr = new Date(targetDateMilliSeconds).toISOString().replace(/T.*/i,'');
+	console.log(targetDateStr + ' '+minDate+' '+maxDate);
 	if(targetDateStr >= minDate && targetDateStr <= maxDate) {
 		var articlesURL = 'days/'+targetDateStr+'/articles';
 		var statisticsURL = 'days/'+targetDateStr+'/popularity';

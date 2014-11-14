@@ -31,7 +31,7 @@
 			<hr>
 		</div> -->
 		<div id='chart' class='noselect'>
-			<h2>Historical Popularity by Google Trends</h2>
+			<!-- <h2>Historical Popularity by Google Trends</h2> -->
 		</div>
 	</div>
 	<div id='articles'>
@@ -64,8 +64,8 @@
 	var dayId = <%= @day.id %>;
 	var articlePage = 1;
 	var articlePageTotal = <%= (@total_articles / @articles_per_page.to_f).ceil %>;
-	var maxDate = '<%= @maxDay %>';
-	var minDate = '<%= @minDay %>';
+	var maxDate = '<%= @maxDay.date %>';
+	var minDate = '<%= @minDay.date %>';
 	var maxDayId = '<%= @maxDayId %>';
 
 	var parseDate = d3.time.format("%Y-%m-%d").parse;
@@ -79,7 +79,8 @@
 			newObj['date'] = parseDate(fullDataset[i].date);
 			newObj[currentStatistic] = fullDataset[i][currentStatistic];
 			newObj['day'] = fullDataset[i].day;
-			newObj['date_orig'] = fullDataset[i].date
+			newObj['date_orig'] = fullDataset[i].date;
+			newObj['make_dot'] = fullDataset[i].make_dot
 			newSet.push(newObj);
 		}
 		return newSet;
@@ -112,7 +113,7 @@
 	var area = d3.svg.area()
 		//.interpolate("basis")
 		.interpolate("monotone")
-		//.interpolate("cardinal")
+		// .interpolate("cardinal")
 		.x(function(d) { return xScale(d.date); })
 		.y0(height)
 		.y1(function(d) { return yScale(d[currentStatistic]); });
@@ -163,7 +164,14 @@
 			.style("text-anchor", "end")
 			.text(currentStatistic.replace(/_/g, ' '));
 
-		var circles = svg.selectAll('circle.overlay').data(dataset).enter()
+		circle_dataset = [];
+		for(var i = 0; i < dataset.length; i++) {
+			if(dataset[i].make_dot) {
+				circle_dataset.push(dataset[i]);
+			}
+		}
+
+		var circles = svg.selectAll('circle.overlay').data(circle_dataset).enter()
 			.append('circle')
 			.attr('class', 'overlay')
 			.attr('fill','transparent')
@@ -172,7 +180,7 @@
 			.attr('cx', function(d) { return xScale(d.date); })
 			.attr('cy', function(d) { return yScale(d[currentStatistic]); });
 
-		var circles = svg.selectAll('circle.standard').data(dataset).enter()
+		var circles = svg.selectAll('circle.standard').data(circle_dataset).enter()
 			.append('circle')
 			.attr('class', 'standard')
 			.attr('fill','steelblue')
