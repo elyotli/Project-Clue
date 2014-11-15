@@ -8,7 +8,7 @@ class CreateArticles < ActiveRecord::Migration
   		t.text :abstract, :default => "No abstract provided."
   		t.text :url
   		t.text :source, :default => "No source provided."
-  		t.text :image_url, :default => "http://dribbble.s3.amazonaws.com/users/107262/screenshots/462548/ketchup_logo_1.jpg"
+  		t.text :image_url #, :default => "http://dribbble.s3.amazonaws.com/users/107262/screenshots/462548/ketchup_logo_1.jpg"
 
   		t.date :published_at, :default => Date.today
 
