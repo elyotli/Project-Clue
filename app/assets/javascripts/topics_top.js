@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-	$(".topic").on("click", function(){
+	$("#topic_list").on("click",".topic", function(){
 		$(".topic").removeClass( "highlighted" );
 		$(this).addClass( "highlighted" );
 	});
