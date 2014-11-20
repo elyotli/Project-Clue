@@ -62,7 +62,7 @@ $(document).on('click', '#articles .fa', function(e) {
 		}
 	}
 	else {
-		dayId = maxDayId;
+		// dayId = maxDayId;
 		if($(e.target).hasClass('fa-chevron-left')) {
 			articlePageTarget = articlePage - 1;
 		}
@@ -85,6 +85,7 @@ $(document).on('click', '#articles .fa', function(e) {
 			data = '';
 			type = 'get';
 			url = 'topics/' + topicId + '/date/' + dayId + '/articles/' + articlePageTarget;
+			console.log(url);
 		}
 
 		$.ajax({
