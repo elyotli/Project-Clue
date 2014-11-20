@@ -1,0 +1,1 @@
+ #<ActiveRecord::Relation [#<Topic id: nil, title: "JUSTICE DEPARTMENT">, #<Topic id: nil, title: "NET NEUTRALITY">, #<Topic id: nil, title: "GREENHOUSE GAS EMISSIONS">, #<Topic id: nil, title: "UNITED STATES POLITICS AND GOVERNMENT">, #<Topic id: nil, title: "EUROPEAN SPACE AGENCY">, #<Topic id: nil, title: "SOCIAL MEDIA">, #<Topic id: nil, title: "EBOLA VIRUS">]>

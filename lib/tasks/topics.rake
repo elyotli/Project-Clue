@@ -81,7 +81,7 @@ namespace :topic do
       #find the images and save them
       bing_client = BingImageSearch.new(keyword)
       image_url = bing_client.get_image_url
-      topic = Topic.find_or_create_by(title: keyword, image_url: image_url)
+      topic = Topic.find_or_create_by(title: keyword)
       daytopic = DayTopic.find_or_create_by(topic_id: topic.id, day_id: today.id)
       p "Topic: #{topic}"
     end
