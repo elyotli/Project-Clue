@@ -13,4 +13,8 @@ class Day < ActiveRecord::Base
     Day.all.order(date: :desc)[0]
   end
 
+  def self.get_first
+  	Day.all.order(date: :asc)[0]
+  end
+
 end

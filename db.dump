@@ -1,0 +1,1053 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: article_topics; Type: TABLE; Schema: public; Owner: dustinsnyder; Tablespace: 
+--
+
+CREATE TABLE article_topics (
+    id integer NOT NULL,
+    topic_id integer,
+    article_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.article_topics OWNER TO dustinsnyder;
+
+--
+-- Name: article_topics_id_seq; Type: SEQUENCE; Schema: public; Owner: dustinsnyder
+--
+
+CREATE SEQUENCE article_topics_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.article_topics_id_seq OWNER TO dustinsnyder;
+
+--
+-- Name: article_topics_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dustinsnyder
+--
+
+ALTER SEQUENCE article_topics_id_seq OWNED BY article_topics.id;
+
+
+--
+-- Name: articles; Type: TABLE; Schema: public; Owner: dustinsnyder; Tablespace: 
+--
+
+CREATE TABLE articles (
+    id integer NOT NULL,
+    title text,
+    abstract text DEFAULT 'No abstract provided.'::text,
+    url text,
+    source text DEFAULT 'No source provided.'::text,
+    image_url text DEFAULT 'http://dribbble.s3.amazonaws.com/users/107262/screenshots/462548/ketchup_logo_1.jpg'::text,
+    published_at date DEFAULT '2014-11-14'::date,
+    twitter_popularity integer DEFAULT 1,
+    facebook_popularity integer DEFAULT 1,
+    google_trend_index integer DEFAULT 1,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.articles OWNER TO dustinsnyder;
+
+--
+-- Name: articles_id_seq; Type: SEQUENCE; Schema: public; Owner: dustinsnyder
+--
+
+CREATE SEQUENCE articles_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.articles_id_seq OWNER TO dustinsnyder;
+
+--
+-- Name: articles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dustinsnyder
+--
+
+ALTER SEQUENCE articles_id_seq OWNED BY articles.id;
+
+
+--
+-- Name: day_topics; Type: TABLE; Schema: public; Owner: dustinsnyder; Tablespace: 
+--
+
+CREATE TABLE day_topics (
+    id integer NOT NULL,
+    topic_id integer,
+    day_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.day_topics OWNER TO dustinsnyder;
+
+--
+-- Name: day_topics_id_seq; Type: SEQUENCE; Schema: public; Owner: dustinsnyder
+--
+
+CREATE SEQUENCE day_topics_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.day_topics_id_seq OWNER TO dustinsnyder;
+
+--
+-- Name: day_topics_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dustinsnyder
+--
+
+ALTER SEQUENCE day_topics_id_seq OWNED BY day_topics.id;
+
+
+--
+-- Name: days; Type: TABLE; Schema: public; Owner: dustinsnyder; Tablespace: 
+--
+
+CREATE TABLE days (
+    id integer NOT NULL,
+    date date,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.days OWNER TO dustinsnyder;
+
+--
+-- Name: days_id_seq; Type: SEQUENCE; Schema: public; Owner: dustinsnyder
+--
+
+CREATE SEQUENCE days_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.days_id_seq OWNER TO dustinsnyder;
+
+--
+-- Name: days_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dustinsnyder
+--
+
+ALTER SEQUENCE days_id_seq OWNED BY days.id;
+
+
+--
+-- Name: popularities; Type: TABLE; Schema: public; Owner: dustinsnyder; Tablespace: 
+--
+
+CREATE TABLE popularities (
+    id integer NOT NULL,
+    topic_id integer,
+    day_id integer,
+    twitter_popularity integer DEFAULT 1,
+    facebook_popularity integer DEFAULT 1,
+    google_trend_index integer DEFAULT 1,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.popularities OWNER TO dustinsnyder;
+
+--
+-- Name: popularities_id_seq; Type: SEQUENCE; Schema: public; Owner: dustinsnyder
+--
+
+CREATE SEQUENCE popularities_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.popularities_id_seq OWNER TO dustinsnyder;
+
+--
+-- Name: popularities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dustinsnyder
+--
+
+ALTER SEQUENCE popularities_id_seq OWNED BY popularities.id;
+
+
+--
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: dustinsnyder; Tablespace: 
+--
+
+CREATE TABLE schema_migrations (
+    version character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.schema_migrations OWNER TO dustinsnyder;
+
+--
+-- Name: topics; Type: TABLE; Schema: public; Owner: dustinsnyder; Tablespace: 
+--
+
+CREATE TABLE topics (
+    id integer NOT NULL,
+    title character varying(255),
+    image_url character varying(255) DEFAULT 'http://dribbble.s3.amazonaws.com/users/107262/screenshots/462548/ketchup_logo_1.jpg'::character varying,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.topics OWNER TO dustinsnyder;
+
+--
+-- Name: topics_id_seq; Type: SEQUENCE; Schema: public; Owner: dustinsnyder
+--
+
+CREATE SEQUENCE topics_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.topics_id_seq OWNER TO dustinsnyder;
+
+--
+-- Name: topics_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dustinsnyder
+--
+
+ALTER SEQUENCE topics_id_seq OWNED BY topics.id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: dustinsnyder
+--
+
+ALTER TABLE ONLY article_topics ALTER COLUMN id SET DEFAULT nextval('article_topics_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: dustinsnyder
+--
+
+ALTER TABLE ONLY articles ALTER COLUMN id SET DEFAULT nextval('articles_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: dustinsnyder
+--
+
+ALTER TABLE ONLY day_topics ALTER COLUMN id SET DEFAULT nextval('day_topics_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: dustinsnyder
+--
+
+ALTER TABLE ONLY days ALTER COLUMN id SET DEFAULT nextval('days_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: dustinsnyder
+--
+
+ALTER TABLE ONLY popularities ALTER COLUMN id SET DEFAULT nextval('popularities_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: dustinsnyder
+--
+
+ALTER TABLE ONLY topics ALTER COLUMN id SET DEFAULT nextval('topics_id_seq'::regclass);
+
+
+--
+-- Data for Name: article_topics; Type: TABLE DATA; Schema: public; Owner: dustinsnyder
+--
+
+COPY article_topics (id, topic_id, article_id, created_at, updated_at) FROM stdin;
+1	1	1	2014-11-14 08:50:18.567584	2014-11-14 08:50:18.567584
+2	1	2	2014-11-14 08:50:18.573882	2014-11-14 08:50:18.573882
+3	1	3	2014-11-14 08:50:18.579016	2014-11-14 08:50:18.579016
+4	1	4	2014-11-14 08:50:18.584229	2014-11-14 08:50:18.584229
+5	1	5	2014-11-14 08:50:21.342835	2014-11-14 08:50:21.342835
+6	1	6	2014-11-14 08:50:21.348786	2014-11-14 08:50:21.348786
+7	1	7	2014-11-14 08:50:21.35391	2014-11-14 08:50:21.35391
+8	1	8	2014-11-14 08:50:21.35895	2014-11-14 08:50:21.35895
+9	1	9	2014-11-14 08:50:23.093706	2014-11-14 08:50:23.093706
+10	1	10	2014-11-14 08:50:23.099418	2014-11-14 08:50:23.099418
+11	1	11	2014-11-14 08:50:23.104467	2014-11-14 08:50:23.104467
+12	1	12	2014-11-14 08:50:24.9955	2014-11-14 08:50:24.9955
+13	1	13	2014-11-14 08:50:25.045701	2014-11-14 08:50:25.045701
+14	1	14	2014-11-14 08:50:25.051802	2014-11-14 08:50:25.051802
+15	1	15	2014-11-14 08:50:25.056953	2014-11-14 08:50:25.056953
+16	1	16	2014-11-14 08:50:26.407498	2014-11-14 08:50:26.407498
+17	1	17	2014-11-14 08:50:26.413593	2014-11-14 08:50:26.413593
+18	1	18	2014-11-14 08:50:26.420036	2014-11-14 08:50:26.420036
+19	1	19	2014-11-14 08:50:26.426615	2014-11-14 08:50:26.426615
+20	1	20	2014-11-14 08:50:28.100551	2014-11-14 08:50:28.100551
+21	1	21	2014-11-14 08:50:28.105252	2014-11-14 08:50:28.105252
+22	1	22	2014-11-14 08:50:28.10976	2014-11-14 08:50:28.10976
+23	1	23	2014-11-14 08:50:28.114196	2014-11-14 08:50:28.114196
+24	2	24	2014-11-14 08:50:30.707501	2014-11-14 08:50:30.707501
+25	2	25	2014-11-14 08:50:30.712603	2014-11-14 08:50:30.712603
+26	2	26	2014-11-14 08:50:30.717489	2014-11-14 08:50:30.717489
+27	2	27	2014-11-14 08:50:30.72235	2014-11-14 08:50:30.72235
+28	2	28	2014-11-14 08:50:32.140529	2014-11-14 08:50:32.140529
+29	2	29	2014-11-14 08:50:32.145557	2014-11-14 08:50:32.145557
+30	2	30	2014-11-14 08:50:32.150738	2014-11-14 08:50:32.150738
+31	2	31	2014-11-14 08:50:32.156047	2014-11-14 08:50:32.156047
+32	2	32	2014-11-14 08:50:33.502715	2014-11-14 08:50:33.502715
+33	2	33	2014-11-14 08:50:33.508106	2014-11-14 08:50:33.508106
+34	2	34	2014-11-14 08:50:33.513371	2014-11-14 08:50:33.513371
+35	2	35	2014-11-14 08:50:33.51842	2014-11-14 08:50:33.51842
+36	2	36	2014-11-14 08:50:35.396793	2014-11-14 08:50:35.396793
+37	2	37	2014-11-14 08:50:35.401938	2014-11-14 08:50:35.401938
+38	2	38	2014-11-14 08:50:36.788089	2014-11-14 08:50:36.788089
+39	2	39	2014-11-14 08:50:36.793809	2014-11-14 08:50:36.793809
+40	2	40	2014-11-14 08:50:36.799266	2014-11-14 08:50:36.799266
+41	2	41	2014-11-14 08:50:36.804441	2014-11-14 08:50:36.804441
+42	2	42	2014-11-14 08:50:38.160708	2014-11-14 08:50:38.160708
+43	2	43	2014-11-14 08:50:38.168233	2014-11-14 08:50:38.168233
+44	3	44	2014-11-14 08:50:39.207734	2014-11-14 08:50:39.207734
+45	4	45	2014-11-14 08:50:40.217135	2014-11-14 08:50:40.217135
+46	4	46	2014-11-14 08:50:40.222723	2014-11-14 08:50:40.222723
+47	4	47	2014-11-14 08:50:41.665931	2014-11-14 08:50:41.665931
+48	4	48	2014-11-14 08:50:41.671745	2014-11-14 08:50:41.671745
+49	4	49	2014-11-14 08:50:41.676989	2014-11-14 08:50:41.676989
+50	4	50	2014-11-14 08:50:41.68212	2014-11-14 08:50:41.68212
+51	1	51	2014-11-14 08:52:05.172825	2014-11-14 08:52:05.172825
+52	1	52	2014-11-14 08:52:05.178048	2014-11-14 08:52:05.178048
+53	1	53	2014-11-14 08:52:05.182843	2014-11-14 08:52:05.182843
+54	1	54	2014-11-14 08:52:05.186892	2014-11-14 08:52:05.186892
+55	1	55	2014-11-14 08:52:05.190772	2014-11-14 08:52:05.190772
+56	1	56	2014-11-14 08:52:05.194703	2014-11-14 08:52:05.194703
+57	1	57	2014-11-14 08:52:05.198891	2014-11-14 08:52:05.198891
+58	1	58	2014-11-14 08:52:05.203473	2014-11-14 08:52:05.203473
+59	1	59	2014-11-14 08:52:05.207563	2014-11-14 08:52:05.207563
+60	2	60	2014-11-14 08:52:05.211552	2014-11-14 08:52:05.211552
+61	2	61	2014-11-14 08:52:05.215384	2014-11-14 08:52:05.215384
+62	2	62	2014-11-14 08:52:05.221499	2014-11-14 08:52:05.221499
+63	2	63	2014-11-14 08:52:05.226175	2014-11-14 08:52:05.226175
+64	2	64	2014-11-14 08:52:05.230003	2014-11-14 08:52:05.230003
+65	2	65	2014-11-14 08:52:05.233944	2014-11-14 08:52:05.233944
+66	2	66	2014-11-14 08:52:05.237716	2014-11-14 08:52:05.237716
+67	2	67	2014-11-14 08:52:05.24151	2014-11-14 08:52:05.24151
+68	2	68	2014-11-14 08:52:05.24523	2014-11-14 08:52:05.24523
+69	3	69	2014-11-14 08:52:05.249047	2014-11-14 08:52:05.249047
+70	3	70	2014-11-14 08:52:05.252788	2014-11-14 08:52:05.252788
+71	3	71	2014-11-14 08:52:05.256676	2014-11-14 08:52:05.256676
+72	3	72	2014-11-14 08:52:05.2605	2014-11-14 08:52:05.2605
+73	3	73	2014-11-14 08:52:05.264249	2014-11-14 08:52:05.264249
+74	3	74	2014-11-14 08:52:05.267969	2014-11-14 08:52:05.267969
+75	3	75	2014-11-14 08:52:05.271675	2014-11-14 08:52:05.271675
+76	3	76	2014-11-14 08:52:05.275411	2014-11-14 08:52:05.275411
+77	3	77	2014-11-14 08:52:05.279101	2014-11-14 08:52:05.279101
+78	4	78	2014-11-14 08:52:05.290504	2014-11-14 08:52:05.290504
+79	4	79	2014-11-14 08:52:05.294367	2014-11-14 08:52:05.294367
+80	4	80	2014-11-14 08:52:05.298218	2014-11-14 08:52:05.298218
+81	4	81	2014-11-14 08:52:05.302013	2014-11-14 08:52:05.302013
+82	4	82	2014-11-14 08:52:05.305704	2014-11-14 08:52:05.305704
+83	4	83	2014-11-14 08:52:05.309389	2014-11-14 08:52:05.309389
+\.
+
+
+--
+-- Name: article_topics_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dustinsnyder
+--
+
+SELECT pg_catalog.setval('article_topics_id_seq', 83, true);
+
+
+--
+-- Data for Name: articles; Type: TABLE DATA; Schema: public; Owner: dustinsnyder
+--
+
+COPY articles (id, title, abstract, url, source, image_url, published_at, twitter_popularity, facebook_popularity, google_trend_index, created_at, updated_at) FROM stdin;
+1	Turning Microcelebrity Into a Big Business	All it takes is blood, sweat and selfies.	http://www.nytimes.com/2014/09/21/magazine/turning-microcelebrity-into-a-big-business.html	New York Times	http://static01.nyt.com/images/2014/09/21/magazine/21audience_ss-slide-ZEDM/21audience_ss-slide-ZEDM-articleLarge.jpg	2014-09-21	666	1	1	2014-11-14 08:50:18.553811	2014-11-14 08:50:18.557952
+2	ISIS’ Goals and Tactics Worldwide	Some background on goals, tactics and the potential long-term threat to the United States from the militant group known as the Islamic State.	http://www.nytimes.com/video/world/middleeast/100000003106592/isis-goals-and-tactics-worldwide.html	New York Times	http://static01.nyt.com/images/2014/09/10/multimedia/nytm-isis-explainer/nytm-isis-explainer-articleLarge.jpg	2014-09-22	390	1	1	2014-11-14 08:50:18.57014	2014-11-14 08:50:18.571409
+3	Getting Married Is Easy	It’s simple. I just stopped behaving badly and dating disasters.	http://www.nytimes.com/2014/09/21/opinion/sunday/elizabeth-wurtzel-why-i-will-be-wed.html	New York Times	http://static01.nyt.com/images/2014/09/21/sunday-review/0921WURTZELsub/0921WURTZELsub-articleLarge.jpg	2014-09-21	329	1	1	2014-11-14 08:50:18.575538	2014-11-14 08:50:18.576768
+4	A Thumbs-Up Brings Favorite Artists to Life For Pandora Listeners 	Listeners who click thumbs-up on a song on the Internet radio service could be treated to a live personal performance by the artist.	http://www.nytimes.com/2014/09/22/business/media/a-thumbs-up-brings-musicians-to-life-for-pandora-listeners-.html	New York Times	http://static01.nyt.com/images/2014/09/21/business/adco/adco-articleLarge.jpg	2014-09-22	262	1	1	2014-11-14 08:50:18.580752	2014-11-14 08:50:18.581987
+5	Facebook Developing App That Allows Anonymity	The app, which is expected to be released in the coming weeks, reveals a different, experimental take on Facebook’s long-established approach to identity.	http://bits.blogs.nytimes.com/2014/10/07/facebook-readies-app-allowing-anonymity/	New York Times	http://dribbble.s3.amazonaws.com/users/107262/screenshots/462548/ketchup_logo_1.jpg	2014-11-14	1837	1	1	2014-11-14 08:50:21.334676	2014-11-14 08:50:21.337278
+6	Twitter Sues U.S. Government Over Data Disclosure Rules	The social media giant wants to loosen restrictions on what it is allowed to tell users about government information requests.	http://bits.blogs.nytimes.com/2014/10/07/twitter-sues-u-s-government-over-data-disclosure-rules/	New York Times	http://static01.nyt.com/images/2014/10/07/business/07bits-twitter/07bits-twitter-articleLarge.jpg	2014-10-07	1346	1	1	2014-11-14 08:50:21.344833	2014-11-14 08:50:21.346519
+7	To Reach China, LinkedIn Plays by Local Rules	The professional social network&#8217;s Chinese-language version, which lacks certain features of Western versions, seems to have the tacit approval of China&#8217;s government.	http://www.nytimes.com/2014/10/06/technology/to-reach-china-linkedin-plays-by-local-rules.html	New York Times	http://static01.nyt.com/images/2014/10/06/business/chinasocialjump/chinasocialjump-articleLarge.jpg	2014-10-06	1222	1	1	2014-11-14 08:50:21.350451	2014-11-14 08:50:21.351661
+8	A 10-Year-Old's Journey, From Lemonade Stand to Silicon Valley	Vivienne Harr opened a lemonade stand to end child slavery and became an Internet sensation. Her story is a reminder of the power of social media.	http://dealbook.nytimes.com/2014/10/07/a-10-year-olds-journey-from-lemonade-stand-to-silicon-valley/	New York Times	http://static01.nyt.com/images/2014/10/08/business/dbpix-dealprof3/dbpix-dealprof3-articleLarge.jpg	2014-10-07	1211	1	1	2014-11-14 08:50:21.355562	2014-11-14 08:50:21.356724
+9	Taylor Swift&rsquo;s 'Out of the Woods' Lives Up to The Hype, Soaring to No. 1 on iTunes	The new Taylor Swift single, “Out of the Woods,” was released at midnight and quickly reached No. 1 on the iTunes chart.	http://artsbeat.blogs.nytimes.com/2014/10/14/swifts-new-single-lives-up-to-her-hype-soaring-to-no-1-on-itunes/	New York Times	http://static01.nyt.com/images/2014/10/15/arts/14SWIFTARTS/14SWIFTARTS-articleLarge.jpg	2014-10-14	502	1	1	2014-11-14 08:50:23.086024	2014-11-14 08:50:23.089142
+10	Renaissance Hotels Lives Up to Its Brand Name by Sponsoring a Book	The book, “The Art of Discovery,” features 100 celebrities discussing their “moments of discovery.” Photographs taken by Jeff Vespa accompany their recollections.	http://www.nytimes.com/2014/10/13/business/media/renaissance-hotels-lives-up-to-its-brand-name-by-sponsoring-a-book.html	New York Times	http://static01.nyt.com/images/2014/10/13/business/13adnews-1-pic3/13adnews-1-pic3-articleLarge.jpg	2014-10-13	154	1	1	2014-11-14 08:50:23.095453	2014-11-14 08:50:23.09717
+11	Prime Time	Sheila Weller chronicles the triumphs and setbacks of three powerful women in the male-dominated realm of network news.	http://www.nytimes.com/2014/10/12/books/review/the-news-sorority-by-sheila-weller.html	New York Times	http://static01.nyt.com/images/2014/10/12/books/review/12bolonik-1/12bolonik-1-articleLarge.jpg	2014-10-12	115	1	1	2014-11-14 08:50:23.101059	2014-11-14 08:50:23.102257
+12	Facebook Sues Lawyers for Pressing Dubious Ownership Case	The company says the former lawyers for Paul Ceglia, who claimed that Mark Zuckerberg had given him a large stake in Facebook, continued to argue his case despite knowledge that his evidence was fabricated.	http://bits.blogs.nytimes.com/2014/10/20/facebook-sues-lawyers-for-pressing-dubious-fraud-case/	New York Times	http://static01.nyt.com/images/2014/10/20/business/20bits-zuckerberg/20bits-zuckerberg-articleLarge.jpg	2014-10-20	779	1	1	2014-11-14 08:50:24.987907	2014-11-14 08:50:24.990921
+13	Hong Kong Police Accuse Man of Inciting Protests 	In the first such arrest since the protest started, the Hong Kong police said the protester, 23, used an online message board to encourage others.	http://www.nytimes.com/2014/10/20/world/asia/hong-kong-protester-arrested-in-inciting-others-to-confront-police.html	New York Times	http://static01.nyt.com/images/2014/10/19/world/asia/20HONGKONG2/20HONGKONG2-articleLarge.jpg	2014-10-20	761	1	1	2014-11-14 08:50:24.997225	2014-11-14 08:50:24.998659
+14	A Dynamic New Tool to Preserve the Friendsters of the Future	Rhizome, a nonprofit group dedicated to supporting and conserving digital art, has developed a tool that records the immersive experience of a website or a social network.	http://bits.blogs.nytimes.com/2014/10/19/a-new-tool-to-preserve-moments-on-the-internet/	New York Times	http://static01.nyt.com/images/2014/10/18/business/18bits-rhizome/18bits-rhizome-articleLarge.jpg	2014-10-19	560	1	1	2014-11-14 08:50:25.048169	2014-11-14 08:50:25.049412
+15	The Quality of Fear	The reaction nationally to Ebola is rooted in weaknesses in our cultural fabric.	http://www.nytimes.com/2014/10/21/opinion/david-brooks-what-the-ebola-crisis-reveals-about-culture.html	New York Times	http://static01.nyt.com/images/2010/09/16/opinion/Brooks_New/Brooks_New-articleLarge.jpg	2014-10-21	521	1	1	2014-11-14 08:50:25.053634	2014-11-14 08:50:25.054807
+16	How Facebook Is Changing the Way Its Users Consume Journalism	Facebook uses mathematical formulas to predict what its users might want to read on the site, from which, a study says, about 30 percent of adults in America get their news.	http://www.nytimes.com/2014/10/27/business/media/how-facebook-is-changing-the-way-its-users-consume-journalism.html	New York Times	http://static01.nyt.com/images/2014/10/27/business/algorithmsjump/algorithmsjump-articleLarge.jpg	2014-10-27	5997	1	1	2014-11-14 08:50:26.398933	2014-11-14 08:50:26.402055
+17	Facebook Offers Life Raft, but Publishers Are Wary	The company has suggested that publishers could simply send pages to Facebook that would live inside the social network&#8217;s mobile app.	http://www.nytimes.com/2014/10/27/business/media/facebook-offers-life-raft-but-publishers-are-wary.html	New York Times	http://static01.nyt.com/images/2014/10/27/business/carrjump/carrjump-articleLarge.jpg	2014-10-27	1919	1	1	2014-11-14 08:50:26.409721	2014-11-14 08:50:26.411083
+18	Twitter’s Revenue Sharply Rises, but Its Usage Stalls	Revenue at the social network surpassed Wall Street expectations, but Twitter is still losing money.	http://www.nytimes.com/2014/10/28/technology/twitter-user-growth-quarterly-earnings.html	New York Times	http://static01.nyt.com/images/2014/10/28/business/28twitter-web1/28twitter-web1-articleLarge.jpg	2014-10-28	707	1	1	2014-11-14 08:50:26.415586	2014-11-14 08:50:26.416789
+19	The Social Network That Pays You to Friend	Tsu plans to share revenue with its users. Is it the democratic social network that Facebook critics have been calling for?	http://op-talk.blogs.nytimes.com/2014/10/27/the-social-network-that-pays-you-to-friend/	New York Times	http://static01.nyt.com/images/2014/10/23/opinion/nyto-money/nyto-money-articleLarge.jpg	2014-10-27	506	1	1	2014-11-14 08:50:26.422321	2014-11-14 08:50:26.423884
+20	For Millennials, the End of the TV Viewing Party	In the era of laptops and Hulu, millennials&#8217; viewing habits may signal the end of the communal living-room screen.	http://www.nytimes.com/2014/11/09/fashion/for-millennials-the-end-of-the-tv-viewing-party.html	New York Times	http://static01.nyt.com/images/2014/11/09/fashion/09NOTV/09NOTV-articleLarge.jpg	2014-11-09	1533	1	1	2014-11-14 08:50:28.093904	2014-11-14 08:50:28.096452
+21	On LinkedIn, a Reference List You Didn&#8217;t Write	A lawsuit is challenging how a feature on LinkedIn, the professional-networking site, uses a job candidate’s work history.	http://www.nytimes.com/2014/11/09/technology/on-linkedin-a-reference-list-you-didnt-write.html	New York Times	http://static01.nyt.com/images/2014/11/09/business/09-TECHNO/09-TECHNO-articleLarge.jpg	2014-11-09	1478	1	1	2014-11-14 08:50:28.102147	2014-11-14 08:50:28.10312
+22	With Some Dating Apps: Less Casual Sex Than Casual Text	More and more millennials are shying away from physical encounters and supplanting them with virtual quasi relationships.	http://www.nytimes.com/2014/11/09/fashion/with-some-dating-apps-tinder-less-casual-sex-than-casual-text.html	New York Times	http://static01.nyt.com/images/2014/11/09/fashion/09FUTURETENSE/09FUTURETENSE-articleLarge.jpg	2014-11-09	736	1	1	2014-11-14 08:50:28.106689	2014-11-14 08:50:28.107672
+23	On Twitter and Instagram, Hiding in Plain E-Sight	Almost any action we take on social media is a time-stamped signpost that we were paying attention to at least some of our smartphone communication.	http://www.nytimes.com/2014/11/09/fashion/on-twitter-and-instagram-hiding-in-plain-e-sight.html	New York Times	http://static01.nyt.com/images/2014/11/09/fashion/09WATER/09WATER-articleLarge.jpg	2014-11-09	681	1	1	2014-11-14 08:50:28.111189	2014-11-14 08:50:28.112219
+24	Eugenie Bouchard Could Be Tennis’s Next Big Shot	After years grinding on the junior circuit, the 20-year-old is poised to be one of the sport’s next big stars. Now she just needs that breakthrough win.	http://www.nytimes.com/2014/08/24/magazine/eugenie-bouchard-could-be-tenniss-next-big-shot.html	New York Times	http://static01.nyt.com/images/2014/08/24/magazine/24bouchard1/mag-24Bouchard-t_CA0-articleLarge.jpg	2014-08-24	1881	1	1	2014-11-14 08:50:30.699554	2014-11-14 08:50:30.702784
+25	Blamed for Rise of ISIS, Syrian Leader Is Pushed to Escalate Fight	Accused of allowing ISIS to amass territory in Syria, President Bashar al-Assad is now being pressed by his own supporters to make defeating the jihadist group a priority for his forces.	http://www.nytimes.com/2014/08/23/world/middleeast/assad-supporters-weigh-benefits-of-us-strikes-in-syria.html	New York Times	http://static01.nyt.com/images/2014/08/23/world/23ISIS-SPAN/23ISIS-1408729016956-articleLarge.jpg	2014-08-23	1253	1	1	2014-11-14 08:50:30.709223	2014-11-14 08:50:30.710368
+26	Pentagon Says Chinese Fighter Jet Confronted American Navy Plane	The Chinese plane flew within 30 feet of the Navy aircraft on Tuesday in international airspace just off the Chinese coast, the Pentagon said.	http://www.nytimes.com/2014/08/23/world/asia/us-says-chinese-fighter-jet-confronted-american-navy-plane.html	New York Times	http://dribbble.s3.amazonaws.com/users/107262/screenshots/462548/ketchup_logo_1.jpg	2014-11-14	1145	1	1	2014-11-14 08:50:30.714254	2014-11-14 08:50:30.715351
+27	China Denies Confrontation With U.S. Surveillance Plane	The Chinese government rejected the Pentagon&#8217;s claim that a People&#8217;s Liberation Army fighter jet had buzzed dangerously close to an American surveillance plane in international air space on Tuesday.	http://www.nytimes.com/2014/08/24/world/asia/china-denies-confrontation-with-us-surveillance-plane-.html	New York Times	http://dribbble.s3.amazonaws.com/users/107262/screenshots/462548/ketchup_logo_1.jpg	2014-11-14	452	1	1	2014-11-14 08:50:30.719111	2014-11-14 08:50:30.720186
+28	Destroying ISIS May Take Years, U.S. Officials Say	The Obama administration is preparing to carry out a phased campaign requiring a sustained effort that could last until after President Obama has left office, according to officials.	http://www.nytimes.com/2014/09/08/world/middleeast/destroying-isis-may-take-3-years-white-house-says.html	New York Times	http://static01.nyt.com/images/2014/09/08/world/middleeast/08STRATEGY/08STRATEGY-articleLarge.jpg	2014-09-08	2374	1	1	2014-11-14 08:50:32.13437	2014-11-14 08:50:32.136567
+29	Qatar’s Support of Islamists Alienates Allies Near and Far	Qatar has helped support a spectrum of Islamist groups by providing safe haven, diplomatic mediation, financial aid and, in certain instances, weapons.	http://www.nytimes.com/2014/09/08/world/middleeast/qatars-support-of-extremists-alienates-allies-near-and-far.html	New York Times	http://static01.nyt.com/images/2014/09/08/world/QATAR/QATAR-articleLarge.jpg	2014-09-08	1787	1	1	2014-11-14 08:50:32.142178	2014-11-14 08:50:32.143359
+30	Obama to Present Case for Broader U.S. Mission Against Militants	In an interview on NBC, President Obama said he would speak to the nation on Wednesday to try to make a case for launching a wider United States-led offensive against ISIS in the Middle East.	http://www.nytimes.com/2014/09/08/us/politics/obama-to-present-case-for-broader-us-mission-against-militants.html	New York Times	http://static01.nyt.com/images/2014/09/07/world/middleeast/08PREXY/08PREXY-articleLarge.jpg	2014-09-08	889	1	1	2014-11-14 08:50:32.147175	2014-11-14 08:50:32.148326
+31	Light Pre-Election Schedule in Congress Matches Legislative Goals	Passing a stopgap spending bill and keeping the Export-Import Bank open are among the modest objectives that lawmakers have set this month.	http://www.nytimes.com/2014/09/07/us/politics/congresss-light-pre-election-schedule-matches-legislative-goals.html	New York Times	http://static01.nyt.com/images/2014/09/07/us/07CONG-sub/07CONG-sub-articleLarge.jpg	2014-09-07	247	1	1	2014-11-14 08:50:32.152626	2014-11-14 08:50:32.153784
+32	Struggling to Gauge ISIS Threat, Even as U.S. Prepares to Act	As President Obama prepares to send the United States on what could be a yearslong military campaign, American intelligence agencies have concluded that the group poses no immediate threat to the United States.	http://www.nytimes.com/2014/09/11/world/middleeast/struggling-to-gauge-isis-threat-even-as-us-prepares-to-act.html	New York Times	http://static01.nyt.com/images/2014/09/11/world/THREAT/THREAT-articleLarge.jpg	2014-09-11	1673	1	1	2014-11-14 08:50:33.495408	2014-11-14 08:50:33.497887
+33	U.S. Pins Hope on Syrian Rebels With Loyalties All Over the Map	President Obama’s determination to train moderate rebels in the battle against ISIS leaves the U.S. dependent on a diverse group riven by infighting.	http://www.nytimes.com/2014/09/12/world/middleeast/us-pins-hope-on-syrian-rebels-with-loyalties-all-over-the-map.html	New York Times	http://dribbble.s3.amazonaws.com/users/107262/screenshots/462548/ketchup_logo_1.jpg	2014-11-14	1515	1	1	2014-11-14 08:50:33.504804	2014-11-14 08:50:33.505854
+34	New Military Campaign Extends a Legacy of War	President Obama on Wednesday night may have ensured that he will pass his successor a volatile and incomplete war, just as he inherited one when he took office.	http://www.nytimes.com/2014/09/11/world/middleeast/extending-a-legacy-of-war.html	New York Times	http://static01.nyt.com/images/2014/09/10/multimedia/nytm-isis-explainer/nytm-isis-explainer-articleLarge.jpg	2014-09-11	927	1	1	2014-11-14 08:50:33.50992	2014-11-14 08:50:33.511096
+35	Try as He May, John McCain Can’t Shake Falsehoods About Ties to ISIS	The Arizona Republican has been hounded after a picture of him with members of the Free Syrian Army was misinterpreted and doctored purposely to make it appear that he supported ISIS, which he does not.	http://www.nytimes.com/2014/09/12/world/middleeast/try-as-he-may-john-mccain-cant-shake-falsehoods-about-ties-to-isis.html	New York Times	http://static01.nyt.com/images/2014/09/12/world/MCCAIN/MCCAIN-thumbStandard.jpg	2014-09-12	711	1	1	2014-11-14 08:50:33.515031	2014-11-14 08:50:33.516222
+36	With Farms Fading and Urban Might Rising, Power Shifts in Iowa	A way of life is eroding as small towns hemorrhage younger residents, a potent but unpredictable undercurrent in a closely fought Senate race.	http://www.nytimes.com/2014/10/21/us/politics/iowa-senate-election.html	New York Times	http://static01.nyt.com/images/2014/10/18/us/Iowa-PROMO/Iowa-PROMO-articleLarge.jpg	2014-10-21	897	1	1	2014-11-14 08:50:35.389232	2014-11-14 08:50:35.392279
+37	In U.S., Fear of Ebola Closes Schools and Shapes Politics	Within the escalating debate over how to manage potential threats to public health, the line between vigilance and hysteria can be blurry.	http://www.nytimes.com/2014/10/20/us/fear-of-ebola-closes-schools-and-shapes-politics.html	New York Times	http://static01.nyt.com/images/2014/10/20/us/SUB-JP-PARANOIA2/SUB-JP-PARANOIA2-articleLarge.jpg	2014-10-20	813	1	1	2014-11-14 08:50:35.398537	2014-11-14 08:50:35.39969
+38	The Truth About the Wars	We need to stop telling ourselves stories about Iraq and Afghanistan, and face what went wrong.	http://www.nytimes.com/2014/11/11/opinion/the-truth-about-the-wars-in-iraq-and-afghanistan.html	New York Times	http://dribbble.s3.amazonaws.com/users/107262/screenshots/462548/ketchup_logo_1.jpg	2014-11-14	1345	1	1	2014-11-14 08:50:36.782154	2014-11-14 08:50:36.783954
+39	With Fear of Being Sidelined, Tea Party Sees the Republican Rise as New Threat  	As Republicans on Capitol Hill move from being the opposition party to being one that has to show it can govern, a powerful tension is emerging between its establishment and its activist wing.	http://www.nytimes.com/2014/11/09/us/politics/before-battling-democrats-gop-is-fighting-itself-.html	New York Times	http://static01.nyt.com/images/2014/11/09/us/JP-REPUBS/JP-REPUBS-articleLarge.jpg	2014-11-09	1115	1	1	2014-11-14 08:50:36.789815	2014-11-14 08:50:36.791468
+40	U.S. Airstrikes in Iraq Target ISIS Leaders	Fighter jets from a United States-led coalition hit a gathering of leaders of the Islamic State group in northwestern Iraq on Saturday, and Iraqi officials said they believed a number of top militants had been killed.	http://www.nytimes.com/2014/11/09/world/middleeast/us-airstrikes-in-iraq-target-isis-leaders.html	New York Times	http://dribbble.s3.amazonaws.com/users/107262/screenshots/462548/ketchup_logo_1.jpg	2014-11-14	1019	1	1	2014-11-14 08:50:36.795445	2014-11-14 08:50:36.796583
+41	Obstacles Limit Targets and Pace of Strikes on ISIS	Commanders of the American-led air campaign in Iraq and Syria are challenged by spotty intelligence, poor weather and an Iraqi Army that has only begun an offensive against the Islamic State.	http://www.nytimes.com/2014/11/10/world/middleeast/trouble-pinning-down-isis-targets-impedes-airstrikes.html	New York Times	http://static01.nyt.com/images/2014/11/10/world/military/military-articleLarge.jpg	2014-11-10	964	1	1	2014-11-14 08:50:36.800954	2014-11-14 08:50:36.8022
+42	In New China, ‘Hostile’ West Is Still Derided	Using language reminiscent of the Cold War, Chinese officials have voiced conspiracy theories accusing foreigners of plotting to weaken or overthrow the Communist Party.	http://www.nytimes.com/2014/11/12/world/asia/china-turns-up-the-rhetoric-against-the-west.html	New York Times	http://static01.nyt.com/images/2014/11/12/world/12beijing-01/12beijing-01-articleLarge.jpg	2014-11-12	1233	1	1	2014-11-14 08:50:38.155913	2014-11-14 08:50:38.158014
+43	Postal Service Discloses Major Theft of Its Employees&#8217; Personal Data	The agency told employees that an attack &#8220;potentially compromised&#8221; databases containing names, addresses, birth dates and Social Security numbers.	http://www.nytimes.com/2014/11/11/us/postal-service-discloses-major-data-theft.html	New York Times	http://static01.nyt.com/images/2014/11/11/us/POSTAL/POSTAL-articleLarge.jpg	2014-11-11	813	1	1	2014-11-14 08:50:38.164772	2014-11-14 08:50:38.165979
+44	Bright Specks of Dust From Comet Siding Spring Light Up Martian Sky	The comet Siding Spring dropped tons of dust into the planet&#8217;s atmosphere as it passed the planet in October.	http://www.nytimes.com/2014/11/08/science/space/bright-specks-of-comet-dust-light-up-martian-sky.html	New York Times	http://static01.nyt.com/images/2014/11/08/science/space/08comet/08comet-articleLarge.jpg	2014-11-08	302	1	1	2014-11-14 08:50:39.198654	2014-11-14 08:50:39.202292
+45	Business Leaders Cautiously Expect G.O.P. Win to Open Some Doors	Issues expected to get a new look include a corporate tax overhaul, environmental and financial regulation, trade deals and the Keystone oil pipeline.	http://www.nytimes.com/2014/11/06/business/republican-election-victory-seen-as-positive-for-business-but-others-temper-expectations.html	New York Times	http://static01.nyt.com/images/2014/11/06/business/IMPACT-1/IMPACT-1-articleLarge.jpg	2014-11-06	362	1	1	2014-11-14 08:50:40.208367	2014-11-14 08:50:40.211557
+46	Push for Fossil-Free Nonprofits 	Donors are increasingly taking into account whether an institution&#8217;s investment portfolio includes petroleum or coal companies before making a contribution.	http://www.nytimes.com/2014/11/07/giving/push-for-fossil-free-nonprofits-.html	New York Times	http://dribbble.s3.amazonaws.com/users/107262/screenshots/462548/ketchup_logo_1.jpg	2014-11-14	234	1	1	2014-11-14 08:50:40.219222	2014-11-14 08:50:40.220466
+47	A Tricky Transition From Fossil Fuel	Denmark is pursuing the world&#8217;s most ambitious policy against climate change, but conventional electricity remains a problematic part of the mix.	http://www.nytimes.com/2014/11/11/science/earth/denmark-aims-for-100-percent-renewable-energy.html	New York Times	http://static01.nyt.com/images/2014/11/11/science/11GILL/11GILL-articleLarge.jpg	2014-11-11	2434	1	1	2014-11-14 08:50:41.65752	2014-11-14 08:50:41.660576
+48	China’s Climate Change Plan Raises Questions	Analysts and policy advisers wonder if the climate accord reached by the U.S. and China goes far enough, and how Beijing will meet its targets.	http://www.nytimes.com/2014/11/13/world/asia/climate-change-china-xi-jinping-obama-apec.html	New York Times	http://static01.nyt.com/images/2014/11/12/world/asia/13CHINA-hp/13CHINA-hp-articleLarge.jpg	2014-11-13	1654	1	1	2014-11-14 08:50:41.668172	2014-11-14 08:50:41.669469
+51	Alex From Target: The Other Side of Fame	A social media phenomenon tells the full story of instant web celebrity.	http://www.nytimes.com/2014/11/13/style/alex-from-target-the-other-side-of-fame.html	New York Times	http://static01.nyt.com/images/2014/11/13/fashion/13zJPDISRUPTIONS/13zJPDISRUPTIONS-articleLarge.jpg	2014-11-13	18129	1	1	2014-11-14 08:52:05.167824	2014-11-14 08:52:05.167824
+52	Americans Say They Want Privacy, but Act as if They Don’t	People are doubtful about the safety of their personal information online or on cellphones. Yet it does not necessarily change their behavior, according to a new poll.	http://www.nytimes.com/2014/11/13/upshot/americans-say-they-want-privacy-but-act-as-if-they-dont.html	New York Times	http://static01.nyt.com/images/2014/11/13/upshot/13up-privacy/13up-privacy-articleLarge.gif	2014-11-13	1459	1	1	2014-11-14 08:52:05.17528	2014-11-14 08:52:05.17528
+53	Facebook Tries to Explain Its Privacy Settings but Advertising Still Rules	The social network will give users simpler explanations on major privacy features, but it is still giving users very little control over how their information is used to sell advertising.	http://bits.blogs.nytimes.com/2014/11/13/facebook-tries-to-explain-its-privacy-settings-but-advertising-still-rules/	New York Times	http://static01.nyt.com/images/2014/11/13/business/13bits-fb/13bits-fb-articleLarge.jpg	2014-11-13	976	1	1	2014-11-14 08:52:05.180211	2014-11-14 08:52:05.180211
+54	In Net Neutrality Push, Internet Giants on the Sidelines	Companies like Facebook and Google have stayed away from mobilizing their users to support an issue that primarily affects smaller Internet upstarts.	http://www.nytimes.com/2014/11/13/technology/in-net-neutrality-debate-tech-giants-on-the-sidelines.html	New York Times	http://static01.nyt.com/images/2014/11/13/business/13state-illo/13state-illo-articleLarge.jpg	2014-11-13	871	1	1	2014-11-14 08:52:05.184667	2014-11-14 08:52:05.184667
+55	S&amp;P gives Twitter debt 'junk' status	US ratings agency Standard &amp; Poor's gives social media giant Twitter's debt "junk" status, which is three notches below investment grade.	http://www.bbc.co.uk/news/business-30048344	BBC	http://news.bbcimg.co.uk/media/images/78977000/jpg/_78977496_twitter_1.jpg	2014-11-13	768	1	1	2014-11-14 08:52:05.188605	2014-11-14 08:52:05.188605
+56	How did ISIS recruit Colorado girls?	Investigators have studied social media activities of the girls to see how ISIS is using Westerners already in its fold to directly communicate with new recruits.	http://www.cnn.com/2014/11/12/us/isis-teen-recruitment/index.html	CNN	http://i2.cdn.turner.com/cnn/dam/assets/140617183642-aman-iraq-isil-isis-flag-top-tease.jpg	2014-11-13	475	1	1	2014-11-14 08:52:05.192506	2014-11-14 08:52:05.192506
+57	ISIS leader taunts coalition	The speaker in an audio message posted Thursday on an ISIS social media account claims to be leader Abu Bakr al-Baghdadi.	http://www.cnn.com/2014/11/13/world/meast/isis-leader-al-baghdadi/index.html	CNN	http://shackmanlab.org/wp-content/uploads/2013/07/person-placeholder.jpg	2014-11-13	379	1	1	2014-11-14 08:52:05.196379	2014-11-14 08:52:05.196379
+58	PR jargon: the 10 most overused terms	No abstract provided.	http://www.theguardian.com/media-network/media-network-blog/2014/nov/14/pr-jargon-overused-terms-words	TheGuardian	http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/11/11/1415703423409/Uber-app--011.jpg	2014-11-14	133	1	1	2014-11-14 08:52:05.201045	2014-11-14 08:52:05.201045
+59	Facebook's Say Thanks: shared social celebration from clowns to sausages	No abstract provided.	http://www.theguardian.com/technology/2014/nov/13/facebook-say-thanks-friends-video-cards	TheGuardian	http://www.thehaasbrothers.com/hsite/wp-content/uploads/2014/04/guardian-logo.jpg	2014-11-13	132	1	1	2014-11-14 08:52:05.205165	2014-11-14 08:52:05.205165
+60	Army Cuts Hit Officers Hard, Especially Ones Up From Ranks	Faced with declining budgets, the Army has had to cut its force, and, for reasons the Army has not explained, the largest group of officers being pushed out — nearly one in five — began as enlisted soldiers.	http://www.nytimes.com/2014/11/13/us/cuts-in-military-mean-job-losses-for-career-staff.html	New York Times	http://static01.nyt.com/images/2014/11/13/us/JP-OFFICERS/JP-OFFICERS-articleLarge-v2.jpg	2014-11-13	1531	1	1	2014-11-14 08:52:05.209368	2014-11-14 08:52:05.209368
+61	Sikh student sues U.S. Army	A Sikh student at Hofstra University filed a lawsuit Wednesday against the United States Army, claiming the service refused to grant him a religious accommodation that would allow him to enlist in his school's ROTC program without shaving his beard, cutting his hair and removing his turban, according to court documents.	http://www.cnn.com/2014/11/13/justice/sikh-student-sues-u-s-army/index.html	CNN	http://shackmanlab.org/wp-content/uploads/2013/07/person-placeholder.jpg	2014-11-13	695	1	1	2014-11-14 08:52:05.213229	2014-11-14 08:52:05.213229
+62	Top U.S. General Says He&#8217;s Open to Using Ground Troops to Retake Mosul	President Obama&#8217;s top military adviser said he would consider deploying a limited number of American forces to fight alongside Iraqi troops moving to retake areas held by militants.	http://www.nytimes.com/2014/11/14/us/top-us-general-says-hes-open-to-using-ground-troops-in-iraq.html	New York Times	http://dribbble.s3.amazonaws.com/users/107262/screenshots/462548/ketchup_logo_1.jpg	2014-11-14	567	1	1	2014-11-14 08:52:05.217117	2014-11-14 08:52:05.217117
+63	Risk Model Seen as Reducing Military Suicides	The computer model identifies a range of factors related to suicide that could allow doctors to follow high-risk soldiers closely and take preventive measures.	http://www.nytimes.com/2014/11/13/health/new-prediction-model-could-reduce-military-suicides-study-finds.html	New York Times	http://dribbble.s3.amazonaws.com/users/107262/screenshots/462548/ketchup_logo_1.jpg	2014-11-13	566	1	1	2014-11-14 08:52:05.223966	2014-11-14 08:52:05.223966
+64	Health Officials Reassess Strategy to Combat Ebola in Liberia	As the rate of new infections has slowed, American and Liberian officials are debating whether to shift money that was planned for the centers into other programs to combat future outbreaks.	http://www.nytimes.com/2014/11/13/world/africa/officials-consider-scaling-back-of-ebola-centers-in-liberia.html	New York Times	http://static01.nyt.com/images/2014/11/13/world/EBOLA/EBOLA-articleLarge.jpg	2014-11-13	544	1	1	2014-11-14 08:52:05.227858	2014-11-14 08:52:05.227858
+65	U.S. Tells U.N. Panel of Steps to Revise Interrogation Policy 	The acting State Department legal adviser told a United Nations panel that monitors torture that the United States had used cruel treatment after the Sept. 11 attacks.	http://www.nytimes.com/2014/11/13/us/us-vows-to-stop-using-torture-against-terrorism-suspects.html	New York Times	http://dribbble.s3.amazonaws.com/users/107262/screenshots/462548/ketchup_logo_1.jpg	2014-11-13	224	1	1	2014-11-14 08:52:05.231794	2014-11-14 08:52:05.231794
+50	In Climate Deal With China, Obama May Set 2016 Theme	The landmark agreement to cut greenhouse gas pollution is a bet by President Obama that the environment will be a winning cause for Democrats.	http://www.nytimes.com/2014/11/13/world/asia/in-climate-deal-with-china-obama-may-set-theme-for-2016.html	New York Times	http://dribbble.s3.amazonaws.com/users/107262/screenshots/462548/ketchup_logo_1.jpg	2014-11-13	1010	1	1	2014-11-14 08:50:41.67885	2014-11-14 08:52:05.285527
+66	More than a third of natural world heritage sites face 'significant threats'	No abstract provided.	http://www.theguardian.com/environment/2014/nov/13/more-than-a-third-of-natural-world-heritage-sites-face-significant-threats	TheGuardian	http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/11/13/1415858146871/71a715af-3431-41ae-9a8e-4160858ff834-460x276.jpeg	2014-11-13	207	1	1	2014-11-14 08:52:05.235565	2014-11-14 08:52:05.235565
+67	Bits of Dance and Chess Found in a Vanished Style of Play	The documentary &#8220;Red Army&#8221; shows a style of hockey played by the Soviets in the 1970s and &#8217;80s that remains unsurpassed for its grace, speed and intricacy.	http://www.nytimes.com/2014/11/13/sports/hockey/red-army-hockey-documentary-begins-limited-run-this-week.html	New York Times	http://dribbble.s3.amazonaws.com/users/107262/screenshots/462548/ketchup_logo_1.jpg	2014-11-13	171	1	1	2014-11-14 08:52:05.239357	2014-11-14 08:52:05.239357
+68	U.N. Commission Presses U.S. on Torture	A United Nations panel that monitors compliance with an antitorture treaty expressed skepticism Thursday about American law enforcement and national security practices.	http://www.nytimes.com/2014/11/14/world/europe/un-commission-presses-us-on-torture.html	New York Times	http://dribbble.s3.amazonaws.com/users/107262/screenshots/462548/ketchup_logo_1.jpg	2014-11-14	157	1	1	2014-11-14 08:52:05.243162	2014-11-14 08:52:05.243162
+69	Landing on a Comet, a European Space Agency Mission Aims to Unlock the Mysteries of Earth	The ambitious mission succeeded, despite a potential showstopper problem, when a signal arrived at Darmstadt, Germany, just after 11 a.m. Eastern time.	http://www.nytimes.com/2014/11/13/science/space/european-space-agencys-spacecraft-lands-on-comets-surface.html	New York Times	http://static01.nyt.com/images/2014/11/13/world/COMET/COMET-articleLarge.jpg	2014-11-13	2921	1	1	2014-11-14 08:52:05.246914	2014-11-14 08:52:05.246914
+70	Rosetta mission: Philae makes historic first landing on comet	No abstract provided.	http://www.theguardian.com/science/2014/nov/12/rosetta-mission-philae-historic-landing-comet	TheGuardian	http://www.theguardian.com/science/video/2014/nov/12/rosetta-space-probe-touches-down-comet-video"                data-short-url="http://gu.com/p/439ac"                        data-show-ads="true"                data-video-id="2191656"                data-video-name="Rosetta space probe touches down on comet – video"                data-video-provider="Reuters"                data-video-poster="http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/11/12/1415807065181/Artists-impression-of-the-017.jpg"> <video data-media-id="gu-video-451771203" class="gu-video" controls="controls" poster="http://static.guim.co.uk/sys-images/Guardian/Pix/audio/video/2014/11/12/1415807052351/Artists-impression-of-the-007.jpg	2014-11-13	1608	1	1	2014-11-14 08:52:05.250662	2014-11-14 08:52:05.250662
+71	Comet Landing Bumpier Than Initially Thought 	The European Space Agency lander is sitting in a skewed position on the comet&#8217;s surface, compromising some aspects of the $1.75 billion Rosetta mission.	http://www.nytimes.com/2014/11/14/science/space/philae-rosetta-spacecraft-bounced-at-landing.html	New York Times	http://static01.nyt.com/images/2014/11/13/science/13philae-on-comet/13philae-on-comet-articleLarge.jpg	2014-11-14	909	1	1	2014-11-14 08:52:05.254465	2014-11-14 08:52:05.254465
+72	Your Thursday Briefing	Here’s what you need to know to start your day.	http://www.nytimes.com/2014/11/13/us/latest-news-comet-watch-ebola-treatments-world-cup-inquiry.html	New York Times	http://static01.nyt.com/images/2014/11/13/world/13nytnow-weather2/13nytnow-weather2-articleLarge.jpg	2014-11-13	623	1	1	2014-11-14 08:52:05.258355	2014-11-14 08:52:05.258355
+73	Rosetta mission: Philae comet landing photos released - live	No abstract provided.	http://www.theguardian.com/science/across-the-universe/live/2014/nov/13/rosetta-mission-philae-lander-live-coverage-comet-esa	TheGuardian	http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/11/13/1415892736492/d9be161c-8a07-4894-8de1-0b4c7f797b21-460x276.jpeg	2014-11-13	481	1	1	2014-11-14 08:52:05.262144	2014-11-14 08:52:05.262144
+74	Philae lander sends back first ever image from comet	No abstract provided.	http://www.theguardian.com/science/2014/nov/13/philae-lander-first-ever-image-comet-surface-rosetta	TheGuardian	http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/11/13/1415877746604/ecc021c4-4f20-4d1d-aba8-955b4541c24d-460x276.jpeg	2014-11-13	321	1	1	2014-11-14 08:52:05.265875	2014-11-14 08:52:05.265875
+75	Rosetta: Philae tight spot on comet prompts tough decisions for Esa	No abstract provided.	http://www.theguardian.com/science/2014/nov/13/philae-lander-tight-spot-comet-tough-decisions-esa-rosetta	TheGuardian	http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/11/13/1415897123471/How-Esa-scientists-believ-009.jpg	2014-11-13	205	1	1	2014-11-14 08:52:05.269594	2014-11-14 08:52:05.269594
+76	Comet landing: Scientists unsure about Philae probe’s location	The European Space Agency’s Philae lander bounced twice before finally settling on 67P/Churyumov-Gerasimenko, leaving scientists uncertain about its exact location. Settled in the shadow of a cliff, there are also fears that the probe's useful lifetime could be significantly less than anticipated.&lt;img src="http://feeds.feedburner.com/~r/foxnews/most-popular/~4/Se4PLLel318" height="1" width="1"/&gt;	http://www.foxnews.com/science/2014/11/14/comet-landing-scientists-unsure-about-philae-probes-location/	Fox	http://global.fncstatic.com/static/managed/img/fn2/video/111314_dotcom_comet_640.jpg	2014-11-14	90	1	1	2014-11-14 08:52:05.273314	2014-11-14 08:52:05.273314
+77	Rosetta: what went right with Philae, what went wrong and how it can be fixed	No abstract provided.	http://www.theguardian.com/science/2014/nov/13/rosetta-philae-comet-mission-what-went-right-what-went-wrong-and-how-it-can-be-fixed	TheGuardian	http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/11/13/1415901340635/c8811062-80bb-4a46-82a9-23062ca24111-460x276.jpeg	2014-11-13	88	1	1	2014-11-14 08:52:05.277026	2014-11-14 08:52:05.277026
+49	Deal on Carbon Emissions by Obama and Xi Jinping Raises Hopes for Upcoming Paris Climate Talks	The emissions targets announced by President Obama and the Chinese leader are expected to be at the heart of a 2015 international climate treaty.	http://www.nytimes.com/2014/11/13/world/asia/deal-on-carbon-emissions-by-obama-and-xi-jinping-raises-hopes-for-upcoming-paris-climate-talks.html	New York Times	http://dribbble.s3.amazonaws.com/users/107262/screenshots/462548/ketchup_logo_1.jpg	2014-11-13	1462	1	1	2014-11-14 08:50:41.673584	2014-11-14 08:52:05.282573
+78	Climate Accord Relies on Environmental Policies Now in Place 	The United States and China should both be able to meet the stated goals by aggressively pursuing policies that are largely underway, analysts said.	http://www.nytimes.com/2014/11/13/world/climate-pact-by-us-and-china-relies-on-policies-now-largely-in-place.html	New York Times	http://dribbble.s3.amazonaws.com/users/107262/screenshots/462548/ketchup_logo_1.jpg	2014-11-13	588	1	1	2014-11-14 08:52:05.288352	2014-11-14 08:52:05.288352
+79	Warmer World Might See More Lightning	A model of predicted lightning strikes estimates an increase on the order of 50 percent if warming continues unchecked through this century.	http://www.nytimes.com/2014/11/14/science/lightning-might-strike-more-in-a-warmer-world.html	New York Times	http://static01.nyt.com/images/2014/11/14/science/earth/14lightning/14lightning-articleLarge.jpg	2014-11-14	530	1	1	2014-11-14 08:52:05.292276	2014-11-14 08:52:05.292276
+80	Obama, Down but Not Out, Presses Ahead	Since deep losses in the midterm elections, the president has flexed his muscles on climate change, immigration and Internet neutrality.	http://www.nytimes.com/2014/11/14/us/politics/down-but-not-out-obama-presses-ahead.html	New York Times	http://static01.nyt.com/images/2014/11/14/us/JP-OBAMA/JP-OBAMA-articleLarge.jpg	2014-11-14	392	1	1	2014-11-14 08:52:05.296096	2014-11-14 08:52:05.296096
+81	A Major Breakthrough on Climate Change	After years of futile efforts, China and the United States agree to cooperate in a meaningful way on global warming.	http://www.nytimes.com/2014/11/13/opinion/climate-change-breakthrough-in-beijing.html	New York Times	http://static01.nyt.com/images/2014/11/12/opinion/nyto-1112climate/nyto-1112climate-articleLarge.jpg	2014-11-13	319	1	1	2014-11-14 08:52:05.299877	2014-11-14 08:52:05.299877
+82	Victorian government has ‘worst environmental record since the 60s’	No abstract provided.	http://www.theguardian.com/australia-news/2014/nov/13/victorian-government-has-worst-environmental-record-since-the-sixties	TheGuardian	http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/11/13/1415863075474/f7b02ee9-ff6d-4a7f-afb9-a759d8eadb63-460x276.jpeg	2014-11-13	197	1	1	2014-11-14 08:52:05.303629	2014-11-14 08:52:05.303629
+83	Emissions reduction: Tony Abbott says Australia is acting, not talking	No abstract provided.	http://www.theguardian.com/environment/2014/nov/13/emissions-reduction-tony-abbott-says-australia-is-acting-not-talking	TheGuardian	http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/11/13/1415852924805/4456de8e-1752-4a23-8419-f586d447cdca-460x276.jpeg	2014-11-13	128	1	1	2014-11-14 08:52:05.307329	2014-11-14 08:52:05.307329
+\.
+
+
+--
+-- Name: articles_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dustinsnyder
+--
+
+SELECT pg_catalog.setval('articles_id_seq', 83, true);
+
+
+--
+-- Data for Name: day_topics; Type: TABLE DATA; Schema: public; Owner: dustinsnyder
+--
+
+COPY day_topics (id, topic_id, day_id, created_at, updated_at) FROM stdin;
+1	1	1	2014-11-14 08:50:10.902161	2014-11-14 08:50:10.902161
+2	2	1	2014-11-14 08:50:11.703573	2014-11-14 08:50:11.703573
+3	3	1	2014-11-14 08:50:12.326054	2014-11-14 08:50:12.326054
+4	4	1	2014-11-14 08:50:13.170483	2014-11-14 08:50:13.170483
+5	1	40	2014-11-14 08:50:18.560326	2014-11-14 08:50:18.560326
+6	1	54	2014-11-14 08:50:21.340631	2014-11-14 08:50:21.340631
+7	1	61	2014-11-14 08:50:23.09183	2014-11-14 08:50:23.09183
+8	1	68	2014-11-14 08:50:24.993588	2014-11-14 08:50:24.993588
+9	1	75	2014-11-14 08:50:26.405286	2014-11-14 08:50:26.405286
+10	1	89	2014-11-14 08:50:28.098805	2014-11-14 08:50:28.098805
+11	2	11	2014-11-14 08:50:30.705551	2014-11-14 08:50:30.705551
+12	2	26	2014-11-14 08:50:32.138877	2014-11-14 08:50:32.138877
+13	2	29	2014-11-14 08:50:33.500586	2014-11-14 08:50:33.500586
+14	2	68	2014-11-14 08:50:35.394897	2014-11-14 08:50:35.394897
+15	2	89	2014-11-14 08:50:36.786251	2014-11-14 08:50:36.786251
+16	2	90	2014-11-14 08:50:38.151916	2014-11-14 08:50:38.151916
+17	3	88	2014-11-14 08:50:39.205581	2014-11-14 08:50:39.205581
+18	4	85	2014-11-14 08:50:40.21488	2014-11-14 08:50:40.21488
+19	4	91	2014-11-14 08:50:41.663716	2014-11-14 08:50:41.663716
+\.
+
+
+--
+-- Name: day_topics_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dustinsnyder
+--
+
+SELECT pg_catalog.setval('day_topics_id_seq', 19, true);
+
+
+--
+-- Data for Name: days; Type: TABLE DATA; Schema: public; Owner: dustinsnyder
+--
+
+COPY days (id, date, created_at, updated_at) FROM stdin;
+1	2014-11-14	2014-11-14 08:50:09.674464	2014-11-14 08:50:09.674464
+2	2014-08-15	2014-11-14 08:50:15.374392	2014-11-14 08:50:15.374392
+3	2014-08-16	2014-11-14 08:50:15.390916	2014-11-14 08:50:15.390916
+4	2014-08-17	2014-11-14 08:50:15.395505	2014-11-14 08:50:15.395505
+5	2014-08-18	2014-11-14 08:50:15.400193	2014-11-14 08:50:15.400193
+6	2014-08-19	2014-11-14 08:50:15.404822	2014-11-14 08:50:15.404822
+7	2014-08-20	2014-11-14 08:50:15.409284	2014-11-14 08:50:15.409284
+8	2014-08-21	2014-11-14 08:50:15.413678	2014-11-14 08:50:15.413678
+9	2014-08-22	2014-11-14 08:50:15.418043	2014-11-14 08:50:15.418043
+10	2014-08-23	2014-11-14 08:50:15.422289	2014-11-14 08:50:15.422289
+11	2014-08-24	2014-11-14 08:50:15.426551	2014-11-14 08:50:15.426551
+12	2014-08-25	2014-11-14 08:50:15.430722	2014-11-14 08:50:15.430722
+13	2014-08-26	2014-11-14 08:50:15.434987	2014-11-14 08:50:15.434987
+14	2014-08-27	2014-11-14 08:50:15.486881	2014-11-14 08:50:15.486881
+15	2014-08-28	2014-11-14 08:50:15.491775	2014-11-14 08:50:15.491775
+16	2014-08-29	2014-11-14 08:50:15.496012	2014-11-14 08:50:15.496012
+17	2014-08-30	2014-11-14 08:50:15.500193	2014-11-14 08:50:15.500193
+18	2014-08-31	2014-11-14 08:50:15.504253	2014-11-14 08:50:15.504253
+19	2014-09-01	2014-11-14 08:50:15.508399	2014-11-14 08:50:15.508399
+20	2014-09-02	2014-11-14 08:50:15.512455	2014-11-14 08:50:15.512455
+21	2014-09-03	2014-11-14 08:50:15.516566	2014-11-14 08:50:15.516566
+22	2014-09-04	2014-11-14 08:50:15.520729	2014-11-14 08:50:15.520729
+23	2014-09-05	2014-11-14 08:50:15.52481	2014-11-14 08:50:15.52481
+24	2014-09-06	2014-11-14 08:50:15.528932	2014-11-14 08:50:15.528932
+25	2014-09-07	2014-11-14 08:50:15.532951	2014-11-14 08:50:15.532951
+26	2014-09-08	2014-11-14 08:50:15.537122	2014-11-14 08:50:15.537122
+27	2014-09-09	2014-11-14 08:50:15.541143	2014-11-14 08:50:15.541143
+28	2014-09-10	2014-11-14 08:50:15.545251	2014-11-14 08:50:15.545251
+29	2014-09-11	2014-11-14 08:50:15.549336	2014-11-14 08:50:15.549336
+30	2014-09-12	2014-11-14 08:50:15.553349	2014-11-14 08:50:15.553349
+31	2014-09-13	2014-11-14 08:50:15.557422	2014-11-14 08:50:15.557422
+32	2014-09-14	2014-11-14 08:50:15.56159	2014-11-14 08:50:15.56159
+33	2014-09-15	2014-11-14 08:50:15.566057	2014-11-14 08:50:15.566057
+34	2014-09-16	2014-11-14 08:50:15.570809	2014-11-14 08:50:15.570809
+35	2014-09-17	2014-11-14 08:50:15.575053	2014-11-14 08:50:15.575053
+36	2014-09-18	2014-11-14 08:50:15.579211	2014-11-14 08:50:15.579211
+37	2014-09-19	2014-11-14 08:50:15.583404	2014-11-14 08:50:15.583404
+38	2014-09-20	2014-11-14 08:50:15.58754	2014-11-14 08:50:15.58754
+39	2014-09-21	2014-11-14 08:50:15.591589	2014-11-14 08:50:15.591589
+40	2014-09-22	2014-11-14 08:50:15.595685	2014-11-14 08:50:15.595685
+41	2014-09-23	2014-11-14 08:50:15.599882	2014-11-14 08:50:15.599882
+42	2014-09-24	2014-11-14 08:50:15.604276	2014-11-14 08:50:15.604276
+43	2014-09-25	2014-11-14 08:50:15.608404	2014-11-14 08:50:15.608404
+44	2014-09-26	2014-11-14 08:50:15.612536	2014-11-14 08:50:15.612536
+45	2014-09-27	2014-11-14 08:50:15.616573	2014-11-14 08:50:15.616573
+46	2014-09-28	2014-11-14 08:50:15.6207	2014-11-14 08:50:15.6207
+47	2014-09-29	2014-11-14 08:50:15.624795	2014-11-14 08:50:15.624795
+48	2014-09-30	2014-11-14 08:50:15.629005	2014-11-14 08:50:15.629005
+49	2014-10-01	2014-11-14 08:50:15.633194	2014-11-14 08:50:15.633194
+50	2014-10-02	2014-11-14 08:50:15.637292	2014-11-14 08:50:15.637292
+51	2014-10-03	2014-11-14 08:50:15.64141	2014-11-14 08:50:15.64141
+52	2014-10-04	2014-11-14 08:50:15.64553	2014-11-14 08:50:15.64553
+53	2014-10-05	2014-11-14 08:50:15.649606	2014-11-14 08:50:15.649606
+54	2014-10-06	2014-11-14 08:50:15.653594	2014-11-14 08:50:15.653594
+55	2014-10-07	2014-11-14 08:50:15.657809	2014-11-14 08:50:15.657809
+56	2014-10-08	2014-11-14 08:50:15.661893	2014-11-14 08:50:15.661893
+57	2014-10-09	2014-11-14 08:50:15.665995	2014-11-14 08:50:15.665995
+58	2014-10-10	2014-11-14 08:50:15.670073	2014-11-14 08:50:15.670073
+59	2014-10-11	2014-11-14 08:50:15.67415	2014-11-14 08:50:15.67415
+60	2014-10-12	2014-11-14 08:50:15.678171	2014-11-14 08:50:15.678171
+61	2014-10-13	2014-11-14 08:50:15.68225	2014-11-14 08:50:15.68225
+62	2014-10-14	2014-11-14 08:50:15.68635	2014-11-14 08:50:15.68635
+63	2014-10-15	2014-11-14 08:50:15.690289	2014-11-14 08:50:15.690289
+64	2014-10-16	2014-11-14 08:50:15.694353	2014-11-14 08:50:15.694353
+65	2014-10-17	2014-11-14 08:50:15.698498	2014-11-14 08:50:15.698498
+66	2014-10-18	2014-11-14 08:50:15.702461	2014-11-14 08:50:15.702461
+67	2014-10-19	2014-11-14 08:50:15.70648	2014-11-14 08:50:15.70648
+68	2014-10-20	2014-11-14 08:50:15.710451	2014-11-14 08:50:15.710451
+69	2014-10-21	2014-11-14 08:50:15.714549	2014-11-14 08:50:15.714549
+70	2014-10-22	2014-11-14 08:50:15.71863	2014-11-14 08:50:15.71863
+71	2014-10-23	2014-11-14 08:50:15.722748	2014-11-14 08:50:15.722748
+72	2014-10-24	2014-11-14 08:50:15.726794	2014-11-14 08:50:15.726794
+73	2014-10-25	2014-11-14 08:50:15.73089	2014-11-14 08:50:15.73089
+74	2014-10-26	2014-11-14 08:50:15.734956	2014-11-14 08:50:15.734956
+75	2014-10-27	2014-11-14 08:50:15.739034	2014-11-14 08:50:15.739034
+76	2014-10-28	2014-11-14 08:50:15.743045	2014-11-14 08:50:15.743045
+77	2014-10-29	2014-11-14 08:50:15.747117	2014-11-14 08:50:15.747117
+78	2014-10-30	2014-11-14 08:50:15.751159	2014-11-14 08:50:15.751159
+79	2014-10-31	2014-11-14 08:50:15.755251	2014-11-14 08:50:15.755251
+80	2014-11-01	2014-11-14 08:50:15.759402	2014-11-14 08:50:15.759402
+81	2014-11-02	2014-11-14 08:50:15.763459	2014-11-14 08:50:15.763459
+82	2014-11-03	2014-11-14 08:50:15.767484	2014-11-14 08:50:15.767484
+83	2014-11-04	2014-11-14 08:50:15.77157	2014-11-14 08:50:15.77157
+84	2014-11-05	2014-11-14 08:50:15.775635	2014-11-14 08:50:15.775635
+85	2014-11-06	2014-11-14 08:50:15.77959	2014-11-14 08:50:15.77959
+86	2014-11-07	2014-11-14 08:50:15.783629	2014-11-14 08:50:15.783629
+87	2014-11-08	2014-11-14 08:50:15.787623	2014-11-14 08:50:15.787623
+88	2014-11-09	2014-11-14 08:50:15.791681	2014-11-14 08:50:15.791681
+89	2014-11-10	2014-11-14 08:50:15.79578	2014-11-14 08:50:15.79578
+90	2014-11-11	2014-11-14 08:50:15.799864	2014-11-14 08:50:15.799864
+91	2014-11-12	2014-11-14 08:50:15.80391	2014-11-14 08:50:15.80391
+92	2014-11-13	2014-11-14 08:50:15.808001	2014-11-14 08:50:15.808001
+\.
+
+
+--
+-- Name: days_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dustinsnyder
+--
+
+SELECT pg_catalog.setval('days_id_seq', 92, true);
+
+
+--
+-- Data for Name: popularities; Type: TABLE DATA; Schema: public; Owner: dustinsnyder
+--
+
+COPY popularities (id, topic_id, day_id, twitter_popularity, facebook_popularity, google_trend_index, created_at, updated_at) FROM stdin;
+1	1	2	1	1	63	2014-11-14 08:50:15.386581	2014-11-14 08:50:15.388387
+2	1	3	1	1	42	2014-11-14 08:50:15.392691	2014-11-14 08:50:15.393796
+3	1	4	1	1	45	2014-11-14 08:50:15.397314	2014-11-14 08:50:15.398436
+4	1	5	1	1	74	2014-11-14 08:50:15.402019	2014-11-14 08:50:15.40314
+5	1	6	1	1	80	2014-11-14 08:50:15.40654	2014-11-14 08:50:15.407669
+6	1	7	1	1	82	2014-11-14 08:50:15.410942	2014-11-14 08:50:15.412054
+7	1	8	1	1	78	2014-11-14 08:50:15.415335	2014-11-14 08:50:15.416402
+8	1	9	1	1	69	2014-11-14 08:50:15.419672	2014-11-14 08:50:15.420731
+9	1	10	1	1	46	2014-11-14 08:50:15.423922	2014-11-14 08:50:15.424955
+10	1	11	1	1	49	2014-11-14 08:50:15.428163	2014-11-14 08:50:15.429213
+11	1	12	1	1	72	2014-11-14 08:50:15.432381	2014-11-14 08:50:15.433455
+12	1	13	1	1	80	2014-11-14 08:50:15.436602	2014-11-14 08:50:15.483975
+13	1	14	1	1	81	2014-11-14 08:50:15.488976	2014-11-14 08:50:15.490147
+14	1	15	1	1	72	2014-11-14 08:50:15.493367	2014-11-14 08:50:15.494381
+15	1	16	1	1	61	2014-11-14 08:50:15.497606	2014-11-14 08:50:15.498642
+16	1	17	1	1	45	2014-11-14 08:50:15.501742	2014-11-14 08:50:15.502762
+17	1	18	1	1	50	2014-11-14 08:50:15.505836	2014-11-14 08:50:15.506867
+18	1	19	1	1	61	2014-11-14 08:50:15.509931	2014-11-14 08:50:15.510952
+19	1	20	1	1	81	2014-11-14 08:50:15.514008	2014-11-14 08:50:15.515043
+20	1	21	1	1	82	2014-11-14 08:50:15.518144	2014-11-14 08:50:15.519172
+21	1	22	1	1	80	2014-11-14 08:50:15.5223	2014-11-14 08:50:15.523322
+22	1	23	1	1	73	2014-11-14 08:50:15.526383	2014-11-14 08:50:15.527398
+23	1	24	1	1	44	2014-11-14 08:50:15.530452	2014-11-14 08:50:15.531427
+24	1	25	1	1	54	2014-11-14 08:50:15.534542	2014-11-14 08:50:15.535573
+25	1	26	1	1	81	2014-11-14 08:50:15.53866	2014-11-14 08:50:15.539653
+26	1	27	1	1	85	2014-11-14 08:50:15.542687	2014-11-14 08:50:15.543728
+27	1	28	1	1	85	2014-11-14 08:50:15.54678	2014-11-14 08:50:15.547795
+28	1	29	1	1	85	2014-11-14 08:50:15.550866	2014-11-14 08:50:15.551852
+29	1	30	1	1	71	2014-11-14 08:50:15.55488	2014-11-14 08:50:15.555916
+30	1	31	1	1	47	2014-11-14 08:50:15.558999	2014-11-14 08:50:15.56003
+31	1	32	1	1	57	2014-11-14 08:50:15.563322	2014-11-14 08:50:15.564342
+32	1	33	1	1	87	2014-11-14 08:50:15.567806	2014-11-14 08:50:15.569046
+33	1	34	1	1	90	2014-11-14 08:50:15.572436	2014-11-14 08:50:15.573489
+34	1	35	1	1	96	2014-11-14 08:50:15.576675	2014-11-14 08:50:15.577721
+35	1	36	1	1	91	2014-11-14 08:50:15.580858	2014-11-14 08:50:15.581887
+36	1	37	1	1	76	2014-11-14 08:50:15.58498	2014-11-14 08:50:15.586006
+37	1	38	1	1	49	2014-11-14 08:50:15.589087	2014-11-14 08:50:15.590094
+38	1	39	1	1	57	2014-11-14 08:50:15.593087	2014-11-14 08:50:15.594114
+39	1	40	1	1	92	2014-11-14 08:50:15.597278	2014-11-14 08:50:15.598329
+40	1	41	1	1	98	2014-11-14 08:50:15.601605	2014-11-14 08:50:15.60273
+41	1	42	1	1	97	2014-11-14 08:50:15.605859	2014-11-14 08:50:15.606889
+42	1	43	1	1	96	2014-11-14 08:50:15.60998	2014-11-14 08:50:15.611009
+43	1	44	1	1	82	2014-11-14 08:50:15.614075	2014-11-14 08:50:15.61509
+44	1	45	1	1	50	2014-11-14 08:50:15.618122	2014-11-14 08:50:15.619154
+45	1	46	1	1	63	2014-11-14 08:50:15.622278	2014-11-14 08:50:15.623302
+46	1	47	1	1	88	2014-11-14 08:50:15.626368	2014-11-14 08:50:15.62739
+47	1	48	1	1	93	2014-11-14 08:50:15.630607	2014-11-14 08:50:15.631643
+48	1	49	1	1	90	2014-11-14 08:50:15.634764	2014-11-14 08:50:15.635797
+49	1	50	1	1	91	2014-11-14 08:50:15.638843	2014-11-14 08:50:15.639874
+50	1	51	1	1	76	2014-11-14 08:50:15.642975	2014-11-14 08:50:15.643986
+51	1	52	1	1	49	2014-11-14 08:50:15.647074	2014-11-14 08:50:15.648075
+52	1	53	1	1	57	2014-11-14 08:50:15.651131	2014-11-14 08:50:15.652101
+53	1	54	1	1	91	2014-11-14 08:50:15.655242	2014-11-14 08:50:15.65626
+54	1	55	1	1	96	2014-11-14 08:50:15.659353	2014-11-14 08:50:15.660371
+55	1	56	1	1	97	2014-11-14 08:50:15.663451	2014-11-14 08:50:15.664455
+56	1	57	1	1	87	2014-11-14 08:50:15.667556	2014-11-14 08:50:15.668574
+57	1	58	1	1	76	2014-11-14 08:50:15.671642	2014-11-14 08:50:15.672658
+58	1	59	1	1	50	2014-11-14 08:50:15.675711	2014-11-14 08:50:15.676664
+59	1	60	1	1	57	2014-11-14 08:50:15.679759	2014-11-14 08:50:15.680765
+60	1	61	1	1	89	2014-11-14 08:50:15.683795	2014-11-14 08:50:15.684815
+61	1	62	1	1	95	2014-11-14 08:50:15.687799	2014-11-14 08:50:15.688755
+62	1	63	1	1	96	2014-11-14 08:50:15.691827	2014-11-14 08:50:15.692858
+63	1	64	1	1	91	2014-11-14 08:50:15.695921	2014-11-14 08:50:15.696946
+64	1	65	1	1	80	2014-11-14 08:50:15.699941	2014-11-14 08:50:15.700926
+65	1	66	1	1	52	2014-11-14 08:50:15.703976	2014-11-14 08:50:15.704959
+66	1	67	1	1	58	2014-11-14 08:50:15.708006	2014-11-14 08:50:15.708953
+67	1	68	1	1	96	2014-11-14 08:50:15.712024	2014-11-14 08:50:15.713045
+68	1	69	1	1	94	2014-11-14 08:50:15.716089	2014-11-14 08:50:15.717103
+69	1	70	1	1	90	2014-11-14 08:50:15.720205	2014-11-14 08:50:15.721197
+70	1	71	1	1	92	2014-11-14 08:50:15.724321	2014-11-14 08:50:15.725272
+71	1	72	1	1	79	2014-11-14 08:50:15.728368	2014-11-14 08:50:15.729384
+72	1	73	1	1	47	2014-11-14 08:50:15.732459	2014-11-14 08:50:15.733472
+73	1	74	1	1	59	2014-11-14 08:50:15.736489	2014-11-14 08:50:15.737508
+74	1	75	1	1	96	2014-11-14 08:50:15.740556	2014-11-14 08:50:15.741554
+75	1	76	1	1	100	2014-11-14 08:50:15.744578	2014-11-14 08:50:15.745597
+76	1	77	1	1	97	2014-11-14 08:50:15.748682	2014-11-14 08:50:15.74968
+77	1	78	1	1	93	2014-11-14 08:50:15.752703	2014-11-14 08:50:15.753718
+78	1	79	1	1	75	2014-11-14 08:50:15.756871	2014-11-14 08:50:15.757861
+79	1	80	1	1	55	2014-11-14 08:50:15.760914	2014-11-14 08:50:15.761921
+80	1	81	1	1	66	2014-11-14 08:50:15.765039	2014-11-14 08:50:15.766008
+81	1	82	1	1	92	2014-11-14 08:50:15.769069	2014-11-14 08:50:15.77009
+82	1	83	1	1	94	2014-11-14 08:50:15.773126	2014-11-14 08:50:15.774139
+83	1	84	1	1	96	2014-11-14 08:50:15.777069	2014-11-14 08:50:15.778054
+84	1	85	1	1	97	2014-11-14 08:50:15.781118	2014-11-14 08:50:15.782098
+85	1	86	1	1	82	2014-11-14 08:50:15.785142	2014-11-14 08:50:15.786105
+86	1	87	1	1	53	2014-11-14 08:50:15.789163	2014-11-14 08:50:15.790149
+87	1	88	1	1	59	2014-11-14 08:50:15.793264	2014-11-14 08:50:15.794276
+88	1	89	1	1	97	2014-11-14 08:50:15.797331	2014-11-14 08:50:15.798341
+89	1	90	1	1	99	2014-11-14 08:50:15.801391	2014-11-14 08:50:15.802384
+90	1	91	1	1	100	2014-11-14 08:50:15.805458	2014-11-14 08:50:15.806478
+91	1	92	1	1	0	2014-11-14 08:50:15.809564	2014-11-14 08:50:15.810594
+92	1	1	1	1	0	2014-11-14 08:50:15.812577	2014-11-14 08:50:15.813589
+93	2	2	1	1	35	2014-11-14 08:50:28.938783	2014-11-14 08:50:28.941369
+94	2	3	1	1	28	2014-11-14 08:50:28.944959	2014-11-14 08:50:28.946346
+95	2	4	1	1	32	2014-11-14 08:50:28.948832	2014-11-14 08:50:28.949937
+96	2	5	1	1	36	2014-11-14 08:50:28.952187	2014-11-14 08:50:28.953298
+97	2	6	1	1	43	2014-11-14 08:50:28.955364	2014-11-14 08:50:28.956402
+98	2	7	1	1	36	2014-11-14 08:50:28.958694	2014-11-14 08:50:28.959784
+99	2	8	1	1	34	2014-11-14 08:50:28.961905	2014-11-14 08:50:28.962951
+100	2	9	1	1	44	2014-11-14 08:50:28.965048	2014-11-14 08:50:28.966195
+101	2	10	1	1	24	2014-11-14 08:50:28.968398	2014-11-14 08:50:28.969459
+102	2	11	1	1	44	2014-11-14 08:50:28.971477	2014-11-14 08:50:28.972508
+103	2	12	1	1	32	2014-11-14 08:50:28.974705	2014-11-14 08:50:28.975722
+104	2	13	1	1	33	2014-11-14 08:50:28.977928	2014-11-14 08:50:28.978955
+105	2	14	1	1	49	2014-11-14 08:50:28.981163	2014-11-14 08:50:28.982178
+106	2	15	1	1	32	2014-11-14 08:50:28.984375	2014-11-14 08:50:28.985394
+107	2	16	1	1	34	2014-11-14 08:50:28.987445	2014-11-14 08:50:28.988456
+108	2	17	1	1	33	2014-11-14 08:50:28.990674	2014-11-14 08:50:28.991721
+109	2	18	1	1	23	2014-11-14 08:50:28.993844	2014-11-14 08:50:28.994798
+110	2	19	1	1	21	2014-11-14 08:50:28.996985	2014-11-14 08:50:28.998002
+111	2	20	1	1	33	2014-11-14 08:50:29.000192	2014-11-14 08:50:29.001201
+112	2	21	1	1	34	2014-11-14 08:50:29.003402	2014-11-14 08:50:29.004412
+113	2	22	1	1	30	2014-11-14 08:50:29.006618	2014-11-14 08:50:29.007619
+114	2	23	1	1	47	2014-11-14 08:50:29.010016	2014-11-14 08:50:29.011043
+115	2	24	1	1	33	2014-11-14 08:50:29.012996	2014-11-14 08:50:29.014007
+116	2	25	1	1	32	2014-11-14 08:50:29.016034	2014-11-14 08:50:29.017051
+117	2	26	1	1	62	2014-11-14 08:50:29.019103	2014-11-14 08:50:29.020131
+118	2	27	1	1	39	2014-11-14 08:50:29.022207	2014-11-14 08:50:29.023233
+119	2	28	1	1	32	2014-11-14 08:50:29.025249	2014-11-14 08:50:29.02626
+120	2	29	1	1	66	2014-11-14 08:50:29.02828	2014-11-14 08:50:29.029282
+121	2	30	1	1	39	2014-11-14 08:50:29.031338	2014-11-14 08:50:29.032346
+122	2	31	1	1	44	2014-11-14 08:50:29.034505	2014-11-14 08:50:29.035613
+123	2	32	1	1	31	2014-11-14 08:50:29.037756	2014-11-14 08:50:29.038788
+124	2	33	1	1	36	2014-11-14 08:50:29.041568	2014-11-14 08:50:29.04264
+125	2	34	1	1	45	2014-11-14 08:50:29.044648	2014-11-14 08:50:29.045657
+126	2	35	1	1	50	2014-11-14 08:50:29.047632	2014-11-14 08:50:29.048608
+127	2	36	1	1	53	2014-11-14 08:50:29.050672	2014-11-14 08:50:29.051636
+128	2	37	1	1	44	2014-11-14 08:50:29.05359	2014-11-14 08:50:29.054595
+129	2	38	1	1	28	2014-11-14 08:50:29.056687	2014-11-14 08:50:29.057712
+130	2	39	1	1	35	2014-11-14 08:50:29.059725	2014-11-14 08:50:29.060739
+131	2	40	1	1	28	2014-11-14 08:50:29.062821	2014-11-14 08:50:29.06385
+132	2	41	1	1	38	2014-11-14 08:50:29.065883	2014-11-14 08:50:29.066898
+133	2	42	1	1	41	2014-11-14 08:50:29.069035	2014-11-14 08:50:29.069971
+134	2	43	1	1	44	2014-11-14 08:50:29.071903	2014-11-14 08:50:29.07298
+135	2	44	1	1	33	2014-11-14 08:50:29.075044	2014-11-14 08:50:29.076061
+136	2	45	1	1	33	2014-11-14 08:50:29.078075	2014-11-14 08:50:29.079093
+137	2	46	1	1	41	2014-11-14 08:50:29.081087	2014-11-14 08:50:29.08211
+138	2	47	1	1	54	2014-11-14 08:50:29.084086	2014-11-14 08:50:29.085116
+139	2	48	1	1	37	2014-11-14 08:50:29.087185	2014-11-14 08:50:29.08821
+140	2	49	1	1	30	2014-11-14 08:50:29.090206	2014-11-14 08:50:29.091228
+141	2	50	1	1	38	2014-11-14 08:50:29.093211	2014-11-14 08:50:29.094212
+142	2	51	1	1	42	2014-11-14 08:50:29.096247	2014-11-14 08:50:29.097257
+143	2	52	1	1	25	2014-11-14 08:50:29.099264	2014-11-14 08:50:29.100285
+144	2	53	1	1	35	2014-11-14 08:50:29.141676	2014-11-14 08:50:29.143359
+145	2	54	1	1	40	2014-11-14 08:50:29.146176	2014-11-14 08:50:29.147364
+146	2	55	1	1	49	2014-11-14 08:50:29.149654	2014-11-14 08:50:29.150738
+147	2	56	1	1	55	2014-11-14 08:50:29.153203	2014-11-14 08:50:29.154398
+148	2	57	1	1	31	2014-11-14 08:50:29.156702	2014-11-14 08:50:29.15781
+149	2	58	1	1	43	2014-11-14 08:50:29.159836	2014-11-14 08:50:29.160894
+150	2	59	1	1	33	2014-11-14 08:50:29.162901	2014-11-14 08:50:29.164115
+151	2	60	1	1	40	2014-11-14 08:50:29.166182	2014-11-14 08:50:29.1672
+152	2	61	1	1	42	2014-11-14 08:50:29.169225	2014-11-14 08:50:29.170255
+153	2	62	1	1	55	2014-11-14 08:50:29.172265	2014-11-14 08:50:29.173289
+154	2	63	1	1	36	2014-11-14 08:50:29.175317	2014-11-14 08:50:29.176348
+155	2	64	1	1	39	2014-11-14 08:50:29.178348	2014-11-14 08:50:29.179361
+156	2	65	1	1	53	2014-11-14 08:50:29.181389	2014-11-14 08:50:29.182383
+157	2	66	1	1	30	2014-11-14 08:50:29.184414	2014-11-14 08:50:29.185427
+158	2	67	1	1	29	2014-11-14 08:50:29.187419	2014-11-14 08:50:29.188467
+159	2	68	1	1	60	2014-11-14 08:50:29.190487	2014-11-14 08:50:29.191504
+160	2	69	1	1	50	2014-11-14 08:50:29.193534	2014-11-14 08:50:29.194548
+161	2	70	1	1	54	2014-11-14 08:50:29.196514	2014-11-14 08:50:29.197519
+162	2	71	1	1	43	2014-11-14 08:50:29.199576	2014-11-14 08:50:29.200601
+163	2	72	1	1	38	2014-11-14 08:50:29.202602	2014-11-14 08:50:29.203595
+164	2	73	1	1	30	2014-11-14 08:50:29.205669	2014-11-14 08:50:29.206638
+165	2	74	1	1	42	2014-11-14 08:50:29.208687	2014-11-14 08:50:29.209761
+166	2	75	1	1	40	2014-11-14 08:50:29.211829	2014-11-14 08:50:29.212848
+167	2	76	1	1	36	2014-11-14 08:50:29.214882	2014-11-14 08:50:29.215894
+168	2	77	1	1	37	2014-11-14 08:50:29.218034	2014-11-14 08:50:29.21906
+169	2	78	1	1	46	2014-11-14 08:50:29.221104	2014-11-14 08:50:29.222128
+170	2	79	1	1	50	2014-11-14 08:50:29.224131	2014-11-14 08:50:29.225121
+171	2	80	1	1	39	2014-11-14 08:50:29.227155	2014-11-14 08:50:29.228204
+172	2	81	1	1	38	2014-11-14 08:50:29.230156	2014-11-14 08:50:29.231139
+173	2	82	1	1	44	2014-11-14 08:50:29.23322	2014-11-14 08:50:29.234245
+174	2	83	1	1	44	2014-11-14 08:50:29.236295	2014-11-14 08:50:29.237318
+175	2	84	1	1	43	2014-11-14 08:50:29.239356	2014-11-14 08:50:29.24038
+176	2	85	1	1	52	2014-11-14 08:50:29.242385	2014-11-14 08:50:29.243395
+177	2	86	1	1	59	2014-11-14 08:50:29.245437	2014-11-14 08:50:29.246488
+178	2	87	1	1	41	2014-11-14 08:50:29.248533	2014-11-14 08:50:29.24956
+179	2	88	1	1	28	2014-11-14 08:50:29.25157	2014-11-14 08:50:29.252591
+180	2	89	1	1	48	2014-11-14 08:50:29.254651	2014-11-14 08:50:29.255598
+181	2	90	1	1	100	2014-11-14 08:50:29.257597	2014-11-14 08:50:29.258616
+182	2	91	1	1	56	2014-11-14 08:50:29.260609	2014-11-14 08:50:29.261615
+183	2	92	1	1	0	2014-11-14 08:50:29.263678	2014-11-14 08:50:29.264679
+184	2	1	1	1	0	2014-11-14 08:50:29.266701	2014-11-14 08:50:29.26771
+185	3	4	1	1	3	2014-11-14 08:50:38.306827	2014-11-14 08:50:38.309126
+186	3	11	1	1	4	2014-11-14 08:50:38.31198	2014-11-14 08:50:38.313136
+187	3	18	1	1	2	2014-11-14 08:50:38.315389	2014-11-14 08:50:38.316451
+188	3	25	1	1	3	2014-11-14 08:50:38.31848	2014-11-14 08:50:38.319548
+189	3	32	1	1	3	2014-11-14 08:50:38.321626	2014-11-14 08:50:38.322696
+190	3	39	1	1	5	2014-11-14 08:50:38.324774	2014-11-14 08:50:38.325809
+191	3	46	1	1	4	2014-11-14 08:50:38.327863	2014-11-14 08:50:38.328907
+192	3	53	1	1	3	2014-11-14 08:50:38.330973	2014-11-14 08:50:38.332
+193	3	60	1	1	4	2014-11-14 08:50:38.334237	2014-11-14 08:50:38.335264
+194	3	67	1	1	4	2014-11-14 08:50:38.337311	2014-11-14 08:50:38.338315
+195	3	74	1	1	4	2014-11-14 08:50:38.340403	2014-11-14 08:50:38.341352
+196	3	81	1	1	4	2014-11-14 08:50:38.343403	2014-11-14 08:50:38.344458
+197	3	88	1	1	100	2014-11-14 08:50:38.346517	2014-11-14 08:50:38.347524
+198	4	2	1	1	0	2014-11-14 08:50:39.342529	2014-11-14 08:50:39.344887
+199	4	3	1	1	0	2014-11-14 08:50:39.347937	2014-11-14 08:50:39.349078
+200	4	4	1	1	0	2014-11-14 08:50:39.351249	2014-11-14 08:50:39.3523
+201	4	5	1	1	35	2014-11-14 08:50:39.354496	2014-11-14 08:50:39.355529
+202	4	6	1	1	41	2014-11-14 08:50:39.357602	2014-11-14 08:50:39.358586
+203	4	7	1	1	38	2014-11-14 08:50:39.360655	2014-11-14 08:50:39.361667
+204	4	8	1	1	0	2014-11-14 08:50:39.36364	2014-11-14 08:50:39.36465
+205	4	9	1	1	0	2014-11-14 08:50:39.366886	2014-11-14 08:50:39.367898
+206	4	10	1	1	0	2014-11-14 08:50:39.369977	2014-11-14 08:50:39.370997
+207	4	11	1	1	0	2014-11-14 08:50:39.373025	2014-11-14 08:50:39.374057
+208	4	12	1	1	0	2014-11-14 08:50:39.37618	2014-11-14 08:50:39.377184
+209	4	13	1	1	37	2014-11-14 08:50:39.379243	2014-11-14 08:50:39.380274
+210	4	14	1	1	0	2014-11-14 08:50:39.382259	2014-11-14 08:50:39.383275
+211	4	15	1	1	0	2014-11-14 08:50:39.385304	2014-11-14 08:50:39.386335
+212	4	16	1	1	0	2014-11-14 08:50:39.388338	2014-11-14 08:50:39.389355
+213	4	17	1	1	0	2014-11-14 08:50:39.391536	2014-11-14 08:50:39.392579
+214	4	18	1	1	0	2014-11-14 08:50:39.39459	2014-11-14 08:50:39.395597
+215	4	19	1	1	31	2014-11-14 08:50:39.397759	2014-11-14 08:50:39.398781
+216	4	20	1	1	30	2014-11-14 08:50:39.401081	2014-11-14 08:50:39.402205
+217	4	21	1	1	0	2014-11-14 08:50:39.404414	2014-11-14 08:50:39.405383
+218	4	22	1	1	0	2014-11-14 08:50:39.407553	2014-11-14 08:50:39.408552
+219	4	23	1	1	0	2014-11-14 08:50:39.410768	2014-11-14 08:50:39.411838
+220	4	24	1	1	0	2014-11-14 08:50:39.414029	2014-11-14 08:50:39.41502
+221	4	25	1	1	0	2014-11-14 08:50:39.417217	2014-11-14 08:50:39.418185
+222	4	26	1	1	0	2014-11-14 08:50:39.420366	2014-11-14 08:50:39.421376
+223	4	27	1	1	35	2014-11-14 08:50:39.423865	2014-11-14 08:50:39.425123
+224	4	28	1	1	39	2014-11-14 08:50:39.42736	2014-11-14 08:50:39.428383
+225	4	29	1	1	42	2014-11-14 08:50:39.430603	2014-11-14 08:50:39.431625
+226	4	30	1	1	44	2014-11-14 08:50:39.433885	2014-11-14 08:50:39.434906
+227	4	31	1	1	47	2014-11-14 08:50:39.436933	2014-11-14 08:50:39.437923
+228	4	32	1	1	49	2014-11-14 08:50:39.43995	2014-11-14 08:50:39.440965
+229	4	33	1	1	51	2014-11-14 08:50:39.442975	2014-11-14 08:50:39.443967
+230	4	34	1	1	53	2014-11-14 08:50:39.445974	2014-11-14 08:50:39.446993
+231	4	35	1	1	51	2014-11-14 08:50:39.448996	2014-11-14 08:50:39.449985
+232	4	36	1	1	33	2014-11-14 08:50:39.452019	2014-11-14 08:50:39.453048
+233	4	37	1	1	52	2014-11-14 08:50:39.455078	2014-11-14 08:50:39.456096
+234	4	38	1	1	42	2014-11-14 08:50:39.458106	2014-11-14 08:50:39.459143
+235	4	39	1	1	42	2014-11-14 08:50:39.461167	2014-11-14 08:50:39.462152
+236	4	40	1	1	47	2014-11-14 08:50:39.464166	2014-11-14 08:50:39.465178
+237	4	41	1	1	44	2014-11-14 08:50:39.46724	2014-11-14 08:50:39.468228
+238	4	42	1	1	63	2014-11-14 08:50:39.470273	2014-11-14 08:50:39.471232
+239	4	43	1	1	34	2014-11-14 08:50:39.473232	2014-11-14 08:50:39.474186
+240	4	44	1	1	38	2014-11-14 08:50:39.476149	2014-11-14 08:50:39.477207
+241	4	45	1	1	42	2014-11-14 08:50:39.479173	2014-11-14 08:50:39.480194
+242	4	46	1	1	46	2014-11-14 08:50:39.482216	2014-11-14 08:50:39.483235
+243	4	47	1	1	50	2014-11-14 08:50:39.485215	2014-11-14 08:50:39.486226
+244	4	48	1	1	48	2014-11-14 08:50:39.488219	2014-11-14 08:50:39.489231
+245	4	49	1	1	39	2014-11-14 08:50:39.491237	2014-11-14 08:50:39.492252
+246	4	50	1	1	46	2014-11-14 08:50:39.494268	2014-11-14 08:50:39.495249
+247	4	51	1	1	44	2014-11-14 08:50:39.497261	2014-11-14 08:50:39.498271
+248	4	52	1	1	48	2014-11-14 08:50:39.500276	2014-11-14 08:50:39.501282
+249	4	53	1	1	52	2014-11-14 08:50:39.503295	2014-11-14 08:50:39.50431
+250	4	54	1	1	56	2014-11-14 08:50:39.506291	2014-11-14 08:50:39.50732
+251	4	55	1	1	39	2014-11-14 08:50:39.509357	2014-11-14 08:50:39.510345
+252	4	56	1	1	39	2014-11-14 08:50:39.512346	2014-11-14 08:50:39.513354
+253	4	57	1	1	48	2014-11-14 08:50:39.515379	2014-11-14 08:50:39.516401
+254	4	58	1	1	54	2014-11-14 08:50:39.518419	2014-11-14 08:50:39.51943
+255	4	59	1	1	61	2014-11-14 08:50:39.521403	2014-11-14 08:50:39.522412
+256	4	60	1	1	68	2014-11-14 08:50:39.524447	2014-11-14 08:50:39.525453
+257	4	61	1	1	65	2014-11-14 08:50:39.527486	2014-11-14 08:50:39.52849
+258	4	62	1	1	49	2014-11-14 08:50:39.53053	2014-11-14 08:50:39.531552
+259	4	63	1	1	55	2014-11-14 08:50:39.533577	2014-11-14 08:50:39.534585
+260	4	64	1	1	44	2014-11-14 08:50:39.536612	2014-11-14 08:50:39.537653
+261	4	65	1	1	37	2014-11-14 08:50:39.539674	2014-11-14 08:50:39.540657
+262	4	66	1	1	50	2014-11-14 08:50:39.542727	2014-11-14 08:50:39.54375
+263	4	67	1	1	63	2014-11-14 08:50:39.545768	2014-11-14 08:50:39.546749
+264	4	68	1	1	56	2014-11-14 08:50:39.54879	2014-11-14 08:50:39.549807
+265	4	69	1	1	72	2014-11-14 08:50:39.551853	2014-11-14 08:50:39.552857
+266	4	70	1	1	67	2014-11-14 08:50:39.55491	2014-11-14 08:50:39.555923
+267	4	71	1	1	78	2014-11-14 08:50:39.558108	2014-11-14 08:50:39.559146
+268	4	72	1	1	59	2014-11-14 08:50:39.561155	2014-11-14 08:50:39.562177
+269	4	73	1	1	67	2014-11-14 08:50:39.56422	2014-11-14 08:50:39.565218
+270	4	74	1	1	76	2014-11-14 08:50:39.567291	2014-11-14 08:50:39.568295
+271	4	75	1	1	78	2014-11-14 08:50:39.570271	2014-11-14 08:50:39.571307
+272	4	76	1	1	61	2014-11-14 08:50:39.57335	2014-11-14 08:50:39.574369
+273	4	77	1	1	75	2014-11-14 08:50:39.57637	2014-11-14 08:50:39.577361
+274	4	78	1	1	72	2014-11-14 08:50:39.579387	2014-11-14 08:50:39.580401
+275	4	79	1	1	47	2014-11-14 08:50:39.582441	2014-11-14 08:50:39.583445
+276	4	80	1	1	39	2014-11-14 08:50:39.585493	2014-11-14 08:50:39.586499
+277	4	81	1	1	61	2014-11-14 08:50:39.588537	2014-11-14 08:50:39.589543
+278	4	82	1	1	87	2014-11-14 08:50:39.591586	2014-11-14 08:50:39.592606
+279	4	83	1	1	46	2014-11-14 08:50:39.594678	2014-11-14 08:50:39.595664
+280	4	84	1	1	37	2014-11-14 08:50:39.597886	2014-11-14 08:50:39.598899
+281	4	85	1	1	84	2014-11-14 08:50:39.600868	2014-11-14 08:50:39.601879
+282	4	86	1	1	61	2014-11-14 08:50:39.603949	2014-11-14 08:50:39.604963
+283	4	87	1	1	55	2014-11-14 08:50:39.606993	2014-11-14 08:50:39.607979
+284	4	88	1	1	44	2014-11-14 08:50:39.639936	2014-11-14 08:50:39.641404
+285	4	89	1	1	66	2014-11-14 08:50:39.644518	2014-11-14 08:50:39.645651
+286	4	90	1	1	46	2014-11-14 08:50:39.648486	2014-11-14 08:50:39.649543
+287	4	91	1	1	100	2014-11-14 08:50:39.651851	2014-11-14 08:50:39.652872
+288	4	92	1	1	0	2014-11-14 08:50:39.655474	2014-11-14 08:50:39.656591
+289	4	1	1	1	0	2014-11-14 08:50:39.659326	2014-11-14 08:50:39.660661
+\.
+
+
+--
+-- Name: popularities_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dustinsnyder
+--
+
+SELECT pg_catalog.setval('popularities_id_seq', 289, true);
+
+
+--
+-- Data for Name: schema_migrations; Type: TABLE DATA; Schema: public; Owner: dustinsnyder
+--
+
+COPY schema_migrations (version) FROM stdin;
+20141107164255
+20141107164334
+20141107164604
+20141107164619
+20141107164631
+20141107164640
+20141113154308
+\.
+
+
+--
+-- Data for Name: topics; Type: TABLE DATA; Schema: public; Owner: dustinsnyder
+--
+
+COPY topics (id, title, image_url, created_at, updated_at) FROM stdin;
+1	SOCIAL MEDIA	http://www.niow.nl/blog/wp-content/uploads/2011/03/Social-Media.jpg	2014-11-14 08:50:10.888859	2014-11-14 08:50:10.888859
+2	UNITED STATES ARMY	http://www.beautifulstatues.com/images/4_CompM2-US-Army.jpg	2014-11-14 08:50:11.700331	2014-11-14 08:50:11.700331
+3	EUROPEAN SPACE AGENCY	http://sunflowercosmos.org/warning_report/space_wars_images/01_european_space_agency.jpg	2014-11-14 08:50:12.322786	2014-11-14 08:50:12.322786
+4	GREENHOUSE GAS EMISSIONS	http://site.destinationgreen.com/wp-content/uploads/2011/02/greenhouse_gas_emissions.jpg	2014-11-14 08:50:13.167283	2014-11-14 08:50:13.167283
+\.
+
+
+--
+-- Name: topics_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dustinsnyder
+--
+
+SELECT pg_catalog.setval('topics_id_seq', 4, true);
+
+
+--
+-- Name: article_topics_pkey; Type: CONSTRAINT; Schema: public; Owner: dustinsnyder; Tablespace: 
+--
+
+ALTER TABLE ONLY article_topics
+    ADD CONSTRAINT article_topics_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: articles_pkey; Type: CONSTRAINT; Schema: public; Owner: dustinsnyder; Tablespace: 
+--
+
+ALTER TABLE ONLY articles
+    ADD CONSTRAINT articles_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: day_topics_pkey; Type: CONSTRAINT; Schema: public; Owner: dustinsnyder; Tablespace: 
+--
+
+ALTER TABLE ONLY day_topics
+    ADD CONSTRAINT day_topics_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: days_pkey; Type: CONSTRAINT; Schema: public; Owner: dustinsnyder; Tablespace: 
+--
+
+ALTER TABLE ONLY days
+    ADD CONSTRAINT days_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: popularities_pkey; Type: CONSTRAINT; Schema: public; Owner: dustinsnyder; Tablespace: 
+--
+
+ALTER TABLE ONLY popularities
+    ADD CONSTRAINT popularities_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: topics_pkey; Type: CONSTRAINT; Schema: public; Owner: dustinsnyder; Tablespace: 
+--
+
+ALTER TABLE ONLY topics
+    ADD CONSTRAINT topics_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: dustinsnyder; Tablespace: 
+--
+
+CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: dustinsnyder
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM dustinsnyder;
+GRANT ALL ON SCHEMA public TO dustinsnyder;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

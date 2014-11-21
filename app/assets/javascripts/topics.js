@@ -29,9 +29,9 @@ $(document).on('click', '.buttons', function(e) {
 });
 
 function updateArticalPagination() {
-	var page = parseInt($('.article').first().data('current-page'));
-	var totalArticles = parseInt($('.article').first().data('total-articles'));
-	articlePageTotal = parseInt($('.article').first().data('total-pages'));
+	var page = parseInt($('.article').first().data('current-page'),10);
+	var totalArticles = parseInt($('.article').first().data('total-articles'),10);
+	articlePageTotal = parseInt($('.article').first().data('total-pages'),10);
 
 	var minRange = page * 4 - 3;
 	var maxRange = page * 4;
@@ -46,6 +46,7 @@ function updateArticalPagination() {
 // click on article carousel buttons
 $(document).on('click', '#articles .fa', function(e) {
 	var articlePageTarget = 0;
+	var bottomLimit = 0;
 
 	var articlesSet = $('#articles-set');
 	if(articlesSet.length != 0) {
@@ -53,12 +54,15 @@ $(document).on('click', '#articles .fa', function(e) {
 		articlePageTotal = articlesData.totalPages;
 		if($(e.target).hasClass('fa-chevron-left')) {
 			articlePageTarget = articlesData.page - 1;
+			bottomLimit = -1;
 		}
 		else {
 			articlePageTarget = articlesData.page + 1;
+			articlePageTotal = articlesData.totalPages - 1;
 		}
 	}
 	else {
+		// dayId = maxDayId;
 		if($(e.target).hasClass('fa-chevron-left')) {
 			articlePageTarget = articlePage - 1;
 		}
@@ -66,7 +70,7 @@ $(document).on('click', '#articles .fa', function(e) {
 			articlePageTarget = articlePage + 1;
 		}
 	}
-	if(articlePageTarget >= 0 && articlePageTarget <= articlePageTotal) {
+	if(articlePageTarget > bottomLimit && articlePageTarget <= articlePageTotal) {
 		var url = '';
 		var data = '';
 		var type = '';
@@ -81,6 +85,7 @@ $(document).on('click', '#articles .fa', function(e) {
 			data = '';
 			type = 'get';
 			url = 'topics/' + topicId + '/date/' + dayId + '/articles/' + articlePageTarget;
+			console.log(url);
 		}
 
 		$.ajax({
@@ -117,6 +122,8 @@ $(document).on('click', '.topic', function(e){
 			//update articles
 
 			var articlePageTarget = 1;
+			console.log(maxDayId);
+			dayId = parseInt(maxDayId,10);
 			$.ajax({
 				url: 'topics/' + topicId + '/date/' + maxDayId + '/articles/' + articlePageTarget,
 				type: 'get',
@@ -126,6 +133,8 @@ $(document).on('click', '.topic', function(e){
 					$('#article_list').html(response);
 					updateArticalPagination();
 					updateHeights();
+					articlePageTotal = parseInt($('.article').first().data('total-pages'),10);
+					console.log(articlePageTotal);
 				}
 			});
 		}
@@ -150,6 +159,7 @@ $(document).on('click', '#topics .fa', function(e) {
 		targetDateMilliSeconds = currentDateMilliSeconds + dayInMilliSeconds;
 	}
 	targetDateStr = new Date(targetDateMilliSeconds).toISOString().replace(/T.*/i,'');
+	console.log(targetDateStr + ' '+minDate+' '+maxDate);
 	if(targetDateStr >= minDate && targetDateStr <= maxDate) {
 		var articlesURL = 'days/'+targetDateStr+'/articles';
 		var statisticsURL = 'days/'+targetDateStr+'/popularity';
