@@ -5,7 +5,7 @@ function raise_up(jquery) {
 			$(this).addClass( "highlighted" );
 
 	});
-	}
+	};
 
 $(document).ready(raise_up);
 $(document).on("page:load", raise_up);
