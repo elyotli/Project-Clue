@@ -6,6 +6,7 @@ function raise_up(jquery) {
 
 	});
 	};
+//works?
 
 $(document).ready(raise_up);
 $(document).on("page:load", raise_up);
