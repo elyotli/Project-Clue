@@ -1,9 +1,11 @@
-$(document).ready(function(){
+function raise_up(jquery) {
+		$("#topic_list").on("click",".topic", function(){
+		
+			$(".topic").removeClass( "highlighted" );
+			$(this).addClass( "highlighted" );
 
-	$("#topic_list").on("click",".topic", function(){
-		$(".topic").removeClass( "highlighted" );
-		$(this).addClass( "highlighted" );
 	});
+	}
 
-	//$('span:contains('+topic+')').closest(".topic").addClass( "highlighted");
-});
+$(document).ready(raise_up);
+$(document).on("page:load", raise_up);
