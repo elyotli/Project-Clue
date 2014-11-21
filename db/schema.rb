@@ -29,9 +29,7 @@ ActiveRecord::Schema.define(version: 20141113154308) do
     t.text     "url"
     t.text     "source",              default: "No source provided."
     t.text     "image_url",           default: "http://dribbble.s3.amazonaws.com/users/107262/screenshots/462548/ketchup_logo_1.jpg"
-
-    t.date     "published_at",        default: '2014-11-13'
-
+    t.date     "published_at",        default: '2014-11-14'
     t.integer  "twitter_popularity",  default: 1
     t.integer  "facebook_popularity", default: 1
     t.integer  "google_trend_index",  default: 1

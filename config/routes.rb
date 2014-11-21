@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   root 'topics#splash'
 
-  get "topics" => 'topics#index', as: 'topics'
+  get "topics" => 'topics#splash_index', as: 'splash'
 
   get "topics/:topic_id/date/:date_id/articles/:page" => 'topics#articles_page'
   get 'topics/:topic_id/statistics/popularity' => 'topics#popularity'
