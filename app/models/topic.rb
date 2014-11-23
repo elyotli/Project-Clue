@@ -6,9 +6,6 @@ class Topic < ActiveRecord::Base
 
 	has_many :popularities
 
-  def find_articles
-
-  end
 
 
 

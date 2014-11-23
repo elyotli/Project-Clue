@@ -171,7 +171,7 @@ $(document).on('click', '#topics .fa', function(e) {
 			type: 'get',
 			dataType: 'html',
 			success: function(response) {
-				$('#topic_list').html(response);
+				//$('#topic_list').html(response);
 				responseCounter++;
 			}
 		});
