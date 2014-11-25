@@ -3,6 +3,7 @@
 # require "./../Requests_and_Responses"
 
 # Use these when calling this from an external file:
+require_relative 'TwitterWordSearch'
 require "./GetKeywords"
 require "./Requests_and_Responses"
 require 'pry'
@@ -12,6 +13,8 @@ require 'awesome_print'
 # require 'Date'
 class NewYorkTimesSearch
   attr_accessor :searched_articles
+  attr_reader :followers
+
   NYT_APP_KEY = "295f07d2db55fce19a6bdd330412d2ff:0:70154133"
   NY_BASE_SEARCH_URL = "http://api.nytimes.com/svc/search/v2/articlesearch.json?"
   include GetKeywords
@@ -19,6 +22,8 @@ class NewYorkTimesSearch
 
   def initialize
     @searched_articles = []
+    search = TwitterWordSearch.new
+    @followers = search.get_follower_count("nytimes")/1000000
   end
 
   def search(keyword)
@@ -48,7 +53,7 @@ class NewYorkTimesSearch
     end
     # return get_popularity(searched_articles)
     searched_articles.each do |article|
-      article[:twitter_pop] = get_twitter_popularity(article[:url]).to_i
+      article[:twitter_pop] = get_twitter_popularity(article[:url]).to_i/followers
       unless article[:twitter_pop] == nil && article[:facebook_pop] == nil
         article[:total_popularity] = article[:twitter_pop].to_i + article[:facebook_pop].to_i
       end
@@ -87,7 +92,7 @@ class NewYorkTimesSearch
 
     #get twitter popularity
     searched_articles.each do |article|
-      article[:twitter_pop] = get_twitter_popularity(article[:url])
+      article[:twitter_pop] = get_twitter_popularity(article[:url]).to_i/followers
     end
     sorted_articles = searched_articles[0..9].sort_by!{ |article| article[:twitter_pop] }
     sorted_articles.reverse!

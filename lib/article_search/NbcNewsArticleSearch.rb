@@ -10,7 +10,6 @@ class NbcNewsArticleSearch < RSSGrabber
 
 	def initialize
 		search = TwitterWordSearch.new
-		# @articles = get_response("http://rss.cnn.com/rss/cnn_topstories.rss")
 		@articles = get_response("http://feeds.nbcnews.com/feeds/topstories")
 		@followers = search.get_follower_count("NBCNews")/1000000
 		@articles = convert(self.articles)

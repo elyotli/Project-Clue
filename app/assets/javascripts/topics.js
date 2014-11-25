@@ -159,6 +159,7 @@ $(document).on('click', '#topics .fa', function(e) {
 		targetDateMilliSeconds = currentDateMilliSeconds + dayInMilliSeconds;
 	}
 	targetDateStr = new Date(targetDateMilliSeconds).toISOString().replace(/T.*/i,'');
+
 	console.log(targetDateStr + ' '+minDate+' '+maxDate);
 	if(targetDateStr >= minDate && targetDateStr <= maxDate) {
 		var articlesURL = 'days/'+targetDateStr+'/articles';
@@ -167,12 +168,15 @@ $(document).on('click', '#topics .fa', function(e) {
 		var responseCounter = 0;
 
 		$.ajax({
+			//makes call to days controller topics method
 			url: 'days/' + targetDateStr + '/topics',
 			type: 'get',
 			dataType: 'html',
 			success: function(response) {
-				//$('#topic_list').html(response);
+				$("#date").find("span").html(targetDateStr);
+				$('#topic_list').html(response);
 				responseCounter++;
+
 			}
 		});
 
@@ -186,18 +190,18 @@ $(document).on('click', '#topics .fa', function(e) {
 			}
 		});
 
-		$.ajax({
-			url: 'days/' + targetDateStr + '/popularity',
-			type: 'get',
-			dataType: 'json',
-			success: function(response) {
-				currentStatistic = 'google_trend_index';
-				fullDataset = response;
-				dataset = partialDataset();
-				populateGraph();
-				responseCounter++;
-			}
-		});
+		// $.ajax({
+		// 	url: 'days/' + targetDateStr + '/popularity',
+		// 	type: 'get',
+		// 	dataType: 'json',
+		// 	success: function(response) {
+		// 		currentStatistic = 'google_trend_index';
+		// 		fullDataset = response;
+		// 		dataset = partialDataset();
+		// 		populateGraph();
+		// 		responseCounter++;
+		// 	}
+		// });
 
 		var responseChecker=setInterval(function () {
 			if(responseCounter == 3) {

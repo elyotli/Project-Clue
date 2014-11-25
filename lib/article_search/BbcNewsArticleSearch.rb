@@ -11,7 +11,7 @@ class BbcNewsArticleSearch < RSSGrabber
 	def initialize
 		search = TwitterWordSearch.new
 		@articles = get_response("http://feeds.bbci.co.uk/news/world/us_and_canada/rss.xml")
-		@followers = search.get_follower_count("Bbc")/1000000
+		@followers = search.get_follower_count("BBCBreaking")/1000000
 		@image = :media_thumbnail_url
 		@articles = convert(self.articles)
 		@articles.each do |article|
