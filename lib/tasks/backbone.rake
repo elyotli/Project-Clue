@@ -58,7 +58,7 @@ task :get_topics => :environment do
     articles_to_save[topic] = todays_articles[topic][0..8]
   end
 
-  # binding.pry
+
 
   articles_to_save.each do |topic, articles|
     articles.each do |article|
@@ -71,7 +71,6 @@ task :get_topics => :environment do
       a.published_at = article[:published_at] unless article[:published_at] == nil
       a.twitter_popularity = article[:twitter_pop] unless article[:twitter_pop] == nil
       a.save!
-      # binding.pry
       top = Topic.find_by(title: topic)
       at = ArticleTopic.find_or_create_by(article_id: a.id, topic_id: top.id)
     end

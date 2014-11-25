@@ -9,9 +9,9 @@ class CNNArticleSearch < RSSGrabber
 	attr_reader :articles, :followers
 
 	def initialize
-		# search = TwitterWordSearch.new
+		search = TwitterWordSearch.new
 		@articles = get_response("http://rss.cnn.com/rss/cnn_topstories.rss")
-		# @followers = search.get_follower_count("CNN")/1000000
+		@followers = search.get_follower_count("CNN")/1000000
 		@image = :media_content_url
 		@articles = convert(self.articles)
 

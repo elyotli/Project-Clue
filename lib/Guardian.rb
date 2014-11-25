@@ -19,21 +19,21 @@ class Guardian
 
 
   attr_accessor :all_articles, :initial_articles, :searched_articles
+  attr_reader :followers
   include Requests_and_Responses
 
   def initialize
-    # @initial_articles = {}
-    # @all_articles = []
     @searched_articles = []
+    search = TwitterWordSearch.new
+    @followers = search.get_follower_count("guardian")/1000000
   end
 
   def get_popularity(articles)
     articles.each do |article|
-      article[:twitter_pop] = get_twitter_popularity(article[:url])
+      article[:twitter_pop] = get_twitter_popularity(article[:url]).to_i/followers
       # article[:facebook_pop] = get_facebook_popularity(article[:url])
       unless article[:twitter_pop] == nil && article[:facebook_pop] == nil
         article[:total_popularity] = article[:twitter_pop].to_i + article[:facebook_pop].to_i
-        # @all_articles << article
       end
     end
     return sort_by_pop
@@ -68,9 +68,8 @@ class Guardian
 
       searched_articles << article
     end
-    # return get_popularity(@searched_articles)
     searched_articles.each do |article|
-      article[:twitter_pop] = get_twitter_popularity(article[:url])
+      article[:twitter_pop] = get_twitter_popularity(article[:url])/followers
       unless article[:twitter_pop] == nil && article[:facebook_pop] == nil
         article[:total_popularity] = article[:twitter_pop].to_i + article[:facebook_pop].to_i
       end
