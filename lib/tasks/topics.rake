@@ -24,8 +24,7 @@ namespace :topic do
   desc "get topics"
   task get_topics: :environment do
     include Requests_and_Responses
-    # client = NYTMostPopularAPI.new
-    # search = TwitterWordSearch.new
+
     nyt = NewYorkTimes.new
     nyt.get_initial_articles
 
@@ -35,8 +34,7 @@ namespace :topic do
 
     news_APIs = [NewYorkTimesSearch.new,
                  Guardian.new]
-                 # ,
-                 # WashPost.new]
+
     news_RSS = [AbcNewsArticleSearch.new,
                 BbcNewsArticleSearch.new,
                 CbsNewsArticleSearch.new,

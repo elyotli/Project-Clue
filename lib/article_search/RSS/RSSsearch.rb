@@ -5,10 +5,6 @@ require_relative '../PopularitySearch'
 require_relative '../../app/models/article'
 require './Requests_and_Responses'
 
-# require '../../Requests_and_Responses'
-
-
-
 ActiveRecord::Base.establish_connection(
 	:adapter => 'postgresql',
 	:database => 'Clue_development'
@@ -16,12 +12,12 @@ ActiveRecord::Base.establish_connection(
 
 module RSS_topic_search
 	include Requests_and_Responses
+
+	#search for a keyword in the title and abstract of all the articles in this RSS feed
 	def search(topic)
 		matches = []
 		self.articles.each do |article|
-			if article[:abstract] == nil
-	      		article[:abstract] = "a"
-	    	end
+	      	article[:abstract] = "" if article[:abstract] == nil
 
 			if article[:title].downcase.include?(topic.downcase) || article[:abstract].downcase.include?(topic.downcase)
 			 	matches << article			 	

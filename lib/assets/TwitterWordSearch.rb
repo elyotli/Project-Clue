@@ -50,32 +50,3 @@ class TwitterWordSearch < APIControl
     follower.followers_count
   end
 end
-
-# test = TwitterWordSearch.new
-# test.get_follower_count("washingtonpost")
-#ap test.search_tweet("http://www.nytimes.com/2014/11/07/opinion/paul-krugman-triumph-of-the-wrong.html")
-
-# puts "*" * 30
-# kard_search = TwitterWordSearch.new
-# puts "Kim Kardashian:"
-# ap kard_search.search_tweet("Kim")
-# puts "*" * 30
-
-# puts "Kim Kardashian:"
-# ap kard_search.search_tweet("Kardashian")
-# puts "*" * 30
-
-# obama_search = TwitterWordSearch.new
-# puts "Obama:"
-# ap obama_search.search_tweet("Obama")
-# puts "*" * 30
-
-# mudpuppies_search = TwitterWordSearch.new
-# puts "Mudpuppies:"
-# ap mudpuppies_search.search_tweet("mudpuppies")
-# puts "*" * 30
-
-# kardashian_search = TwitterWordSearch.new
-# puts "Kim Kardashian:"
-# ap kardashian_search.search_tweet("Kardashian")
-# puts "*" * 30
