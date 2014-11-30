@@ -38,9 +38,7 @@ module GetKeywords
 
     contenders = []
     results.each do |result|
-      # parsed = result["adx_keywords"].split(";")
-      # parsed.map! {|keyword| keyword.gsub(/\(.*\)/, "") }
-      
+
       #initialize in case the result is blank
       des_facet = []
       org_facet = []

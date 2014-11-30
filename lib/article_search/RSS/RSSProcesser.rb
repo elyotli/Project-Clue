@@ -15,7 +15,7 @@ class RSSProcesser
   end
 
   #search for a keyword in the title and abstract of all the articles in this RSS feed
-  def search_keyword(keyword)
+  def article_search(keyword)
     matches = []
     @articles.each do |article|
       article[:abstract] = "" if article[:abstract] == nil
@@ -48,8 +48,8 @@ class RSSProcesser
 
   #update the social media popularities
   #this is separated out to avoid making too many calls
-  def update_articles_popularity
-    @articles.each do |article|
+  def update_popularity
+    @articles.map! do |article|
       article[:twitter_pop] = get_twitter_popularity(article[:url]).to_i
       article[:facebook_popularity] = get_facebook_popularity(article[:url]).to_i
     end

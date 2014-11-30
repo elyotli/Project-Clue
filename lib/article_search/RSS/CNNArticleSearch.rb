@@ -1,20 +1,11 @@
-require_relative '../TwitterWordSearch'
-require_relative 'RSSGrabber'
-require_relative 'RSSsearch'
-require 'pry'
+require_relative 'RSSProcesser'
 
-class CNNArticleSearch < RSSGrabber
-	include RSS_topic_search
-
+class CNNArticleSearch < RSSProcesser
 	attr_reader :articles, :followers
 
 	def initialize
-		search = TwitterWordSearch.new
-		@articles = get_response("http://rss.cnn.com/rss/cnn_topstories.rss")
-		@followers = search.get_follower_count("CNN")/1000000
-		@image = :media_content_url
-		@articles = convert(self.articles)
-
+		@raw_articles = get_response("http://rss.cnn.com/rss/cnn_topstories.rss")
+		@articles = format(@raw_articles)
 		@articles.each do |article|
 			if article[:abstract].scan(/\&/).length > 0
 				str = article[:abstract]
@@ -24,7 +15,10 @@ class CNNArticleSearch < RSSGrabber
 				end
 			end
    			article[:source] = "CNN"
- 		end 
+ 		end
 	end
 
+	def twitter_follower_count
+		@followers = twitter_follower_count("CNN")
+	end
 end

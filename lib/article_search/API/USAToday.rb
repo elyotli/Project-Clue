@@ -1,8 +1,6 @@
-# Use these within this file:
-# require "./../GetKeywords"
-# require "./../Requests_and_Responses"
 
-# Use these when calling this from an external file:
+#this file has not been updated
+
 require "./GetKeywords"
 require "./Requests_and_Responses"
 

@@ -1,25 +1,18 @@
-require_relative '../TwitterWordSearch'
-require_relative 'RSSGrabber'
-require_relative 'RSSsearch'
-require 'pry'
+require_relative 'RSSProcesser'
 
-class NbcNewsArticleSearch < RSSGrabber
-	include RSS_topic_search
-
+class NbcNewsArticleSearch < RSSProcesser
 	attr_reader :articles, :followers
 
 	def initialize
-		search = TwitterWordSearch.new
-		@articles = get_response("http://feeds.nbcnews.com/feeds/topstories")
-		@followers = search.get_follower_count("NBCNews")/1000000
-		@articles = convert(self.articles)
+		@raw_articles = get_response("http://feeds.nbcnews.com/feeds/topstories")
+		@articles = format(@raw_articles)
 		@articles.each do |article|
    			article[:source] = "NBC"
    			article[:abstract] = article[:abstract].gsub(/&lt.*/, "")
  		end
 	end
 
+	def twitter_follower_count
+		@followers = twitter_follower_count("NBCNews")
+	end
 end
-
-# nbc = NbcNewsArticleSearch.new
-

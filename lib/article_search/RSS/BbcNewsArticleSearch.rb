@@ -1,24 +1,17 @@
-require_relative '../TwitterWordSearch'
-require_relative 'RSSGrabber'
-require_relative 'RSSsearch'
-require 'pry'
+require_relative 'RSSProcesser'
 
-class BbcNewsArticleSearch < RSSGrabber
-	include RSS_topic_search
-
+class BbcNewsArticleSearch < RSSProcesser
 	attr_reader :articles, :followers
 
 	def initialize
-		search = TwitterWordSearch.new
-		@articles = get_response("http://feeds.bbci.co.uk/news/world/us_and_canada/rss.xml")
-		@followers = search.get_follower_count("BBCBreaking")/1000000
-		@image = :media_thumbnail_url
-		@articles = convert(self.articles)
+		@raw_articles = get_response("http://feeds.bbci.co.uk/news/world/us_and_canada/rss.xml")
+		@articles = format(@raw_articles)
 		@articles.each do |article|
    			article[:source] = "BBC"
- 		end 
+ 		end
+	end
+
+	def twitter_follower_count
+		@followers = twitter_follower_count("BBCBreaking")
 	end
 end
-
-
-
