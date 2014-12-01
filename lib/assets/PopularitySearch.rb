@@ -1,8 +1,8 @@
-# require 'uri'
-# require 'net/http'
-# require 'twitter'
-# require 'json'
-# require 'awesome_print'
+require 'uri'
+require 'net/http'
+require 'twitter'
+require 'json'
+require 'awesome_print'
 
 module PopularitySearch
   

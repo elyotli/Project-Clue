@@ -1,29 +1,12 @@
 require_relative "../TwitterWordSearch"
-require_relative "../APIControl"
-require_relative "../article_search/NYTMostPopularAPI"
-require_relative "../article_search/NYTArticleSearch"
-require_relative "../article_search/GuardianArticleSearch"
-require_relative "../article_search/USATodayArticleSearch"
-require_relative "../article_search/WaPoArticleSearch"
-require_relative "../article_search/RSSGrabber"
-require_relative "../article_search/CNNArticleSearch"
-require_relative "../article_search/AbcNewsArticleSearch"
-require_relative "../article_search/CbsNewsArticleSearch"
-require_relative "../article_search/FoxNewsArticleSearch"
-require_relative "../article_search/ReutersArticleSearch"
-require_relative "../article_search/NbcNewsArticleSearch"
-require_relative "../article_search/NprArticleSearch"
-require_relative "../article_search/BbcNewsArticleSearch"
 require_relative "../BingImageSearch"
 require_relative "../NewYorkTimes"
-require "./Requests_and_Responses"
-require "awesome_print"
-# require "Date"
+Dir["./lib/article_search/API/*"].each {|file| require file }
+Dir["./lib/article_search/RSS/*"].each {|file| require file }
 
 namespace :topic do
   desc "get topics"
   task get_topics: :environment do
-    include Requests_and_Responses
 
     nyt = NewYorkTimes.new
     nyt.get_initial_articles
@@ -50,9 +33,6 @@ namespace :topic do
     champion_topics = champions.map do |article|
       article[:keywords]
     end
-
-    puts "got champions:"
-    # ap champion_topics
 
     ranked_keywords_with_count = []
     champion_topics.each do |topic_set|

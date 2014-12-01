@@ -1,10 +1,3 @@
-# Use these within this file:
-# require "./../GetKeywords"
-# require "./../Requests_and_Responses"
-
-# Use these when calling this from an external file:
-require "./GetKeywords"
-require "./Requests_and_Responses"
 require 'awesome_print'
 require 'net/http'
 require 'uri'
@@ -17,8 +10,6 @@ class BingImageSearch
   # %27 is quotes, %20 is + 
   BING_IMAGE_BASE_URL = "https://api.datamarket.azure.com/Bing/Search/v1/Image?Market=%27en-US%27&Adult=%27Strict%27&ImageFilters=%27Size%3AMedium%2BAspect%3AWide%2BStyle%3APhoto%27&Query=%27"
   attr_accessor :url, :query
-  include GetKeywords
-  include Requests_and_Responses
 
   def initialize(query)
     @query = query
@@ -41,7 +32,6 @@ class BingImageSearch
     response = get_response
     response["entry"][1]["content"]["properties"][0]["MediaUrl"][0]["content"]
   end
-
 end
 
 # client = BingImageSearch.new("ebola virus")
