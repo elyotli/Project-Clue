@@ -15,7 +15,7 @@ class RSSProcesser
   end
 
   #search for a keyword in the title and abstract of all the articles in this RSS feed
-  def article_search(keyword)
+  def search(keyword)
     matches = []
     @articles.each do |article|
       article[:abstract] = "" if article[:abstract] == nil

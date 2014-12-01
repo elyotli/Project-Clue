@@ -1,21 +1,14 @@
-require_relative "APIControl"
-
 require 'json'
 require 'awesome_print'
 require 'twitter'
 
-PROJ_CLUE_CONSUMER_KEY = "pn5orCjkWymq7dLFZwf1rJWLB"
-PROJ_CLUE_CONSUMER_SECRET ="1KzC4wZOgU8qlgZlozDJtL6o1cPWNzSmLGmmuvRg6Tr1OkX0i8"
-PROJ_CLUE_TOKEN = "30163876-h8eLKbPqOR3QAjuakwMTWjk45jgtitn0gQmwtMxk8"
-PROJ_CLUE_TOKEN_SECRET = "PArLmsMPEGZOagLNSd8gkejjNje4mcmEFhNkAOdOF1SSy"
-
-TWITTER_CLIENT = Twitter::REST::Client.new do |config|
-  config.consumer_key    = PROJ_CLUE_CONSUMER_KEY
-  config.consumer_secret = PROJ_CLUE_CONSUMER_SECRET
-end
-
-class TwitterWordSearch < APIControl
+class TwitterWordSearch
   attr_accessor :time_elapsed
+
+  PROJ_CLUE_CONSUMER_KEY = "pn5orCjkWymq7dLFZwf1rJWLB"
+  PROJ_CLUE_CONSUMER_SECRET ="1KzC4wZOgU8qlgZlozDJtL6o1cPWNzSmLGmmuvRg6Tr1OkX0i8"
+  PROJ_CLUE_TOKEN = "30163876-h8eLKbPqOR3QAjuakwMTWjk45jgtitn0gQmwtMxk8"
+  PROJ_CLUE_TOKEN_SECRET = "PArLmsMPEGZOagLNSd8gkejjNje4mcmEFhNkAOdOF1SSy"
 
   def initialize
     @tweet_id_arr = []
@@ -23,12 +16,17 @@ class TwitterWordSearch < APIControl
     @current_tweet_id = 0
     @current_tweet_time = 0
     @time_elapsed
+
+    @twitter_client = Twitter::REST::Client.new do |config|
+      config.consumer_key    = PROJ_CLUE_CONSUMER_KEY
+      config.consumer_secret = PROJ_CLUE_CONSUMER_SECRET
+    end
   end
 
   def search_tweet(search_word, find_before=nil)
     # parsed_search_word = URI.parse(search_word)
      #parsed_search_word = search_word.split(" ").join("+")
-    twit_search = TWITTER_CLIENT.search("#{search_word}", :lang => "en", :result_type => "recent", :max_id => find_before).take(100)
+    twit_search = @twitter_client.search("#{search_word}", :lang => "en", :result_type => "recent", :max_id => find_before).take(100)
     num_results = twit_search.count
 
     twit_search.each do |tweet|
@@ -46,7 +44,7 @@ class TwitterWordSearch < APIControl
   end
 
   def get_follower_count(user)
-    follower = TWITTER_CLIENT.user("#{user}")
+    follower = @twitter_client.user("#{user}")
     follower.followers_count
   end
 end

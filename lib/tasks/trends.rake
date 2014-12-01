@@ -1,41 +1,34 @@
-require "./Requests_and_Responses"
-require "awesome_print"
-require "./lib/GoogleTrendsIndex"
+require "../assets/GoogleTrendsClient"
+require "../article_search/API/NYTArticleSearch"
+require "../article_search/API/GuardianArticleSearch"
 require "date"
 require "pry"
-require "./lib/NewYorkTimesSearch"
+require "awesome_print"
 require "ruby-standard-deviation"
 
 namespace :topics do
   desc "get trend data"
-  task trends: :environment do
+  task get_trends: :environment do
+    # pull topics from DB
   	TIME_PERIOD = "3"
-
-  	#pull today's topics
-  	#save the data to popularity table
-
-  	today = Day.find_or_create_by(date: Date.today)
+    today = Day.find_or_create_by(date: Date.today)
   	topics = today.topics.map{|topic| topic.title}
 
-  	# topics = ["potatoes"]
   	#pull the gtrends data for each topic
   	topics.each do |topic|
-  		#save to DB
-  		p "exploring #{topic}..."
-  		dbtopic = Topic.find_or_create_by(title: topic)
+  		p "exploring #{topic} in google trends..."
   		client = GoogleTrendsClient.new(topic, TIME_PERIOD)
-  		data_hash = client.process_data
+  		date_data_hash = client.process_data
 
-  		data_hash.each do |k, v|
+  		date_data_hash.each do |k, v|
   			dbday = Day.find_or_create_by(date: Date.parse(k))
   			dbpop = Popularity.find_or_create_by(topic_id: dbtopic.id, day_id: dbday.id)
   			dbpop.google_trend_index = v
   			dbpop.save!
-  			# data points before 30 days will be fucked up, but worry about that later
   		end
-  		# ap data_hash
-      unless data_hash == {}
-  		  p delta = 1.5 * data_hash.values.stdev
+  		# ap date_data_hash
+      unless date_data_hash == {}
+  		  delta = date_data_hash.values.stdev
     		#find articles
     		breakout_dates = client.detect_trend(delta)
     		ap [topic, breakout_dates]
@@ -51,9 +44,11 @@ namespace :topics do
  	breakout_date = Date.parse(date_string)
  	dbday = Day.find_or_create_by(date: breakout_date)
  	dbtopic = Topic.find_or_create_by(title: topic)
- 	article_results = NewYorkTimesSearch.new.search_with_date(topic, breakout_date)
+ 	article_results = NYTArticleSearch.new.search(topic, breakout_date)
   ap "historical articles for #{topic} : "
  	ap article_results
+
+
  	article_results.each do |article|
     unless article.nil?
    		a = Article.find_or_create_by(title: article[:title])

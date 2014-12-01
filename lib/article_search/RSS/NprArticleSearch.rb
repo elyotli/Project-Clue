@@ -1,6 +1,6 @@
 require_relative 'RSSProcesser'
 
-class NprArticleSearch < RSSGrabber
+class NprArticleSearch < RSSProcesser
 	attr_reader :articles, :followers
 
 	def initialize

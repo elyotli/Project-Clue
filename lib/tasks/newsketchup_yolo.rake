@@ -1,4 +1,4 @@
 desc "Get everything, because YOLO!"
 namespace :newsketchup do
-  task :yolo => ["topic:get_topics", "topics:trends", "get_topics"]
+  task :yolo => ["topics:get_topics", "topics:get_trends", "topics:get_articles"]
 end
