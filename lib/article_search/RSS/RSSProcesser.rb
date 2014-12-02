@@ -36,7 +36,7 @@ class RSSProcesser
       article[:title] = raw_article[:title]
       article[:url] = raw_article[:guid]
       article[:abstract] = raw_article[:description]
-      article[:published_at] = raw_article[:pubDate]
+      article[:published_at] = raw_article[:pubDate].to_s
       article[:image_url] = raw_article[@image]
       if article[:image_url] == nil
         article[:image_url] = "http://shackmanlab.org/wp-content/uploads/2013/07/person-placeholder.jpg"

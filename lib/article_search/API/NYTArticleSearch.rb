@@ -40,5 +40,6 @@ class NYTArticleSearch < APIProcesser
       end
       @articles << article
     end
+    return @articles
   end
 end
