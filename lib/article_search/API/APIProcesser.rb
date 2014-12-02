@@ -1,8 +1,10 @@
 require 'uri'
 require 'net/http'
 require 'awesome_print'
+require_relative '../../assets/PopularitySearch'
 
 class APIProcesser
+  include PopularitySearch
 
   def get_request
     uri = URI.parse(@processed_url)

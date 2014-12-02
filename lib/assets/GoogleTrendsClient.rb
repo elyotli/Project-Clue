@@ -3,10 +3,11 @@ require 'rubygems'
 require 'open-uri'
 require 'nokogiri'
 require 'awesome_print'
+require 'date'
 # require 'mechanize'
 
 class GoogleTrendsClient
-  attr_accessor :data_hash
+  attr_accessor :data_hash, :delta, :trending_days
   BASE_URL = "http://www.google.com/trends/fetchComponent?hl=en-US&cmpt=q&content=1&export=3&cid=TIMESERIES_GRAPH_0"
   COOKIE = "PREF=ID=15a0c35777e5d761:U=0406a7d45c556908:FF=0:LD=en:NR=100:TM=1414641345:LM=1415489465:GM=1:SG=2:S=8c1dQPRl7PMzJbmb"
 
@@ -14,26 +15,32 @@ class GoogleTrendsClient
     related_search: "&RISING_QUERIES_0_0"}
 
   def initialize(keywords, month_span)
+    process_url(keywords, month_span)
+    get_request
+    parse_response
+    build_data_hash
+    detect_trends
+  end
+
+  def process_url(keywords, month_span)
     @processed_url = BASE_URL
     @processed_url += "&q=" + keywords.split(" ").join("+")
     @processed_url += "&date=today+" + month_span + "-m"
   end
 
-  def process_data
-    response = get_request
-    response = response.match(/[(].*/).to_s
-    response = response.gsub(/(new Date)\D\d{4}\D\d{1,2}\D\d{1,2}\D/)  { |s| s = '"' + s + '"' }
-    response = response[1..-3]
-    @data_hash = build_data_hash(JSON.parse(response))
+  def parse_response
+    @response = @response.match(/[(].*/).to_s
+    @response = @response.gsub(/(new Date)\D\d{4}\D\d{1,2}\D\d{1,2}\D/)  { |s| s = '"' + s + '"' }
+    @response = JSON.parse(@response[1..-3])
   end
 
-  def build_data_hash(response_JSON)
-    data_hash = {}
+  def build_data_hash
+    @data_hash = {}
     # if no response
-    if response_JSON["status"] == "error"
-      return data_hash
+    if @response["status"] == "error"
+      return @data_hash
     else
-      response_JSON["table"]["rows"].each do |row|
+      @response["table"]["rows"].each do |row|
         cell = row["c"]
         datedata = parse_date(cell[0]["v"])
         indexdata = cell[1]["f"]
@@ -42,21 +49,12 @@ class GoogleTrendsClient
         else
           indexdata = indexdata.to_i
         end
-        data_hash["#{datedata}"]= indexdata
+        @data_hash["#{datedata}"]= indexdata
       end
-      return data_hash
     end
   end
 
-  def parse_date(raw_string)
-    date_array = raw_string[9..-1].split(",")
-    year = date_array[0].to_i
-    month = date_array[1].to_i + 1
-    day = date_array[2].to_i
-    Date.new(year,month,day)
-  end
-
-  #the correct algorithm for peak detection:
+  #the correct algorithm for peak detection that needs to be implemented
   # if the topic exist, look at the number of days since last time we looked at it its trends
     # use the correct trend timeline
     # take the ratio of an overlapping day
@@ -67,17 +65,20 @@ class GoogleTrendsClient
     # if the stdev is not significantly lower, keep this interval
     # else, we gotta repeat for the next longest span
 
-  def detect_trend(delta)
-    trending_days = []
+  # then, look at the median and the standard deviation, any data above 1 stdev of the median should be captured
+  # use the social media, ebola for sample data trials
+
+  def detect_trends
+    @delta = @data_hash.values.stdev unless data_hash == {}
+    @trending_days = []
     previous_index = 100
-    @data_hash.each do |k, v|
-      if v - previous_index > delta
-        trending_days << k
+    @data_hash.each do |date_string, index|
+      if index - previous_index > @delta
+        @trending_days << Date.parse(date_string)
       else
       end
-      previous_index = v
+      previous_index = index
     end
-    return trending_days
   end
 
   private
@@ -91,7 +92,15 @@ class GoogleTrendsClient
     response = Net::HTTP.start(uri.host, uri.port) do |http|
       http.request request
     end
-    return response.body
+    @response = response.body
+  end
+
+  def parse_date(raw_string)
+    date_array = raw_string[9..-1].split(",")
+    year = date_array[0].to_i
+    month = date_array[1].to_i + 1
+    day = date_array[2].to_i
+    Date.new(year,month,day)
   end
 end
 

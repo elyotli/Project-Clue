@@ -11,13 +11,11 @@ module PopularitySearch
   TWITTER_CONSUMER_SECRET ="1KzC4wZOgU8qlgZlozDJtL6o1cPWNzSmLGmmuvRg6Tr1OkX0i8"
   
   def twitter_popularity(url)
-    
     result_json = JSON.parse(get_request(TWITTER_BASE_URL + url))
     result_json["count"]
   end
 
   def facebook_popularity(url)
-    
     result_json = JSON.parse(get_request(FACEBOOK_BASE_URL + url))
     result_json["shares"]
   end
