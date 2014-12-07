@@ -7,7 +7,7 @@ require 'date'
 # require 'mechanize'
 
 class GoogleTrendsClient
-  attr_accessor :data_hash, :delta, :trending_days
+  attr_accessor :trend_data, :delta, :trending_days
   BASE_URL = "http://www.google.com/trends/fetchComponent?hl=en-US&cmpt=q&content=1&export=3&cid=TIMESERIES_GRAPH_0"
   COOKIE = "PREF=ID=15a0c35777e5d761:U=0406a7d45c556908:FF=0:LD=en:NR=100:TM=1414641345:LM=1415489465:GM=1:SG=2:S=8c1dQPRl7PMzJbmb"
 
@@ -35,10 +35,10 @@ class GoogleTrendsClient
   end
 
   def build_data_hash
-    @data_hash = {}
+    @trend_data = {}
     # if no response
     if @response["status"] == "error"
-      return @data_hash
+      return @trend_data
     else
       @response["table"]["rows"].each do |row|
         cell = row["c"]
@@ -49,7 +49,7 @@ class GoogleTrendsClient
         else
           indexdata = indexdata.to_i
         end
-        @data_hash["#{datedata}"]= indexdata
+        @trend_data[datedata]= indexdata
       end
     end
   end
@@ -69,19 +69,22 @@ class GoogleTrendsClient
   # use the social media, ebola for sample data trials
 
   def detect_trends
-    @delta = @data_hash.values.stdev unless data_hash == {}
-    @trending_days = []
-    previous_index = 100
-    @data_hash.each do |date_string, index|
-      if index - previous_index > @delta
-        @trending_days << Date.parse(date_string)
-      else
-      end
-      previous_index = index
-    end
+    unless @trend_data == {}
+      @delta = @trend_data.values.stdev 
+      @median = calculate_median(@trend_data.values)
+    end 
+    @trending_days = @trend_data.select do |date, popularity|
+      popularity - @median > @delta
+    end.keys
   end
 
   private
+
+  def calculate_median(array)
+    sorted = array.sort
+    len = sorted.length
+    return (sorted[(len - 1) / 2] + sorted[len / 2]) / 2.0
+  end
 
   def get_request
     uri = URI.parse(@processed_url)

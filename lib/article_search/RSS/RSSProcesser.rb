@@ -22,7 +22,7 @@ class RSSProcesser
       title_searched = article[:title].downcase.include?(keyword.downcase)
       abstract_searched = article[:abstract].downcase.include?(keyword.downcase)
       if title_searched || abstract_searched
-        matches << article        
+        matches << article
       end
     end
     return matches

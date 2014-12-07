@@ -71,7 +71,7 @@ class NewYorkTimesMostPopular
     return response.body
   end
 
-  #change "Obama, Barack" to "Barack Obama"
+  #flip first and last name, changing "Obama, Barack" to "Barack Obama"
   def process_name(name)
     name_array = name.split(",")
     last_name = name_array[0].strip
