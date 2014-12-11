@@ -122,5 +122,27 @@ class TopicsController < ApplicationController
     render partial: 'topics/articles_range', layout: false
   end
 
+
+  def beta
+    @topics = Topic.last(5)
+    @current_topic = @topics[0]
+    @articles = @current_topic.articles
+  end
+
+  def trends
+    ap params
+    current_topic = Topic.find_by(title: params[:topic])
+    if current_topic
+      @dates = current_topic.popularities.map do |popularity|
+        popularity.day.date
+      end
+      @trends = current_topic.popularities.map do |popularity|
+        popularity.google_trend_index
+      end
+      return {status: 200, dates: @dates, trends: @trends}
+    else
+      return {status: 404}
+    end
+  end
 end
 

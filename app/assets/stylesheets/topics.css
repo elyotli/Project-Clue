@@ -1,6 +1,6 @@
 /*------------- general -----------*/
 
-body {
+/*body {
 	padding: 70px 0 20px 0;
 	margin: 0;
 }
@@ -9,11 +9,11 @@ hr {
 	position: relative;
 	left: -999999em;
 	clear: both;
-}
+}*/
 
 /*------------- header -----------*/
 
-#header {
+/*#header {
 	height: 35px;
 	background-color: #222;
 	padding-bottom: 1em;
@@ -56,12 +56,12 @@ hr {
 	margin: 0 auto;
 	text-align: center;
 	position: relative;
-}
+}*/
 
 
 /*------------- topics -----------*/
 
-#topics {
+/*#topics {
 	margin: 1em 0;
 	height: 160px;
 	margin-bottom: 65px;
@@ -88,7 +88,6 @@ hr {
 }
 
 #topics .topic img {
-	/*display:none;*/
 	width: 100%;
   height: 150px;
 }
@@ -103,8 +102,6 @@ hr {
 }
 
 .highlighted{
-/*	border: solid;
-	border-color: white;*/
 	position: relative;
 	bottom: 17px;
 
@@ -125,15 +122,14 @@ hr {
 .fa-chevron-left:hover, .fa-chevron-right:hover {
 	cursor: pointer;
 	color: #0E2D5E;
-}
+}*/
 
 /*------------- graph -----------*/
 
-#statistics {
+/*#statistics {
 	clear: both;
 	margin-top: 2em;
 	height: 300px;
-	/*margin-bottom: 12px;*/
 	position: relative;
 }
 
@@ -146,12 +142,11 @@ hr {
 .buttons div {
 	width: 80px;
 	height: 20px;
-	/*background-color: #ddd;*/
+	background-color: #ddd;
 	float: right;
 }
 
 .buttons div {
-	/*margin-left: 12px;*/
 	font-style: italic;
 }
 
@@ -161,17 +156,15 @@ hr {
 }
 
 svg {
-	/*width: 865px;
-	height: 288px;*/
 	width: 100%;
 	height: 288px;
 	background-color: #ccc;
 	margin: 0 auto;
-}
+}*/
 
 /*------------- articles -----------*/
 
-#articles {
+/*#articles {
 	position: relative;
 	margin-top: 2em;
 }
@@ -191,7 +184,6 @@ svg {
 	box-shadow: 0 0 4px #999;
 	border-radius: 5px;
 	position: relative;
-	/*padding-bottom: 1.5em;*/
 }
 
 #articles a {
@@ -212,17 +204,6 @@ svg {
 	background-repeat: no-repeat;
 }
 
-/*.article .image {
-	overflow: hidden;
-	text-align: center;
-}
-
-.article .image img {
-	height: 250px;
-	/*width: 100%;*/
-	/*z-index: 4;
-}*/
-
 .article .text p {
 	padding: 0 0.5em;
 }
@@ -231,7 +212,7 @@ svg {
 	color: white;
 	font: bold 18px/45px Helvetica, Sans-Serif;
 	letter-spacing: -1px;
-	background: rgb(0, 0, 0); /* fallback color */
+	background: rgb(0, 0, 0);
 	background: rgba(0, 0, 0, 0.7);
 	box-shadow: 0 0 4px #999;
 }
@@ -239,7 +220,7 @@ svg {
 .article .popularity {
 	color: white;
 	font-family: Helvetica, Sans-Serif;
-	background: rgb(0, 0, 0); /* fallback color */
+	background: rgb(0, 0, 0);
 	background: rgba(0, 0, 0, 0.7);
 	box-shadow: 0 0 4px #999;
 	font-size: 1em;
@@ -271,11 +252,11 @@ svg {
 	background: linear-gradient(#f9f9f9,#e3e3e3);
 	box-shadow: 0 0 4px #999;
 	border-radius: 5px;
-}
+}*/
 
 /*------------- header -----------*/
 
-#footer {
+/*#footer {
 	position: fixed;
 	bottom: 0;
 	width: 100%;
@@ -284,11 +265,11 @@ svg {
 	background-color: #222;
 	color: white;
 	text-align: center;
-}
+}*/
 
 /*------------- svg -----------*/
 
-#chart h2 {
+/*#chart h2 {
 	color: #333;
 	position: absolute;
 	left: 30%;
@@ -331,4 +312,4 @@ circle {
 
 .noselect:hover {
 	cursor: default;
-}
+}*/

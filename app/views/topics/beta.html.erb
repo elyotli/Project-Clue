@@ -1,100 +1,30 @@
-<!DOCTYPE html>
-<html>
-	<head>
-	  	<title>NewsKetchup</title>
-	  	<link href="betastyle.css" rel="stylesheet" type="text/css">
-		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-	</head>
-	<body>
-		<div class='header'>
-			<h1 class='title'>NewsKetchup</h1>
+<div class='header'>
+	<h1 class='title'>NewsKetchup</h1>
+</div>
+
+<div class='body'>
+	<div class='sidebar'>
+		<div class='search'>
+			<p>search bar</p>
 		</div>
-
-		<div class='body'>
-			<div class='content'>
-				<div class='graph'>
-
-				</div>
-				<div class='articles'>
-
-				</div>
-			</div>
-			<div class='sidebar'>
-				<div class='search'>
-				</div>
-				<div class='topics'>
-				</div>
-			</div>
+		<div class='topics'>
+			<%= render partial: 'topics/topic', local: @topics, layout: false %>
 		</div>
+	</div>
+	<div class='content'>
+		<div class='graph'>
 
-		<div class='footer'>
-			<p>talk to us!</p>
 		</div>
+		<div class='articles'>
+			<%= render partial: 'topics/article', local: @articles, layout: false %>
+		</div>
+	</div>
+	
+</div>
 
-	</body>
+<div class='footer'>
+	<p>talk to us!</p>
+</div>
 
-	<script>
-		//setting up canvas
-		var windowWidth = window.innerWidth,
-			windowHeight = window.innerHeight,
-			canvasWidth = 0.5 * windowWidth,
-			canvasHeight = 0.5 * windowHeight,
-			padding = 50;
-
-		// set up the dates
-		var dataArray = [1.5, 2, 1.5, 1.6, 2.3, 1.9];
-
-		var today = new Date();
-
-		var popularityData = {};
-
-		var heightScale = d3.scale.linear()
-							.domain([0, 20])
-							.range([0, canvasWidth]);
-
-		var colorScale = d3.scale.linear()
-							.domain([dataArray])
-							.range(["red", "blue"]);
-
-		var axis = d3.svg.axis()
-					.ticks(5)
-					.scale(heightScale);
-
-		var canvas = d3.select(".graph")
-					.append("svg")
-					.attr("height", canvasHeight)
-					.attr("width", canvasWidth)
-					.append("g")
-					.attr("transform", "translate(50, 50)");
-
-		var bars = canvas.selectAll("rect")
-						.data(dataArray)
-						.enter()
-							.append("rect")
-							.attr("width", 30)
-							.attr("height", 30)
-							.attr("fill", function(d){
-								return colorScale(d);
-							})
-							.attr("y", function(d, i){
-								return canvasHeight;
-							})
-							.attr("x", function(d, i){
-								return 40 * i;
-							});
-
-
-		bars.transition()
-			.duration(500)
-			.attr("height", function(d){
-				return heightScale(d);
-			});
-
-			//use .each("end", function(){d3.select(this).attr("fill", "red");})
-			// to change something at the end of animation
-
-		canvas.append("g")
-			.attr("transform", "translate(0, 400)")
-			.call(axis);
-	</script>
-</html>
+<%= content_tag :div, class: "topic_data", current_topic: @current_topic do %>
+<% end %>

@@ -1,12 +1,12 @@
-function raise_up(jquery) {
-		$("#topic_list").on("click",".topic", function(){
+// function raise_up(jquery) {
+// 		$("#topic_list").on("click",".topic", function(){
 		
-			$(".topic").removeClass( "highlighted" );
-			$(this).addClass( "highlighted" );
+// 			$(".topic").removeClass( "highlighted" );
+// 			$(this).addClass( "highlighted" );
 
-	});
-	};
-//works?
+// 	});
+// 	};
+// //works?
 
-$(document).ready(raise_up);
-$(document).on("page:load", raise_up);
+// $(document).ready(raise_up);
+// $(document).on("page:load", raise_up);
