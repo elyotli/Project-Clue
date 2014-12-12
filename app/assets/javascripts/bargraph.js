@@ -1,20 +1,38 @@
-function updateGraph(dataArray, canvasData){
-	// set up the data
-	var canvas = canvasData.canvas,
-		yScale = canvasData.yScale,
-		graphHeight = canvasData.graphHeight,
-		graphWidth = canvasData.graphWidth;
+function updateGraph(dateArray, trendsArray){
+	// set up the date data
+	var minDate = new Date(dateArray[0]),
+		maxDate = new Date(dateArray[1]);
 
-	var dataNSize = dataArray.length,
+	//set up scale
+	var xScale = d3.time.scale()
+	        	.domain([minDate, maxDate])
+				.range([0, graphWidth]),
+		yScale = d3.scale.linear()
+				.domain([0, 100]) //google trends index goes up to 100
+				.range([graphHeight, 0]);
+
+	updateBars(trendsArray, yScale);
+	updateAxis(xScale, yScale);
+}
+
+function updateBars(trendsArray, yScale){
+	canvas.selectAll("rect").remove(); //lol... force reset
+
+	var dataNSize = trendsArray.length,
 		barSize = graphWidth / dataNSize;
-
+	var colorScale = d3.scale.linear()
+							.domain([0, 100])
+							.range(["#FFFF66", "#FF0000"]);
+	
 	var bars = canvas.selectAll("rect")
-					.data(dataArray)
+					.data(trendsArray)
 					.enter()
 						.append("rect")
 						.attr("width", barSize)
 						.attr("height", 0) 
-						.attr("fill", "navy")
+						.attr("fill", function(d){
+							return colorScale(d);
+						})
 						.attr("y", function(d, i){
 							return graphHeight;//starting from top down, so graphHeight is all the way at the bottom
 						})
@@ -22,74 +40,110 @@ function updateGraph(dataArray, canvasData){
 							return barSize * i;
 						});
 
-	var xScale = d3.time.scale()
-	        	.domain([mindate, maxdate])
-				.range([padding, width - padding * 2]);
-
-	var xAxis = d3.svg.axis()
-				.ticks(5)
-				.scale(xScale);
-
 	bars.transition()
-		.duration(500)
+		.duration(300)
 		.attr("y", function(d){
-			return graphHeight - yScale(d);
+			return yScale(d);
 		})
 		.attr("height", function(d){
-			return yScale(d);
+			return graphHeight - yScale(d);
 		});
-		//use .each("end", function(){d3.select(this).attr("fill", "red");})
-		// to change something at the end of animation
+}
+
+function updateAxis(xScale, yScale){
+	$(".graph").find(".axis").remove(); //lol... force reset
+	$(".graph").find(".y-label").remove(); //lol... force reset
+
+	var xAxis = d3.svg.axis()
+			.orient("bottom")
+			.outerTickSize([2])
+			.scale(xScale),
+		yAxis = d3.svg.axis()
+			.orient("left")
+			.scale(yScale)
+			.outerTickSize([2])
+			.ticks(1);
+
+	d3.select(".graph svg")
+		.append("g")
+		.attr("class", "axis")
+		.attr("transform", "translate(" + paddingLeft + ", " + (graphHeight + paddingTop) + ")")
+		.call(xAxis);
+	d3.select(".graph svg")
+		.append("g")
+		.attr("class", "axis")
+		.attr("transform", "translate(" + paddingLeft + ", " + paddingTop + ")")
+		.call(yAxis);
+
+	//add the yAxis title
+	d3.select(".graph svg").append("text")
+	    .attr("class", "y-label")
+	    .attr("text-anchor", "end")
+	    .attr("y", paddingLeft*0.7)	//this is actually the horizontal distance from the left
+	    .attr("x", -(graphHeight*0.3)) //this is actually the vertical distance from the top
+	    .attr("transform", "rotate(-90)")
+	    .text("Search Popularity");
+}
+
+function parseTopicToURL(topic_string){
+	return topic_string.replace(" ", "-");
 }
 
 $(document).ready(function(){
+	//define canvas size, a bunch of fucking globals, what!
+	canvasWidth = $(".content").width(), //this is the dimension of the entire d3 box
+	canvasHeight = 300,
+	paddingTop = 10,
+	paddingBottom = 30,
+	paddingLeft = 50,
+	paddingRight = 0,
+	graphHeight = canvasHeight - paddingTop - paddingBottom, //this is the dimension of bargraph;
+	graphWidth = canvasWidth - paddingLeft - paddingRight;
 
-	//define size
-	var windowWidth = window.innerWidth,
-		windowHeight = window.innerHeight,
-		canvasWidth = 0.5 * windowWidth, //this is the dimension of the entire d3 box
-		canvasHeight = 0.3 * windowHeight,
-		paddingTop = 30,
-		paddingBottom = 30,
-		paddingLeft = 30,
-		paddingRight = 30,
-		graphHeight = canvasHeight - paddingTop - paddingBottom, //this is the dimension of bargraph;
-		graphWidth = canvasWidth - paddingLeft - paddingRight;
-
-	var canvas = d3.select(".graph")
-				.append("svg")
-				.attr("height", canvasHeight)
-				.attr("width", canvasWidth)
-				.append("g")
-				.attr("transform", "translate(" + paddingTop + ", " + paddingLeft + ")");
-
-	//set up scale
-	var yScale = d3.scale.linear()
-						.domain([0, 100]) //google trends index goes up to 100
-						.range([0, graphHeight]);
-
-	var canvasData = {
-		"canvas":canvas,
-		"yScale":yScale,
-		"graphHeight":graphHeight,
-		"graphWidth":graphWidth
-	};
+	canvas = d3.select(".graph")
+			.append("svg")
+			.attr("height", canvasHeight)
+			.attr("width", canvasWidth)
+			.append("g")
+			.attr("transform", "translate(" + paddingLeft + ", " + paddingTop + ")")
+			.attr("height", graphHeight)
+			.attr("width", graphWidth);
 
 	//fetch data
-	var current_topic = window.current_topic;
+	var dbtopic = gon.current_topic;
+	var current_topic = dbtopic.title;
 	$.ajax({
-	  url: 'trends/' + current_topic,
-	  data: {topic: current_topic},
+	  url: 'trends/',
+	  data: {topic: parseTopicToURL(current_topic)},
 	  success: function(response){
-	  	console.log(response);
+	  	updateGraph(response.dates, response.trends);
 	  }
 	});
 
-	var dataArray = [];
-	for(var i = 0; i < 40; i++){
-		dataArray[i] = Math.random()*100;
-	};
-
-	updateGraph(dataArray, canvasData);
+	//when clicking on a topic
+	$(".topic-title").on("click", function(){
+		var current_topic = $(this).find("h3").html().trim();
+		topicClick(current_topic);
+	});
 });	
 
+function updateArticles(response){
+	$(".articles-body").html(response);
+}
+
+function topicClick(current_topic){
+	$.ajax({
+	  	url: 'trends/',
+	  	data: {topic: parseTopicToURL(current_topic)},
+	  	success: function(response){
+	  		updateGraph(response.dates, response.trends);
+	  	}
+	});
+	$.ajax({
+		url: 'articles/',
+		data: {topic: parseTopicToURL(current_topic)},
+		success: function(response){
+			updateArticles(response);
+		}
+	});
+}

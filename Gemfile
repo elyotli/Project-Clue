@@ -33,6 +33,7 @@ gem 'pry'
 gem 'twitter-bootstrap-rails'
 
 gem 'ruby-standard-deviation'
+gem 'gon'
 
 # gem 'xml-simple'
 

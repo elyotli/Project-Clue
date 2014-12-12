@@ -1,338 +1,40 @@
-<div id='header'>
-	<div class='container'>
-		<h1 class='xxlarge title'>News Ketchup</h1>
-		<div class='datebox'>
-			<h3 id='date'>
-				Headline - <span><%= @day.date.to_s %></span>
-			</h3>
-		</div>
-	</div>
+<div class='header'>
+	<h1 class='title'>NewsKetchup</h1>
 </div>
 
-<div class='container'>
-	<div id='topics'>
-		<div class='btn btn_l'>
-			<i class="fa fa-chevron-left"></i>
+<div class='body'>
+	<div class='sidebar'>
+		<div class='search'>
+			<p>search bar</p>
 		</div>
-		<div id='topic_list'>
+		<div class='topics'>
 			<%= render partial: 'topics/topic', local: @topics, layout: false %>
+		</div>
+	</div>
+	<div class='content'>
+		<div class='current-topic'>
+			<h1><%= @current_topic.title %></h1>
+		</div>
+		<div class='graph'>
+
+		</div>
+		<div class='articles'>
+			<div class='articles-header'>
+				<div class='article-date-box'>
+				    <p>Published Date</p>
+				</div>
+				<div class='article-content-box'>
+				    <p>Articles</p>
+				</div>
 			</div>
-		<div class='btn btn_r'>
-			<i class="fa fa-chevron-right	fa-5"></i>
-		</div>
-		<hr>
-	</div>
-
-	<div id='statistics'>
-		<!-- <div class='buttons'>
-			<div class='btn' id='twitter_popularity'>Twitter</div>
-			<div class='btn' id='facebook_popularity'>Facebook</div>
-			<div class='btn' id='google_trend_index'>Google</div>
-			<hr>
-		</div> -->
-		<div id='chart' class='noselect'>
-			<!-- <h2>Historical Popularity by Google Trends</h2> -->
+			<div class='articles-body'>
+				<%= render partial: 'topics/articles', local: @articles, layout: false %>
+			</div>
 		</div>
 	</div>
-	<div id='articles'>
-		<div class='btn btn_l'>
-			<i class="fa fa-chevron-left	fa-5"></i>
-		</div>
-		<div id='article_list'>
-			<%= render partial: 'topics/article', local: @articles, layout: false %>
-		</div>
-		<hr>
-		<div class='btn btn_r'>
-			<i class="fa fa-chevron-right	fa-5"></i>
-		</div>
-		<hr>
-	</div>
-	<div id='article-page'>
-	<% if @articles.count == 1 %>
-		Article 1 of 1
-	<% else %>
-		<p>Articles <span id='article-page-current'>1-<%= @articles.count %></span> of <span id='article-page-total'><%= @total_articles %></span> Total</p>
-	<% end %>
-	</div>
+	
 </div>
-<hr>
-<div id='footer'>
-	Created by: Vince Li, Alex Drennen, Shomari Ewing, Dustin Snyder
-</footer>
-<script type='text/javascript'>
-	var topicId = <%= @topics[0].id %>;
-	var dayId = <%= @day.id %>;
-	var articlePage = 1;
-	var articlePageTotal = <%= (@total_articles / @articles_per_page.to_f).ceil %>;
-	var maxDate = '<%= @maxDay.date %>';
-	var minDate = '<%= @minDay.date %>';
-	var maxDayId = '<%= @maxDayId %>';
 
-	var parseDate = d3.time.format("%Y-%m-%d").parse;
-	var currentStatistic = 'google_trend_index';
-
-	function partialDataset() {
-		var newSet = [];
-		var newObj = {};
-		for(var i=0; i < fullDataset.length; i++) {
-			newObj = {};
-			newObj['date'] = parseDate(fullDataset[i].date);
-			newObj[currentStatistic] = fullDataset[i][currentStatistic];
-			newObj['day'] = fullDataset[i].day;
-			newObj['date_orig'] = fullDataset[i].date;
-			newObj['make_dot'] = fullDataset[i].make_dot
-			newSet.push(newObj);
-		}
-		return newSet;
-	}
-
-	var circleActive = false;
-	var svgActive = false;
-
-	var fullDataset=JSON.parse('<%= raw @dataset %>');
-	var dataset = partialDataset();
-
-	var margin = {top: 20, right: 30, bottom: 30, left: 50},
-	    width = $('.container').width() - margin.left - margin.right,
-	    height = 288 - margin.top - margin.bottom;
-
-	var xScale = d3.time.scale()
-		.range([0, width]);
-
-	var yScale = d3.scale.linear()
-		.range([height, 0]);
-
-	var xAxis = d3.svg.axis()
-		.scale(xScale)
-		.orient('bottom');
-
-	var yAxis = d3.svg.axis()
-		.scale(yScale)
-		.orient('left');
-
-	var area = d3.svg.area()
-		//.interpolate("basis")
-		.interpolate("monotone")
-		// .interpolate("cardinal")
-		.x(function(d) { return xScale(d.date); })
-		.y0(height)
-		.y1(function(d) { return yScale(d[currentStatistic]); });
-
-	var svg = d3.select("#chart").append("svg")
-		.attr("width", width + margin.left + margin.right)
-		.attr("height", height + margin.top + margin.bottom)
-		.append("g")
-		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-	populateGraph();
-
-	function populateGraph() {
-		function getMaxOfArray(numArray) {
-		  return Math.max.apply(null, numArray);
-		}
-
-		function getMinOfArray(numArray) {
-		  return Math.min.apply(null, numArray);
-		}
-
-		d3.selectAll('.axis').remove();
-		d3.selectAll('.area').remove();
-		d3.selectAll('text').remove();
-		d3.selectAll('circle').remove();
-
-		xScale.domain(d3.extent(dataset, function(d) { return d.date; }));
-		yScale.domain(d3.extent(dataset, function(d) { return d[currentStatistic]; }));
-
-		svg.append("path")
-			.datum(dataset)
-			.attr("class", "area")
-			.attr("d", area);
-
-
-		svg.append("g")
-			.attr("class", "x axis")
-			.attr("transform", "translate(0," + height + ")")
-			.call(xAxis);
-
-		svg.append("g")
-			.attr("class", "y axis")
-			.call(yAxis)
-			.append("text")
-			.attr("transform", "rotate(-90)")
-			.attr("y", 6)
-			.attr("dy", ".71em")
-			.style("text-anchor", "end")
-			.text(currentStatistic.replace(/_/g, ' '));
-
-		circle_dataset = [];
-		for(var i = 0; i < dataset.length; i++) {
-			if(dataset[i].make_dot) {
-				circle_dataset.push(dataset[i]);
-			}
-		}
-
-		var circles = svg.selectAll('circle.overlay').data(circle_dataset).enter()
-			.append('circle')
-			.attr('class', 'overlay')
-			.attr('fill','transparent')
-			.attr('stroke-width', '1px')
-			.attr('r', '20px')
-			.attr('cx', function(d) { return xScale(d.date); })
-			.attr('cy', function(d) { return yScale(d[currentStatistic]); });
-
-		var circles = svg.selectAll('circle.standard').data(circle_dataset).enter()
-			.append('circle')
-			.attr('class', 'standard')
-			.attr('fill','steelblue')
-			.attr('stroke', 'white')
-			.attr('stroke-width', '2px')
-			.attr('r', '5px')
-			.attr('cx', function(d) { return xScale(d.date); })
-			.attr('cy', function(d) { return yScale(d[currentStatistic]); });
-
-		d3.selectAll('circle').on('mouseover',function(){
-			var data = this.__data__.date;
-			d3.selectAll('circle.standard').attr('fill', function(d){
-				return this.__data__.date == data ? 'black' : 'steelblue';
-			});
-		});
-
-		d3.selectAll('circle').on('mouseout',function(event){
-			var data = this.__data__.date;
-			d3.selectAll('circle.standard').attr('fill', function(d){
-				return 'steelblue';
-			});
-		});
-
-		// user click dot
-		//user clicks on graph circle to get that day's articles
-		d3.selectAll('circle.standard').on('mousedown',function(){
-			circleActive = true;
-			d3.selectAll('circle.standard').attr('stroke','white');
-			d3.select(this).attr('stroke','red');
-			var date = this.__data__.date.toISOString().replace(/T.*/i,'');
-			var day = this.__data__.day;
-			var url = 'topics/'+topicId+'/date/'+day+'/articles/1';
-			$.ajax({
-				url: url,
-				type: 'get',
-				dataType: 'html',
-				success: function(response) {
-					dayId = day;
-					articlePage = 1;
-					$('#article_list').html(response);
-					articlePageTotal = $('.article').first().data('total-pages');
-					updateArticalPagination();
-					updateHeights();
-				}
-			});
-		});
-
-		d3.selectAll('circle').on('mouseup',function(){
-			circleActive = false;
-		});
-
-		d3.select('svg').on('mousedown', function(){
-			if(!circleActive) {
-				svgActive = true;
-				d3.selectAll('circle.standard').attr('stroke','white');
-				svg.append("rect")
-					.attr('class','left-bracket')
-					.attr('opacity',0.5)
-					.attr("x", d3.mouse(this)[0]-margin.left)
-					.attr("y", 0)
-					.attr('width',2)
-					.attr('height', height);
-			}
-		});
-
-		d3.select('svg').on('mousemove', function () {
-			if(svgActive && !circleActive) {
-			  var mouseX = d3.mouse(this)[0];
-			  var rectX = parseFloat(d3.select('rect.left-bracket').attr('x'));
-
-			  var width = mouseX - rectX - margin.left;
-
-			  if(width < 0) {
-			  	svgActive = false;
-			  	svg.select("rect.left-bracket").remove();
-			  // 	if(d3.select('rect.left-bracket').attr('data-start')) {
-			  // 		width = d3.select('rect.left-bracket').attr('data-start') - mouseX;
-			  // 		d3.select('rect.left-bracket')
-			  // 			.attr('x', mouseX - margin.left)
-			  // 			.attr('width', width);
-			  // 	}
-			  // 	else {
-				 //  	d3.select('rect.left-bracket')
-				 //  		.attr('data-start', mouseX)
-				 //  		.attr('x', mouseX - margin.left);
-				 //  }
-			  }
-			  else {
-			  	d3.selectAll('rect.left-bracket')
-			  		.attr('data-start',false)
-			  	 	.attr('width', width);
-			  }
-			}
-		});
-
-
-		// user select range
-		//user selects a range of days on the graph to get their articles
-		d3.select('svg').on('mouseup', function(){
-			if(svgActive && !circleActive) {
-				svgActive = false;
-				var selection = svg.select("rect.left-bracket");
-
-				var selectionWidth = parseFloat(selection.attr('width'));
-				var selectionXLeftBound = parseFloat(selection.attr('x'));
-				var selectionXRightBound = selectionWidth + selectionXLeftBound;
-
-				var selected = [];
-
-				d3.selectAll('circle.standard').each(function(){
-					xPos = parseFloat($(this).attr('cx'));
-					if(xPos >= selectionXLeftBound && xPos <= selectionXRightBound) {
-						$(this).attr('stroke','red');
-						selected.push(this.__data__.date_orig);
-					}
-				});
-
-				selected = selected.sort();
-
-				if(selected.length > 0) {
-					var selectedRange = [selected[0], selected[selected.length-1]];
-					//console.log(selectedRange);
-					var data = 'min='+selectedRange[0]+'&max='+selectedRange[1];
-					console.log(data);
-					$.ajax({
-						url: 'topics/'+topicId+'/date_range',
-						type: 'post',
-						data: data,
-						dataType: 'html',
-						success: function(response) {
-							$('#article_list').html(response);
-							updateArticalPagination();
-							updateHeights();
-						}
-					});
-				}
-
-				selection.remove();
-			}
-		});
-
-		$('#chart').on('mousedown',function(e){
-			$(this).addClass('active');
-			$(this).css('cursor','default');
-		});
-		$('#chart').on('mouseup',function(e){
-			$(this).removeClass('active');
-			$(this).css('cursor', 'default')
-		});
-		$('#chart.active').on('hover',function(e){
-			e.stopPropagation();
-			$(this).css('cursor', 'default')
-		});
-	}
-</script>
+<div class='footer'>
+	<p>talk to us!</p>
+</div>

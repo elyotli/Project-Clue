@@ -2,20 +2,9 @@ Rails.application.routes.draw do
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
-  root 'topics#beta'
-
-  # get "topics" => 'topics#splash_index', as: 'splash'
-  get "beta" => 'topics#beta'
-  get "trends/:topic" => 'topics#trends'
-
-  # get "topics/:topic_id/date/:date_id/articles/:page" => 'topics#articles_page'
-  # get 'topics/:topic_id/statistics/popularity' => 'topics#popularity'
-  # get "topics/:topic_id/date/:date/articles" => 'topics#articles'
-  # post "topics/:topic_id/date_range" => 'topics#articles_range'
-
-  # get 'days/:date/articles' => 'days#articles'
-  # get 'days/:date/topics' => 'days#topics'
-  # get 'days/:date/popularity' => 'days#popularity'
+  root 'topics#index'
+  get "trends" => 'topics#trends'
+  get "articles" => 'topics#articles'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
