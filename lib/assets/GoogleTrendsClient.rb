@@ -1,9 +1,10 @@
 require 'json'
 require 'rubygems'
-require 'open-uri'
-require 'nokogiri'
+require 'uri'
+require 'net/http'
 require 'awesome_print'
 require 'date'
+require 'ruby-standard-deviation'
 # require 'mechanize'
 
 class GoogleTrendsClient
@@ -14,18 +15,22 @@ class GoogleTrendsClient
   QUERY_OPTION = {time_series: "&TIMESERIES_GRAPH_0",
     related_search: "&RISING_QUERIES_0_0"}
 
-  def initialize(keywords, month_span)
-    process_url(keywords, month_span)
+  def new_search(keywords)
+    process_url(keywords)
+    get_request
+    parse_response
+    build_data_hash
+    detect_trends
+    refine_url #once initial popularity spark is detected, we can take a closer look at a more specific time period
     get_request
     parse_response
     build_data_hash
     detect_trends
   end
 
-  def process_url(keywords, month_span)
+  def process_url(keywords)
     @processed_url = BASE_URL
     @processed_url += "&q=" + keywords.split(" ").join("+")
-    @processed_url += "&date=today+" + month_span + "-m"
   end
 
   def parse_response
@@ -37,9 +42,7 @@ class GoogleTrendsClient
   def build_data_hash
     @trend_data = {}
     # if no response
-    if @response["status"] == "error"
-      return @trend_data
-    else
+    if @response["status"] != "error"
       @response["table"]["rows"].each do |row|
         cell = row["c"]
         datedata = parse_date(cell[0]["v"])
@@ -54,20 +57,6 @@ class GoogleTrendsClient
     end
   end
 
-  #the correct algorithm for peak detection that needs to be implemented
-  # if the topic exist, look at the number of days since last time we looked at it its trends
-    # use the correct trend timeline
-    # take the ratio of an overlapping day
-    # use that ratio on all previous days
-  # if the topic is new
-    # look at the longest span
-    # look at the stdev of the curve until the next longest span and the next longest span
-    # if the stdev is not significantly lower, keep this interval
-    # else, we gotta repeat for the next longest span
-
-  # then, look at the median and the standard deviation, any data above 1 stdev of the median should be captured
-  # use the social media, ebola for sample data trials
-
   def detect_trends
     unless @trend_data == {}
       @delta = @trend_data.values.stdev 
@@ -76,6 +65,15 @@ class GoogleTrendsClient
     @trending_days = @trend_data.select do |date, popularity|
       popularity - @median > @delta
     end.keys
+  end
+
+  def refine_url
+    initial_relevant_date = @trending_days[0].prev_month.prev_month
+    year_from = initial_relevant_date.year
+    month_from = initial_relevant_date.month
+    day_difference = (Date.today - initial_relevant_date).to_i
+    month_difference = (day_difference/30.4374).ceil #this is the average number of days in a month
+    @processed_url += "&date=" + month_from.to_s + "/" + year_from.to_s + "+" + month_difference.to_s + "m"
   end
 
   private

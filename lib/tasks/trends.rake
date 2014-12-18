@@ -12,14 +12,14 @@ namespace :topics do
   task get_trends: :environment do
     # pull topics from DB
     
-  	TIME_PERIOD = "3"
     today = Day.find_or_create_by(date: Date.today)
   	topics = today.topics
 
   	topics.each do |topic|
   		p "searching #{topic.title} in google trends..."
       #still need to get the id of the topic
-  		client = GoogleTrendsClient.new(topic.title, TIME_PERIOD)
+  		client = GoogleTrendsClient.new
+      client.new_search(topic)
   		trend_data = client.trend_data
 
       p "searching for the days that #{topic.title} is trending..."
@@ -41,6 +41,31 @@ namespace :topics do
       seed_popularity(topic, trend_data)
   	end
   end
+
+  desc "runs daily, determine the hot topics to show for default"
+  task get_hot_topics: :environment do
+    today = Date.today
+    day_1_week_ago = get_day_a_week_ago(today)
+    
+    topics_ranking = Topic.all.map do |topic|
+      # sum of popularity from articles published in the last week
+      {topic.title => topic.articles.where(published_at: day_1_week_ago..today).sum(:twitter_popularity)}
+    end
+
+    #sort and pick the top 5
+    ap topics_ranking.sort_by{|k, v| v}.reverse
+
+  end
+
+
+end
+
+def get_day_a_week_ago(today)
+  day_1_week_ago = today
+  7.times do
+    day_1_week_ago = day_1_week_ago.prev_day
+  end
+  return day_1_week_ago
 end
 
 #get rid of the historical days that we already searched 
@@ -51,11 +76,11 @@ def filter_trending_days(topic, trending_days)
   end
 end
 
-#find way to find articles that really matter
+#this filters articles for each day
 def filter_articles(articles)
   include PopularitySearch
   #this isn't fair to more recent articles
-  popularity_cutoff = 200
+  popularity_cutoff = 300
   articles.each do |article|
     article[:twitter_pop] = twitter_popularity(article[:url])
   end
@@ -63,11 +88,7 @@ def filter_articles(articles)
     article[:twitter_pop] > popularity_cutoff
   end
   articles = articles.sort_by{|article| article[:twitter_pop]}.reverse
-  if articles.count > 3
-    return articles[0..2]
-  else
-    return articles
-  end
+  return articles[0..2] #only pick the top 3 if there's more than 3
 end
 
 def seed_popularity(topic, trend_data)
@@ -94,3 +115,4 @@ def seed_articles(topic, articles)
     ArticleTopic.find_or_create_by(topic_id: topic.id, article_id: a.id)
   end
 end
+
