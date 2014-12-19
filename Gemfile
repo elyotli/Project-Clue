@@ -35,6 +35,10 @@ gem 'twitter-bootstrap-rails'
 gem 'ruby-standard-deviation'
 gem 'gon'
 
+group :development, :test do
+  gem 'rspec-rails'
+end
+
 # gem 'xml-simple'
 
 # Use ActiveModel has_secure_password
