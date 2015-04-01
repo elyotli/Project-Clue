@@ -1,9 +1,7 @@
-
-
-
 class CreateArticles < ActiveRecord::Migration
   def change
     create_table :articles do |t|
+      t.belongs_to :topic
     	t.text :title
   		t.text :abstract, :default => "No abstract provided."
   		t.text :url
@@ -14,7 +12,6 @@ class CreateArticles < ActiveRecord::Migration
 
   		t.integer :twitter_popularity, :default => 1
   		t.integer :facebook_popularity, :default => 1
-  		t.integer :google_trend_index, :default => 1
 
       t.timestamps
     end
