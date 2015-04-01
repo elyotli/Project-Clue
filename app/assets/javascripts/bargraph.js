@@ -16,7 +16,7 @@ function updateGraph(dateArray, trendsArray){
 }
 
 function updateBars(trendsArray, yScale){
-	canvas.selectAll("rect").remove(); //lol... force reset
+	canvas.selectAll("rect").remove(); //force reset
 
 	var dataNSize = trendsArray.length,
 		barSize = graphWidth / dataNSize;
@@ -51,8 +51,8 @@ function updateBars(trendsArray, yScale){
 }
 
 function updateAxis(xScale, yScale){
-	$(".graph").find(".axis").remove(); //lol... force reset
-	$(".graph").find(".y-label").remove(); //lol... force reset
+	$(".graph").find(".axis").remove(); //force reset
+	$(".graph").find(".y-label").remove(); //force reset
 
 	var xAxis = d3.svg.axis()
 			.orient("bottom")
@@ -90,7 +90,7 @@ function parseTopicToURL(topic_string){
 }
 
 $(document).ready(function(){
-	//define canvas size, a bunch of fucking globals, what!
+	//define canvas size, a bunch of globals, should change to closure
 	canvasWidth = $(".content").width(), //this is the dimension of the entire d3 box
 	canvasHeight = 300,
 	paddingTop = 10,

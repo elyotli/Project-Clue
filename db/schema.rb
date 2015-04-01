@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141113154308) do
+ActiveRecord::Schema.define(version: 20141216202914) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 20141113154308) do
     t.text     "url"
     t.text     "source",              default: "No source provided."
     t.text     "image_url",           default: "http://dribbble.s3.amazonaws.com/users/107262/screenshots/462548/ketchup_logo_1.jpg"
-    t.date     "published_at",        default: '2014-11-14'
+    t.date     "published_at",        default: '2014-11-12'
     t.integer  "twitter_popularity",  default: 1
     t.integer  "facebook_popularity", default: 1
     t.integer  "google_trend_index",  default: 1
@@ -48,6 +48,11 @@ ActiveRecord::Schema.define(version: 20141113154308) do
     t.date     "date"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "hot_topics", force: true do |t|
+    t.integer "topic_id"
+    t.date    "date"
   end
 
   create_table "popularities", force: true do |t|
