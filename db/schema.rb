@@ -11,65 +11,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141216202914) do
+ActiveRecord::Schema.define(version: 20150401035650) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "article_topics", force: true do |t|
-    t.integer  "topic_id"
-    t.integer  "article_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "articles", force: true do |t|
-    t.text     "title"
+    t.integer  "topic_id"
+    t.text     "name"
     t.text     "abstract",            default: "No abstract provided."
     t.text     "url"
     t.text     "source",              default: "No source provided."
-    t.text     "image_url",           default: "http://dribbble.s3.amazonaws.com/users/107262/screenshots/462548/ketchup_logo_1.jpg"
-    t.date     "published_at",        default: '2014-11-12'
+    t.text     "image_url"
+    t.date     "published_at",        default: '2015-04-01'
     t.integer  "twitter_popularity",  default: 1
     t.integer  "facebook_popularity", default: 1
-    t.integer  "google_trend_index",  default: 1
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "day_topics", force: true do |t|
-    t.integer  "topic_id"
-    t.integer  "day_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "days", force: true do |t|
-    t.date     "date"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "hot_topics", force: true do |t|
-    t.integer "topic_id"
-    t.date    "date"
-  end
-
-  create_table "popularities", force: true do |t|
-    t.integer  "topic_id"
-    t.integer  "day_id"
-    t.integer  "twitter_popularity",  default: 1
-    t.integer  "facebook_popularity", default: 1
-    t.integer  "google_trend_index",  default: 1
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "topics", force: true do |t|
-    t.string   "title"
-    t.string   "image_url",  default: "http://dribbble.s3.amazonaws.com/users/107262/screenshots/462548/ketchup_logo_1.jpg"
+    t.string   "name"
+    t.string   "image_url"
+    t.integer  "twitter_popularity",  default: 1
+    t.integer  "facebook_popularity", default: 1
+    t.integer  "google_trend_index",  default: 1
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "visits", force: true do |t|
+    t.integer "topic_id"
   end
 
 end

@@ -3,38 +3,12 @@
 </div>
 
 <div class='body'>
-	<div class='sidebar'>
-		<div class='search'>
-			<p>search bar</p>
-		</div>
-		<div class='topics'>
-			<%= render partial: 'topics/topic', local: @topics, layout: false %>
-		</div>
-	</div>
-	<div class='content'>
-		<div class='current-topic'>
-			<h1><%= @current_topic.title %></h1>
-		</div>
-		<div class='graph'>
-
-		</div>
-		<div class='articles'>
-			<div class='articles-header'>
-				<div class='article-date-box'>
-				    <p>Published Date</p>
-				</div>
-				<div class='article-content-box'>
-				    <p>Articles</p>
-				</div>
-			</div>
-			<div class='articles-body'>
-				<%= render partial: 'topics/articles', local: @articles, layout: false %>
-			</div>
+	<div class='row'>
+		<div class='search-bar-container'>
+			<input type='text' class='form-control search-input' placeholder='start here...'>
+			<span class="input-group-btn">
+		        <button class="btn btn-default search-button" type="button">Go!</button>
+		    </span>
 		</div>
 	</div>
-	
-</div>
-
-<div class='footer'>
-	<p>talk to us!</p>
 </div>

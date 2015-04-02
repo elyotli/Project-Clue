@@ -2,7 +2,7 @@ class CreateArticles < ActiveRecord::Migration
   def change
     create_table :articles do |t|
       t.belongs_to :topic
-    	t.text :title
+    	t.text :name
   		t.text :abstract, :default => "No abstract provided."
   		t.text :url
   		t.text :source, :default => "No source provided."
