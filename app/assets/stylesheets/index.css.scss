@@ -8,7 +8,7 @@ form, fieldset, a {
 }
 body {
 	font-size: 100.01%;
-	background-color: #ffffff;
+	background-color: #67E6EC;
 }
 
 /*header-------------------------------------*/
@@ -29,12 +29,28 @@ body {
 }
 
 .search-bar-container{
-	padding-top: 100px; 
-	width: 600px;
+	background-color: #FFFFFF;
+
+	margin-top: 100px;
 	margin-left: auto;
 	margin-right: auto;
+	padding: 10px;
+
+	width: 600px;
+	height: 200px;
+
+	border-radius: 5px;
+	
+	.intro{
+		padding-top: 10px;
+		padding-bottom: 10px;
+		font-size: 1.25em;
+		text-align: center;
+		line-height: 1.5;
+	}
 
 	.search-input{
+		margin-top: 20px;
 		font-size: 2em;
 		width: 80%;
 	}
