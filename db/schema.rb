@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150401035650) do
+ActiveRecord::Schema.define(version: 20150409230510) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,9 +23,18 @@ ActiveRecord::Schema.define(version: 20150401035650) do
     t.text     "url"
     t.text     "source",              default: "No source provided."
     t.text     "image_url"
-    t.date     "published_at",        default: '2015-04-01'
+    t.date     "published_at",        default: '2015-04-09'
     t.integer  "twitter_popularity",  default: 1
     t.integer  "facebook_popularity", default: 1
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "popularities", force: true do |t|
+    t.integer  "topic_id"
+    t.integer  "index"
+    t.date     "date"
+    t.integer  "status"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -33,9 +42,6 @@ ActiveRecord::Schema.define(version: 20150401035650) do
   create_table "topics", force: true do |t|
     t.string   "name"
     t.string   "image_url"
-    t.integer  "twitter_popularity",  default: 1
-    t.integer  "facebook_popularity", default: 1
-    t.integer  "google_trend_index",  default: 1
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -4,15 +4,20 @@
 
 <article class='main-container'>
 	<div class='search-bar-container form-search'>
-		<p class='intro'>It's hard to get the full context of news these days. Newsketchup brings you relevant historical news content so you can get the full picture!
-		</p>
-		<input type='text' class='form-control search-input' placeholder='start here...' maxlength='40'>
-		<span class="input-group-btn">
-	        <button class="btn btn-default search-button" type="button">Go!</button>
-	    </span>
+		<div class='intro'>
+			<h4>It's hard to get the full context of news these days. Newsketchup brings you relevant historical news content so you can get the full picture!
+			</h4>
+		</div>
+		<%= form_tag("/trends", method: :get, class: "form-search form-inline") do %>
+			<input id='search-text' type='text' name='topic' class='search-query search-input' placeholder='What do you want to know?' maxlength='40'/>
+			<button id='search-button' type="submit" class="btn btn-primary">Search</button>
+		<% end %>
 	</div>
 
+	<div class='graph-container'>
+		<canvas id="graph-canvas" width="800" height="400"></canvas>
 
+	</div>
 
 
 
