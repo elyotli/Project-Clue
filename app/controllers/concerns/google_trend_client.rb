@@ -32,10 +32,10 @@ module GoogleTrendClient
   end
 
   def parse_response(response)
-    if response["status"] != "error"
-      response = response.match(/[(].*/).to_s
-      response = response.gsub(/(new Date)\D\d{4}\D\d{1,2}\D\d{1,2}\D/)  { |s| s = '"' + s + '"' }
-      response = JSON.parse(response[1..-3])
+    response = response.match(/[(].*/).to_s[1..-3]
+    response = response.gsub(/(new Date)\D\d{4}\D\d{1,2}\D\d{1,2}\D/)  { |s| s = '"' + s + '"' }
+    response = JSON.parse(response)
+    unless response["status"] == "error"
       trend_data = {}
       response["table"]["rows"].each do |row|
         datedata = parse_date(row["c"][0]["v"])

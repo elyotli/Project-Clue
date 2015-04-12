@@ -10,12 +10,12 @@ class TopicsController < ApplicationController
   def trends
     topic = Topic.find_or_initialize_by(name: params[:topic])
     if topic.persisted?
-      puts topic.id
-      respond_with @topic.popularities
+      respond_with topic.popularities
     else
+      trend_data = trend_search(topic.name)
       topic.save!
-      popularities = Popularity.save_data(topic, trend_search(params[:topic]))
-      respond_with(popularities)
+      Popularity.save_data(topic, trend_data)
+      respond_with topic.popularities
     end
   end
 

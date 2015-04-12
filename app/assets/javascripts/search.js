@@ -23,12 +23,29 @@ $(document).ready(function(){
 
 });
 
-function populateGraph(data){
+function populateGraph(response){
+	var labels 	= [];
+	var data 	= [];
+	for(var i = 0; i<response.length; i++){
+		labels.push(response[i].date);
+		data.push(response[i].index);
+	}
+	var data = {
+		labels: labels,
+		datasets:[
+			{
+			fillColor: "rgba(225,0,0,1)",
+			strokeColor: "rgba(225,0,0,1)",
+			data: data
+			}
+		]
+	}
 
-	options = {
+	var options = {
 		animation 			: true,
 		animationSteps		: 100,
 		animationEasing 	: "easeOutQuart",
+		scaleShowGridLines  : false,
 	}
 
 	var ctx = $("#graph-canvas")[0].getContext("2d");
