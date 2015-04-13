@@ -14,5 +14,5 @@
 //= require jquery.turbolinks
 //= require jquery_ujs
 //= require twitter/bootstrap
-//= require Chart
+//= require d3
 //= require_tree .

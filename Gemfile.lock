@@ -32,8 +32,6 @@ GEM
     awesome_print (1.2.0)
     buftok (0.2.0)
     builder (3.2.2)
-    chart-js-rails (0.0.9)
-      railties (> 3.1)
     chronic (0.10.2)
     coderay (1.1.0)
     coffee-rails (4.0.1)
@@ -43,6 +41,8 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.8.0)
+    d3-rails (3.5.5)
+      railties (>= 3.1)
     diff-lcs (1.2.5)
     equalizer (0.0.9)
     erubis (2.7.0)
@@ -188,8 +188,8 @@ PLATFORMS
 
 DEPENDENCIES
   awesome_print
-  chart-js-rails
   coffee-rails (~> 4.0.0)
+  d3-rails
   gon
   jbuilder (~> 2.0)
   jquery-rails

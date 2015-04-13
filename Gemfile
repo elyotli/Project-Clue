@@ -61,4 +61,4 @@ gem 'xml-simple'
 gem 'whenever', :require => false
 gem 'simple-rss'
 gem 'rails_12factor', group: :production
-gem 'chart-js-rails'
+gem "d3-rails"
