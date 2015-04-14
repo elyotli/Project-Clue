@@ -13,6 +13,7 @@ $(document).ready(function(){
 			.append("svg")
 			.attr("height", canvasHeight)
 			.attr("width", canvasWidth)
+			.attr("id", "graph-canvas")
 			.append("g")
 			.attr("transform", "translate(" + paddingLeft + ", " + paddingTop + ")")
 			.attr("height", graphHeight)
@@ -91,19 +92,19 @@ function updateAxis(xScale, yScale){
 			.outerTickSize([2])
 			.ticks(1);
 
-	d3.select(".graph-container")
+	d3.select("#graph-canvas")
 		.append("g")
 		.attr("class", "axis")
 		.attr("transform", "translate(" + paddingLeft + ", " + (graphHeight + paddingTop) + ")")
 		.call(xAxis);
-	d3.select(".graph-container")
+	d3.select("#graph-canvas")
 		.append("g")
 		.attr("class", "axis")
 		.attr("transform", "translate(" + paddingLeft + ", " + paddingTop + ")")
 		.call(yAxis);
 
 	//add the yAxis title
-	d3.select(".graph-container").append("text")
+	d3.select("#graph-canvas").append("text")
 	    .attr("class", "y-label")
 	    .attr("text-anchor", "end")
 	    .attr("y", paddingLeft*0.7)	//this is actually the horizontal distance from the left
