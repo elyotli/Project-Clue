@@ -1,17 +1,15 @@
-require 'uri'
-require 'net/http'
-require 'awesome_print'
 require_relative '../../assets/PopularitySearch'
 
 class APIProcesser
   include PopularitySearch
 
-  def get_request
-    uri = URI.parse(@processed_url)
-    request = Net::HTTP::Get.new(uri)
+  def get_request(url)
+    uri = URI.parse(url)
+    request = Net::HTTP::Get.new(url)
     response = Net::HTTP.start(uri.host, uri.port) do |http|
       http.request request
     end
+    puts response
     return response.body
   end
 

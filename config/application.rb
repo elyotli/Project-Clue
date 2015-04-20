@@ -20,9 +20,6 @@ Bundler.require(*Rails.groups)
 # end
 
 
-
-
-
 module Clue
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.

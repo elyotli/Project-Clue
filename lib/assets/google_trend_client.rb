@@ -1,5 +1,3 @@
-require 'net/http'
-
 module GoogleTrendClient
 
   BASE_URL = "http://www.google.com/trends/fetchComponent?hl=en-US&cmpt=q&content=1&export=3&cid=TIMESERIES_GRAPH_0"
