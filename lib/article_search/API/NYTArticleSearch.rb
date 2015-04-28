@@ -9,8 +9,7 @@ class NYTArticleSearch < APIProcesser
 
   def search(query, begin_date, end_date)
     response = get_articles(query, begin_date, end_date)
-    puts response
-    parse_articles(response)
+    parse_articles(response) if response.any?
   end
 
   def get_articles(query, begin_date, end_date)
